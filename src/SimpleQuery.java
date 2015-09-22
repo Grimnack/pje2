@@ -25,7 +25,7 @@ public class SimpleQuery {
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
 
-		Query query = new Query("source:twitter4j #RWC");
+		Query query = new Query("bonjour");
 		QueryResult result = twitter.search(query);
 		for (Status status : result.getTweets()) {
 			System.out.println("@" + status.getUser().getScreenName() + ":" + status.getText());
