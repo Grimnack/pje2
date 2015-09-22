@@ -1,3 +1,4 @@
+import graphics.Frame;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -32,5 +33,7 @@ public class SimpleQuery {
 		}
 
 		System.out.println("Fini");
+		
+		Frame frame = new Frame();
 	}
 }
