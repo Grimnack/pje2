@@ -1,56 +1,92 @@
 package graphics;
 
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import listeners.SearchListener;
+import twitter4j.Status;
 
 public class Frame extends JFrame{
 
-	JLabel label;
-	List<JLabel> tweets;
+	JTextField textField;
 	JButton search;
+
+	JPanel searchPanel;
+	JPanel tweetsPanel;
 	
+
+
 	public Frame(){
 		super();
-		this.setSize(1000, 1000);
 		this.setTitle("Twitter");
 		this.setVisible(true);
 		
+		textField = new JTextField(15);
+		textField.setPreferredSize(new Dimension(200, 24));
+
 		search = new JButton("Search !");
-		search.addActionListener(new SearchListener());
-	
-		label = new JLabel("Tweets : ");
+		search.addActionListener(new SearchListener(this, textField));
 		
-		tweets = new ArrayList();
+		searchPanel = new JPanel();
+		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
 		
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-		
-		
-		this.add(search);
-		this.add(label);
-		readFile();
+		searchPanel.add(textField);
+		searchPanel.add(search);
 		
 		
+		tweetsPanel = new JPanel();
+
+		setLayout(new GridBagLayout());
+
+
+		tweetsPanel.setLayout(new BoxLayout(tweetsPanel, BoxLayout.Y_AXIS));
+
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 1000;
+		c.gridheight = 200;
+		
+		//gridx, gridy , gridwidth, gridheight
+		
+		this.add(searchPanel, c);
+		
+		
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 200;
+		c.gridwidth = 1000;
+		c.gridheight = 500;
+		
+		this.add(tweetsPanel, c);
+
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		int xSize = ((int) tk.getScreenSize().getWidth());
+		int ySize = ((int) tk.getScreenSize().getHeight());
+		this.setSize(xSize,ySize);
+		
+
 	}
-	
-	protected void readFile(){
+
+	/*protected void readFile(){
 
 
 		String fichier = "tweets.txt";
-		
+
 		String tweets = "";
 
-		//lecture du fichier texte	
 		try{
 
 			BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(fichier)));
@@ -63,9 +99,29 @@ public class Frame extends JFrame{
 		catch (Exception e){
 			System.out.println(e.toString());
 		}
+
+	}*/
+	
+
+	public void addTweets(List<Status> tweets){
+
+		for(int i=0;i<tweets.size();i++){
+			Status tweet = tweets.get(i);
+			
+			JPanel tweetPanel = new JPanel();
+			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
+			
+			tweetPanel.add(new JLabel(tweet.getUser().getScreenName()));
+			tweetPanel.add(new JLabel(tweet.getText()));
+			
+			tweetsPanel.add(tweetPanel);
+
+			
+		}
 		
-		
+		revalidate(); 
+		repaint();
 	}
-	
-	
+
+
 }
