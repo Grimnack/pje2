@@ -1,0 +1,15 @@
+Espaces inexistants
+Tweets redondants
+Verifier que les tweets sont en francais
+
+
+
+OBLIGATOIRE :
+
+1) distance minimum : (nombre de mots total - nombre de mots en commun) / nombre de mots total
+	ex: super il fait beau / super il fait chaud : 8 - 6 / 8
+
+2) KNN
+
+
+EN PLUS : Levenshtem, Simmetrics

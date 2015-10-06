@@ -4,9 +4,12 @@ import graphics.Frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -37,7 +40,6 @@ public class SearchListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 
 		String fileName = textField.getText() + ".csv";
-		String fileNameNettoye = textField.getText() + "Clean.csv";
 
 
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -68,7 +70,7 @@ public class SearchListener implements ActionListener{
 
 			File fileToBeDeleted = new File(fileName);
 			if(fileToBeDeleted.exists() && !fileToBeDeleted.isDirectory()) { 
-			   fileToBeDeleted.delete();
+				fileToBeDeleted.delete();
 			}
 
 			File file = new File(fileName);
@@ -76,39 +78,33 @@ public class SearchListener implements ActionListener{
 			BufferedWriter output = new BufferedWriter(new FileWriter(file));
 
 			for (Status status : result.getTweets()) {
-				
+
 				String toBeCleaned = status.getText();
 				System.out.println(toBeCleaned);
-				
-				// Pattern - Matcher
-				Pattern pattern = Pattern.compile("([@#\"\r\n(RT )]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
-				Matcher matcher = pattern.matcher(toBeCleaned);
 
-				String cleaned = matcher.replaceAll(""); 
+				Pattern smiley = Pattern.compile("[(:-\\)|:\\)|:\\]|=\\)|:-D|:D|=D|;-\\)|;\\))(:-\\(|:\\(|:\\[|=\\(|>:\\(|>:-\\(|;-\\()]"
+						+ "[(:-\\(|:\\(|:\\[|=\\(|>:\\(|>:-\\(|;-\\()(:-\\)|:\\)|:\\]|=\\)|:-D|:D|=D|;-\\)|;\\))]") ;
+				Matcher matcherSmiley = smiley.matcher(toBeCleaned);
 
-				// ajout a la liste pour le graphique
-				stringTweets.add(cleaned); 
-				
-				// ajout dans le fichier
-				String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
-				output.write(string);
-				System.out.println(string);
-				
-				
-				
-				/* 
-				 * Pattern pattern = Pattern.compile("^[\r\n]+[\r\n]+$");
-				Matcher matcher = pattern.matcher(ligne);
+				if(!matcherSmiley.matches()){
 
-				String nettoyee = matcher.replaceAll(""); 
 
-				System.out.println(nettoyee);
-				System.out.println();
-				
-				stringTweets.add(nettoyee); 
-				
-				
-				 */
+
+					// Pattern - Matcher
+					Pattern pattern = Pattern.compile("([@#\"\r\n(RT )]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
+					Matcher matcher = pattern.matcher(toBeCleaned);
+
+					String cleaned = matcher.replaceAll(""); 
+
+					// ajout a la liste pour le graphique
+					stringTweets.add(cleaned); 
+
+					// ajout dans le fichier
+					String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
+					output.write(string);
+					System.out.println(string);
+
+				}
 			}
 			output.flush();
 
@@ -120,40 +116,24 @@ public class SearchListener implements ActionListener{
 		// Lecture dans un fichier et nettoyage des tweets
 
 
-/*
-		List<String> stringTweets = new ArrayList<String>();
+
+		/*List<String> stringTweets = new ArrayList<String>();
 
 		try{
-			// Test si fichier existe deja pour le supprimer
-			File fileToBeDeleted = new File(fileNameNettoye);
-			if(fileToBeDeleted.exists() && !fileToBeDeleted.isDirectory()) { 
-				fileToBeDeleted.delete();
-			}
-			
-			// Ouverture/lecture du fichier non nettoye
+
+			// Ouverture/lecture du fichier
 			BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
-			
-			// Creation du nouveau fichier nettoye
-			File file = new File(fileNameNettoye);
-			BufferedWriter output = new BufferedWriter(new FileWriter(file));
 
 			String ligne;
-		
-			while ((ligne=br.readLine())!=null){
 
-				
-				
-				
-				
-				output.write(nettoyee);
+			while ((ligne=br.readLine())!=null){
+				stringTweets.add(ligne);
+
 			}
 			// Fin de lecture
 			br.close(); 
-			
-			// Fin de l'ecriture
-			output.flush();
-			output.close();
-			
+
+
 		} catch (Exception exception){
 			System.out.println(e.toString());
 		}*/
