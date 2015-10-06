@@ -83,7 +83,7 @@ public class Frame extends JFrame{
 	/*protected void readFile(){
 
 
-		String fichier = "tweets.txt";
+		String fichier = "tweets.csv";
 
 		String tweets = "";
 
@@ -103,16 +103,19 @@ public class Frame extends JFrame{
 	}*/
 	
 
-	public void addTweets(List<Status> tweets){
+	public void addTweets(List<String> tweets){
 
 		for(int i=0;i<tweets.size();i++){
-			Status tweet = tweets.get(i);
+			String stringTweet = tweets.get(i);
 			
 			JPanel tweetPanel = new JPanel();
 			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
 			
-			tweetPanel.add(new JLabel(tweet.getUser().getScreenName()));
-			tweetPanel.add(new JLabel(tweet.getText()));
+			// Split avec ","
+			String [] tweet = stringTweet.split("\",\"");
+			
+			tweetPanel.add(new JLabel(tweet[0]));
+			tweetPanel.add(new JLabel(tweet[1]));
 			
 			tweetsPanel.add(tweetPanel);
 
