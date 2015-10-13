@@ -4,12 +4,9 @@ import graphics.Frame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,6 +14,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JTextField;
 
+import models.Model;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -28,16 +26,16 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class SearchListener implements ActionListener{
 
-
-	protected Frame mainFrame;
 	protected JTextField textField;
 
 	public SearchListener(Frame mainFrame, JTextField textField){
 		this.textField = textField;
-		this.mainFrame = mainFrame;
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
+		// Mise a jour du theme dans le model
+		Model.theme =  textField.getText();
 
 		String fileName = textField.getText() + ".csv";
 
@@ -64,6 +62,7 @@ public class SearchListener implements ActionListener{
 		}
 
 		List<String> stringTweets = new ArrayList<String>();
+		
 
 		// Ecriture dans un fichier
 		try {
@@ -80,31 +79,41 @@ public class SearchListener implements ActionListener{
 			for (Status status : result.getTweets()) {
 
 				String toBeCleaned = status.getText();
-				System.out.println(toBeCleaned);
 
-				Pattern smiley = Pattern.compile("[(:-\\)|:\\)|:\\]|=\\)|:-D|:D|=D|;-\\)|;\\))(:-\\(|:\\(|:\\[|=\\(|>:\\(|>:-\\(|;-\\()]"
+				/*Pattern smiley = Pattern.compile("[(:-\\)|:\\)|:\\]|=\\)|:-D|:D|=D|;-\\)|;\\))(:-\\(|:\\(|:\\[|=\\(|>:\\(|>:-\\(|;-\\()]"
 						+ "[(:-\\(|:\\(|:\\[|=\\(|>:\\(|>:-\\(|;-\\()(:-\\)|:\\)|:\\]|=\\)|:-D|:D|=D|;-\\)|;\\))]") ;
-				Matcher matcherSmiley = smiley.matcher(toBeCleaned);
+				Matcher matcherSmiley = smiley.matcher(toBeCleaned);*/
 
-				if(!matcherSmiley.matches()){
+				//if(!matcherSmiley.matches()){
 
 
 
-					// Pattern - Matcher
-					Pattern pattern = Pattern.compile("([@#\"\r\n(RT )]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
-					Matcher matcher = pattern.matcher(toBeCleaned);
+				// Pattern - Matcher
+				Pattern pattern = Pattern.compile("([@#\"\r\n(RT)]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
+				Matcher matcher = pattern.matcher(toBeCleaned);
 
-					String cleaned = matcher.replaceAll(""); 
+				String cleaned = matcher.replaceAll(""); 
+				
+				
+
+
+				// ajout dans le fichier
+				String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
+
+
+				// Verifier que le tweet n'est pas redondant
+				if(!stringTweets.contains(string)){
+
+					output.write(string);
 
 					// ajout a la liste pour le graphique
-					stringTweets.add(cleaned); 
-
-					// ajout dans le fichier
-					String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
-					output.write(string);
-					System.out.println(string);
-
+					stringTweets.add(string); 
 				}
+
+
+				//}
+
+
 			}
 			output.flush();
 
@@ -137,9 +146,8 @@ public class SearchListener implements ActionListener{
 		} catch (Exception exception){
 			System.out.println(e.toString());
 		}*/
-
-
-		mainFrame.addTweets(stringTweets);
+		
+		Model.frame.addTweets(stringTweets);
 	}
 
 

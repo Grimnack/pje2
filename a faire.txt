@@ -1,6 +1,13 @@
-Espaces inexistants
-Tweets redondants
-Verifier que les tweets sont en francais
+Finir les smileys
+
+
+Option:
+
+Graphisme:
+- ne pas afficher boutons algo avant d'avoir fait une recherche
+- affichage des tweets plus propre
+- trouver un style graphique à l'appli
+- chevauchement des labels 
 
 
 
