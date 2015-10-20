@@ -1,5 +1,5 @@
 package models;
 
 public enum Polarite {
-	NEUTRE, POSITIF, NEGATIF;
+	NEUTRE, POSITIF, NEGATIF, UNDEFINED;
 }
