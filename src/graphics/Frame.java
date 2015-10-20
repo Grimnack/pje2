@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 
 import listeners.NaifListener;
 import listeners.SearchListener;
+import listeners.TagListener;
+import listeners.ValidationListener;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -39,7 +41,8 @@ public class Frame extends JFrame{
 	JTextField textField;
 	JButton search;
 	JButton naifButton;
-
+	JButton tagButton;
+	
 	JPanel searchPanel;
 	JPanel algoPanel;
 	JPanel tweetsPanel;
@@ -73,12 +76,15 @@ public class Frame extends JFrame{
 		// Algo Panel
 		naifButton = new JButton("Algo naïf");
 		naifButton.addActionListener(new NaifListener(this));
-
+		tagButton = new JButton("Etiquetage");
+		tagButton.addActionListener(new TagListener(this));
 		algoPanel = new JPanel();
 		algoPanel.setOpaque(false);
 		algoPanel.setLayout(new BoxLayout(algoPanel, BoxLayout.X_AXIS));
 		algoPanel.add(naifButton);
+		algoPanel.add(tagButton);
 
+		
 		// Tweet panel
 		tweetsPanel = new JPanel();	
 		tweetsPanel.setOpaque(false);
@@ -106,7 +112,6 @@ public class Frame extends JFrame{
 		c.gridheight = 100;
 
 		this.add(algoPanel, c);
-
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
@@ -150,6 +155,7 @@ public class Frame extends JFrame{
 
 			tweetPanel.add(new JLabel(tweet[0]));
 			tweetPanel.add(new JLabel(tweet[1]));
+			
 			//	tweetPanel.add(new JTextField(""));
 
 			tweetsPanel.add(tweetPanel);
@@ -179,7 +185,12 @@ public class Frame extends JFrame{
 			tweetPanel.add(new JLabel(tweet[1]));
 			tweetPanel.add(new JTextField(50));
 
+			JButton validation = new JButton("Valider");
+			validation.addActionListener(new ValidationListener(this));
+			tweetPanel.add(validation);
+			
 			tweetsPanel.add(tweetPanel);
+			
 		}
 
 		revalidate(); 

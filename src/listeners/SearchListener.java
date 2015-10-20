@@ -116,7 +116,7 @@ public class SearchListener implements ActionListener{
 
 		// Lecture dans un fichier et nettoyage des tweets
 
-
+		Model.tweetsmodel = new ArrayList<String>(stringTweets);
 		Model.frame.addTweets(stringTweets);
 	}
 
