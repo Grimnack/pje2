@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import javax.swing.JTextField;
 
 import models.Model;
+import models.Tweet;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -63,7 +64,7 @@ public class SearchListener implements ActionListener{
 		}
 
 		List<String> stringTweets = new ArrayList<String>();
-		
+		List<Tweet> lesTweets = new ArrayList<Tweet>();
 
 		// Ecriture dans un fichier
 		try {
@@ -78,6 +79,8 @@ public class SearchListener implements ActionListener{
 			BufferedWriter output = new BufferedWriter(new FileWriter(file));
 
 			for (Status status : result.getTweets()) {
+				
+				Tweet tweet = new Tweet();
 
 				String toBeCleaned = status.getText();
 
@@ -91,8 +94,11 @@ public class SearchListener implements ActionListener{
 				Matcher matcherPonctu = patternPonctu.matcher(cleanedHalf);
 				
 				String cleaned = matcherPonctu.replaceAll("");
-
-			
+				
+				tweet.setText(cleaned);
+				tweet.setUser(status.getUser().getScreenName()) ;
+				lesTweets.add(tweet);
+				
 				// ajout dans le fichier
 				String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
 
@@ -116,7 +122,7 @@ public class SearchListener implements ActionListener{
 
 		// Lecture dans un fichier et nettoyage des tweets
 
-		Model.tweetsmodel = new ArrayList<String>(stringTweets);
+		Model.lesTweets = new ArrayList<Tweet>(lesTweets);
 		Model.frame.addTweets(stringTweets);
 	}
 
