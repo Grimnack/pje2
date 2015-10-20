@@ -31,6 +31,11 @@ import org.jfree.data.general.DefaultPieDataset;
 
 public class Frame extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	JTextField textField;
 	JButton search;
 	JButton naifButton;
@@ -65,7 +70,6 @@ public class Frame extends JFrame{
 		searchPanel.add(textField);
 		searchPanel.add(search);
 
-
 		// Algo Panel
 		naifButton = new JButton("Algo naïf");
 		naifButton.addActionListener(new NaifListener(this));
@@ -75,7 +79,7 @@ public class Frame extends JFrame{
 		algoPanel.setLayout(new BoxLayout(algoPanel, BoxLayout.X_AXIS));
 		algoPanel.add(naifButton);
 
-
+		// Tweet panel
 		tweetsPanel = new JPanel();	
 		tweetsPanel.setOpaque(false);
 		tweetsPanel.setLayout(new BoxLayout(tweetsPanel, BoxLayout.Y_AXIS));
@@ -128,28 +132,6 @@ public class Frame extends JFrame{
 
 	}
 
-	/*protected void readFile(){
-
-
-		String fichier = "tweets.csv";
-
-		String tweets = "";
-
-		try{
-
-			BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(fichier)));
-			String ligne;
-			while ((ligne=br.readLine())!=null){
-				this.add(new JLabel(ligne));
-			}
-			br.close(); 
-		}		
-		catch (Exception e){
-			System.out.println(e.toString());
-		}
-
-	}*/
-
 
 	public void addTweets(List<String> tweets){
 
@@ -168,10 +150,36 @@ public class Frame extends JFrame{
 
 			tweetPanel.add(new JLabel(tweet[0]));
 			tweetPanel.add(new JLabel(tweet[1]));
+			//	tweetPanel.add(new JTextField(""));
 
 			tweetsPanel.add(tweetPanel);
+		}
 
+		revalidate(); 
+		repaint();
+	}
 
+	public void addTweetsWithTag(List<String> tweets){
+
+		tweetsPanel.removeAll();
+
+		for(int i=0;i<tweets.size();i++){
+			String stringTweet = tweets.get(i);
+
+			JPanel tweetPanel = new JPanel();
+			tweetPanel.setOpaque(false);
+
+			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
+
+			// Split avec ","
+			String [] tweet = stringTweet.split("\",\"");
+			
+
+			tweetPanel.add(new JLabel(tweet[0]));
+			tweetPanel.add(new JLabel(tweet[1]));
+			tweetPanel.add(new JTextField(50));
+
+			tweetsPanel.add(tweetPanel);
 		}
 
 		revalidate(); 
@@ -186,19 +194,12 @@ public class Frame extends JFrame{
 		DefaultPieDataset union = new DefaultPieDataset();
 		//remplir l'ensemble
 
-		System.out.println(positif);
-
 		double negatifPourcentage = negatif / (negatif + neutre + positif)*100,
 				neutrePourcentage = neutre / (negatif + neutre + positif)*100,
 				positifPourcentage = positif/ (negatif + neutre + positif)*100;
 		union.setValue("Negatif", negatifPourcentage);
 		union.setValue("Neutre", neutrePourcentage);
 		union.setValue("Positif", positifPourcentage);
-
-		System.out.println(union.getValue("Negatif"));
-		System.out.println(union.getValue("Neutre"));
-		System.out.println(union.getValue("Positif"));
-
 
 		JFreeChart repart = ChartFactory.createPieChart("Répartition par sentiments (algo naïf)", union, true, true, false);
 		ChartPanel crepart = new ChartPanel(repart);

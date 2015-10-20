@@ -59,6 +59,7 @@ public class SearchListener implements ActionListener{
 		try {
 			result = twitter.search(query);
 		} catch (TwitterException e1) {
+			System.out.println(e1.toString());
 		}
 
 		List<String> stringTweets = new ArrayList<String>();
@@ -80,23 +81,18 @@ public class SearchListener implements ActionListener{
 
 				String toBeCleaned = status.getText();
 
-				/*Pattern smiley = Pattern.compile("[(:-\\)|:\\)|:\\]|=\\)|:-D|:D|=D|;-\\)|;\\))(:-\\(|:\\(|:\\[|=\\(|>:\\(|>:-\\(|;-\\()]"
-						+ "[(:-\\(|:\\(|:\\[|=\\(|>:\\(|>:-\\(|;-\\()(:-\\)|:\\)|:\\]|=\\)|:-D|:D|=D|;-\\)|;\\))]") ;
-				Matcher matcherSmiley = smiley.matcher(toBeCleaned);*/
-
-				//if(!matcherSmiley.matches()){
-
-
-
 				// Pattern - Matcher
 				Pattern pattern = Pattern.compile("([@#\"\r\n(RT)]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
 				Matcher matcher = pattern.matcher(toBeCleaned);
 
-				String cleaned = matcher.replaceAll(""); 
+				String cleanedHalf = matcher.replaceAll(""); 
 				
+				Pattern patternPonctu = Pattern.compile("\\p{Punct}");
+				Matcher matcherPonctu = patternPonctu.matcher(cleanedHalf);
 				
+				String cleaned = matcherPonctu.replaceAll("");
 
-
+			
 				// ajout dans le fichier
 				String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
 
@@ -110,43 +106,17 @@ public class SearchListener implements ActionListener{
 					stringTweets.add(string); 
 				}
 
-
-				//}
-
-
 			}
 			output.flush();
 
 			output.close();
 		} catch(Exception exception){
-
+			System.out.println(exception.toString());
 		}
 
 		// Lecture dans un fichier et nettoyage des tweets
 
 
-
-		/*List<String> stringTweets = new ArrayList<String>();
-
-		try{
-
-			// Ouverture/lecture du fichier
-			BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
-
-			String ligne;
-
-			while ((ligne=br.readLine())!=null){
-				stringTweets.add(ligne);
-
-			}
-			// Fin de lecture
-			br.close(); 
-
-
-		} catch (Exception exception){
-			System.out.println(e.toString());
-		}*/
-		
 		Model.frame.addTweets(stringTweets);
 	}
 

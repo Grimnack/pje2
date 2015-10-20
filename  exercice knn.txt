@@ -1,0 +1,28 @@
+A = Fatigué de travailler, super les vacances arrivent à point
+
+1 : Grève à Air France, les vacances commencent mal					Négatif
+2 : Direction soleil pour les vacances super						Positif
+3 : Je vais devoir travailler pendant les vacances pour rattraper mon retard en PJE	Négatif (très négatif)
+
+
+
+
+A : nombre de mots total = 9
+
+1 : nombre de mots total = 8
+2 : nombre de mots total = 6
+3 : nombre de mots total = 13
+
+
+Distance A1 : (17 - 6)/17 = 0.65
+Distance A2 : (15 - 6)/15 = 0.6
+Distance A3 : (22 - 6)/22 = 0.82
+
+1 plus proche voisin : A positif
+3 plus proche voisin : A négatif
+
+
+
+
+
+

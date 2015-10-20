@@ -6,7 +6,10 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import models.Model;
 
@@ -135,6 +138,54 @@ public class Annotation {
 
 
 
+	}
+
+	
+	public static void annoteKNN(){
+		try{
+			
+			String pathNameInput = Model.theme + "-polariteNaif.csv";
+
+			// Ouverture/lecture du fichier
+			BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(pathNameInput)));
+			
+			String ligne;
+			
+			
+			List<String> tweetsAClasser = new ArrayList<String>();
+			
+			while ((ligne=br.readLine()) != null){
+				tweetsAClasser.add(ligne.split("\",\"")[1]);
+			}
+			
+			
+			
+		} catch(Exception e){
+			
+		}
+		
+		
+		
+	}
+	
+	public static double getDistanceTweet(String tweet1, String tweet2){
+		
+		// Split
+		List<String> splitCleaned1 = Arrays.asList(tweet1.split("\\s*"));
+		List<String> splitCleaned2 = Arrays.asList(tweet2.split("\\s*"));
+		
+		
+		int nbMotsTotal = splitCleaned1.size() + splitCleaned2.size(), nbMotsCommun = 0;
+		
+		
+		for(String mot1 : splitCleaned1){
+			if(splitCleaned2.contains(mot1)){
+				nbMotsCommun += 2;
+			}
+		}
+		
+		return (nbMotsTotal - nbMotsCommun) / nbMotsCommun;
+		
 	}
 
 }

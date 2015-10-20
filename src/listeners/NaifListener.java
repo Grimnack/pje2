@@ -16,7 +16,6 @@ public class NaifListener implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("ça marche !!!");
 		Annotation.annoteNaif();
 	}
 
