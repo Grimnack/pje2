@@ -208,7 +208,7 @@ public class Frame extends JFrame{
 		repaint();
 	}
 
-	public void updateNaifStats(double negatif, double neutre, double positif){
+	public void updateStats(double negatif, double neutre, double positif){
 
 		statsPanel.removeAll();
 

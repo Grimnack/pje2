@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Tweet {
@@ -27,8 +28,6 @@ public class Tweet {
 		setPolarite(polarite);
 	}
 	
-	
-	
 	public double getDistanceWith(Tweet tweet){
 		
 		// Split
@@ -42,12 +41,21 @@ public class Tweet {
 				nbMotsCommun += 2;
 			}
 		}
-		
 		return (nbMotsTotal - nbMotsCommun) / nbMotsCommun;
 		
 	}
 	
+	public boolean isNegatif(){
+		return polarite == Polarite.NEGATIF;
+	}
 	
+	public boolean isNeutre(){
+		return polarite == Polarite.NEUTRE;
+	}
+	
+	public boolean isPositif(){
+		return polarite == Polarite.POSITIF;
+	}	
 	
 	public void setText(String text){
 		this.text = text ;
@@ -62,6 +70,16 @@ public class Tweet {
 		double neutreDiff = Math.abs(2-avgKNN);
 		double posDiff = Math.abs(4-avgKNN);
 		
+		// avg est plus proche de negatif
+		if(negDiff < neutreDiff && negDiff < posDiff)
+			this.polarite = Polarite.NEGATIF;
+		
+		else if(neutreDiff < posDiff)
+			this.polarite = Polarite.NEUTRE;
+		
+		else
+			this.polarite = Polarite.POSITIF;
+		
 	}
 	
 	public void setPolarite(Polarite pol){
@@ -74,6 +92,34 @@ public class Tweet {
 
 	public String getUser() {
 		return user; 
+	}
+	
+	
+	public static HashMap<Polarite, Integer> getPolariteFrequency(List<Tweet> tweets){
+		HashMap<Polarite, Integer> map = new HashMap<Polarite, Integer>();
+		
+		for(Tweet tweet : tweets){
+			Polarite polarite;
+			if(tweet.isNegatif()){
+				polarite = Polarite.NEGATIF;			
+
+			} else if(tweet.isPositif()){
+				polarite = Polarite.POSITIF;			
+				
+			} else {
+				polarite = Polarite.NEUTRE;
+				
+			}
+			
+			Integer value = map.get(polarite); 
+			if(value == null)
+				map.put(polarite, 0);
+			
+			else
+				map.put(polarite, value++);
+		}
+		
+		return map;
 	}
 	
 }

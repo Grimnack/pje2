@@ -132,7 +132,7 @@ public class Annotation {
 			
 			//System.out.println("Ecriture finie");
 			
-			Model.frame.updateNaifStats(tweetNegatif, tweetNeutre, tweetPositif);
+			Model.frame.updateStats(tweetNegatif, tweetNeutre, tweetPositif);
 			
 		} catch (Exception exception){
 			System.out.println(exception.toString());
@@ -174,8 +174,8 @@ public class Annotation {
 
 				Map<Tweet, Double> distanceSorted = CollectionUtil.mapSortByValue(tweetDistance);			
 				
-				List<Double> values = (List<Double>)distanceSorted.values();
-				
+				List<Double> values = new ArrayList<Double>(distanceSorted.values());
+			
 				// On en prend 5, ou moins si la list est moins grande
 				int toInd=5;
 				if(toInd > values.size())
@@ -185,10 +185,13 @@ public class Annotation {
 				values = values.subList(0, toInd);
 				double moyennePolarite = CollectionUtil.listGetAvg(values);
 
-				
-				
+				tweet.setPolariteFromAvg(moyennePolarite);			
 				
 			}
+			
+			HashMap<Polarite, Integer> map = Tweet.getPolariteFrequency(Model.lesTweets);
+			
+			Model.frame.updateStats(map.get(Polarite.))
 			
 			
 		} catch(Exception e){
