@@ -48,5 +48,9 @@ public class Tweet {
 	public String getText(){
 		return text;
 	}
+
+	public String getUser() {
+		return user; 
+	}
 	
 }
