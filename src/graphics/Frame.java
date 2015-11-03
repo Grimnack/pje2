@@ -21,6 +21,7 @@ import listeners.NaifListener;
 import listeners.SearchListener;
 import listeners.TagListener;
 import listeners.ValidationListener;
+import models.Tweet;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -165,12 +166,12 @@ public class Frame extends JFrame{
 		repaint();
 	}
 
-	public void addTweetsWithTag(List<String> tweets){
+	public void addTweetsWithTag(List<Tweet> lesTweets){
 
 		tweetsPanel.removeAll();
 
-		for(int i=0;i<tweets.size();i++){
-			String stringTweet = tweets.get(i);
+		for(int i=0;i<lesTweets.size();i++){
+			String stringTweet = lesTweets.get(i).;
 
 			JPanel tweetPanel = new JPanel();
 			tweetPanel.setOpaque(false);
