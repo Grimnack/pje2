@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import listeners.KNNListener;
 import listeners.NaifListener;
 import listeners.SearchListener;
 import listeners.TagListener;
@@ -42,6 +43,7 @@ public class Frame extends JFrame{
 	JButton search;
 	JButton naifButton;
 	JButton tagButton;
+	JButton knnButton;
 	
 	JPanel searchPanel;
 	JPanel algoPanel;
@@ -76,13 +78,20 @@ public class Frame extends JFrame{
 		// Algo Panel
 		naifButton = new JButton("Algo naïf");
 		naifButton.addActionListener(new NaifListener(this));
+		
 		tagButton = new JButton("Etiquetage");
 		tagButton.addActionListener(new TagListener(this));
+		
+		knnButton = new JButton("KNN");
+		knnButton.addActionListener(new KNNListener(this));
+		
+		
 		algoPanel = new JPanel();
 		algoPanel.setOpaque(false);
 		algoPanel.setLayout(new BoxLayout(algoPanel, BoxLayout.X_AXIS));
 		algoPanel.add(naifButton);
 		algoPanel.add(tagButton);
+		algoPanel.add(knnButton);
 
 		
 		// Tweet panel

@@ -6,13 +6,13 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.MapUtil;
+import models.CollectionUtil;
 import models.Model;
+import models.Polarite;
 import models.Tweet;
 
 
@@ -159,10 +159,9 @@ public class Annotation {
 			
 			while ((ligne=br.readLine()) != null){
 				String [] tweetSplit = ligne.split("\",\"");
-				String valueToBeConverted = tweetSplit[2].substring(0, tweetSplit[2].length() -1);
+				Polarite polarite = Polarite.valueOf(tweetSplit[2].substring(0, tweetSplit[2].length() -1));
 				
-				Tweet tweet = new Tweet(tweetSplit[1], Integer.parseInt(valueToBeConverted));
-	
+				Tweet tweet = new Tweet(tweetSplit[1], Polarite.valueOf(polarite));
 				tweetBase.add(tweet);
 			}
 						
@@ -170,44 +169,33 @@ public class Annotation {
 			for(Tweet tweet : Model.lesTweets){
 				tweetDistance = new HashMap<Tweet, Double>();
 				
-				for(Tweet tweetEtiquete : tweetBase){
-					tweetDistance.put(tweetEtiquete, getDistanceTweet(tweetEtiquete, tweet));
-				}
+				for(Tweet tweetEtiquete : tweetBase)
+					tweetDistance.put(tweetEtiquete, tweet.getDistanceWith(tweetEtiquete));
+
+				Map<Tweet, Double> distanceSorted = CollectionUtil.mapSortByValue(tweetDistance);			
+				
+				List<Double> values = (List<Double>)distanceSorted.values();
+				
+				// On en prend 5, ou moins si la list est moins grande
+				int toInd=5;
+				if(toInd > values.size())
+					toInd = values.size();
+
+				
+				values = values.subList(0, toInd);
+				double moyennePolarite = CollectionUtil.listGetAvg(values);
+
 				
 				
-				Map<Tweet, Double> distanceSorted = MapUtil.sortByValue(tweetDistance);
-				
-				int i=0;
-				// On en prend 5, ou moins si la map est moins grande
-				double moyennePolarite = 0;
-				while(i < distanceSorted.values().size() || i < 5){
-					/*moyennePolarite += distanceSorted.values().toArray()[i];*/
-					System.out.println(distanceSorted.values().toArray()[i]);
-				}
 				
 			}
 			
-		} catch(Exception e){
 			
+		} catch(Exception e){
+			System.out.println(e.getMessage());
 		}
 	}
 	
-	public static double getDistanceTweet(Tweet tweet1, Tweet tweet2){
-		
-		// Split
-		List<String> splitCleaned1 = Arrays.asList(tweet1.getText().split("\\s*"));
-		List<String> splitCleaned2 = Arrays.asList(tweet2.getText().split("\\s*"));
-		
-		int nbMotsTotal = splitCleaned1.size() + splitCleaned2.size(), nbMotsCommun = 0;
-		
-		for(String mot1 : splitCleaned1){
-			if(splitCleaned2.contains(mot1)){
-				nbMotsCommun += 2;
-			}
-		}
-		
-		return (nbMotsTotal - nbMotsCommun) / nbMotsCommun;
-		
-	}
+	
 
 }

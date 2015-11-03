@@ -7,9 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class MapUtil {
+public class CollectionUtil {
 
-	public static <K, V extends Comparable<? super V>> Map<K, V>  sortByValue( Map<K, V> map ){
+	public static <K, V extends Comparable<? super V>> Map<K, V>  mapSortByValue( Map<K, V> map ){
 		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>( map.entrySet() );
 		Collections.sort( list, new Comparator<Map.Entry<K, V>>(){
 		
@@ -24,5 +24,13 @@ public class MapUtil {
 		}
 		return result;
 
+	}
+	
+	public static int listGetAvg(List<Double> list){
+		int sum = 0;
+		for(Double d : list)
+			sum += d;
+		return sum / list.size();
+		
 	}
 }
