@@ -7,10 +7,11 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 
+import models.MapUtil;
 import models.Model;
 
 
@@ -144,28 +145,48 @@ public class Annotation {
 	public static void annoteKNN(){
 		try{
 			
-			String pathNameInput = Model.theme + "-polariteNaif.csv";
+			String pathNameInput = Model.theme + "-etiquette.csv";
 
 			// Ouverture/lecture du fichier
 			BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(pathNameInput)));
 			
-			String ligne;
+			String ligne;	
 			
+			HashMap<String, Integer> tweetBase = new HashMap<String, Integer>();
 			
-			List<String> tweetsAClasser = new ArrayList<String>();
+			HashMap<String, Double> tweetDistance;
 			
 			while ((ligne=br.readLine()) != null){
-				tweetsAClasser.add(ligne.split("\",\"")[1]);
+				String [] tweetSplit = ligne.split("\",\"");
+				String valueToBeConverted = tweetSplit[2].substring(0, tweetSplit[2].length() -1);
+				int value = Integer.parseInt(valueToBeConverted);
+				tweetBase.put(tweetSplit[1], value);
 			}
-			
-			
+						
+			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
+			for(String tweet : Model.tweetsmodel){
+				tweetDistance = new HashMap<String, Double>();
+				
+				for(String tweetEtiquete : tweetBase.keySet()){
+					tweetDistance.put(tweetEtiquete, getDistanceTweet(tweetEtiquete, tweet));
+				}
+				
+				
+				Map<String, Double> distanceSorted = MapUtil.sortByValue(tweetDistance);
+				
+				int i=0;
+				// On en prend 5, ou moins si la map est moins grande
+				double moyennePolarite = 0;
+				while(i < distanceSorted.values().size() || i < 5){
+					/*moyennePolarite += distanceSorted.values().toArray()[i];*/
+					System.out.println(distanceSorted.values().toArray()[i]);
+				}
+				
+			}
 			
 		} catch(Exception e){
 			
 		}
-		
-		
-		
 	}
 	
 	public static double getDistanceTweet(String tweet1, String tweet2){
@@ -174,9 +195,7 @@ public class Annotation {
 		List<String> splitCleaned1 = Arrays.asList(tweet1.split("\\s*"));
 		List<String> splitCleaned2 = Arrays.asList(tweet2.split("\\s*"));
 		
-		
 		int nbMotsTotal = splitCleaned1.size() + splitCleaned2.size(), nbMotsCommun = 0;
-		
 		
 		for(String mot1 : splitCleaned1){
 			if(splitCleaned2.contains(mot1)){
