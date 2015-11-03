@@ -13,6 +13,7 @@ import java.util.Map;
 
 import models.MapUtil;
 import models.Model;
+import models.Tweet;
 
 
 public class Annotation {
@@ -152,27 +153,29 @@ public class Annotation {
 			
 			String ligne;	
 			
-			HashMap<String, Integer> tweetBase = new HashMap<String, Integer>();
+			List<Tweet> tweetBase = new ArrayList<Tweet>();
 			
-			HashMap<String, Double> tweetDistance;
+			HashMap<Tweet, Double> tweetDistance;
 			
 			while ((ligne=br.readLine()) != null){
 				String [] tweetSplit = ligne.split("\",\"");
 				String valueToBeConverted = tweetSplit[2].substring(0, tweetSplit[2].length() -1);
-				int value = Integer.parseInt(valueToBeConverted);
-				tweetBase.put(tweetSplit[1], value);
+				
+				Tweet tweet = new Tweet(tweetSplit[1], Integer.parseInt(valueToBeConverted));
+	
+				tweetBase.add(tweet);
 			}
 						
 			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
-			for(String tweet : Model.tweetsmodel){
-				tweetDistance = new HashMap<String, Double>();
+			for(Tweet tweet : Model.lesTweets){
+				tweetDistance = new HashMap<Tweet, Double>();
 				
-				for(String tweetEtiquete : tweetBase.keySet()){
+				for(Tweet tweetEtiquete : tweetBase){
 					tweetDistance.put(tweetEtiquete, getDistanceTweet(tweetEtiquete, tweet));
 				}
 				
 				
-				Map<String, Double> distanceSorted = MapUtil.sortByValue(tweetDistance);
+				Map<Tweet, Double> distanceSorted = MapUtil.sortByValue(tweetDistance);
 				
 				int i=0;
 				// On en prend 5, ou moins si la map est moins grande
@@ -189,11 +192,11 @@ public class Annotation {
 		}
 	}
 	
-	public static double getDistanceTweet(String tweet1, String tweet2){
+	public static double getDistanceTweet(Tweet tweet1, Tweet tweet2){
 		
 		// Split
-		List<String> splitCleaned1 = Arrays.asList(tweet1.split("\\s*"));
-		List<String> splitCleaned2 = Arrays.asList(tweet2.split("\\s*"));
+		List<String> splitCleaned1 = Arrays.asList(tweet1.getText().split("\\s*"));
+		List<String> splitCleaned2 = Arrays.asList(tweet2.getText().split("\\s*"));
 		
 		int nbMotsTotal = splitCleaned1.size() + splitCleaned2.size(), nbMotsCommun = 0;
 		
