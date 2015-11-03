@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +23,7 @@ import listeners.NaifListener;
 import listeners.SearchListener;
 import listeners.TagListener;
 import listeners.ValidationListener;
+import models.Tweet;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -174,28 +176,28 @@ public class Frame extends JFrame{
 		repaint();
 	}
 
-	public void addTweetsWithTag(List<String> tweets){
+	public void addTweetsWithTag(List<Tweet> lesTweets){
 
 		tweetsPanel.removeAll();
 
-		for(int i=0;i<tweets.size();i++){
-			String stringTweet = tweets.get(i);
+		for(int i=0;i<lesTweets.size();i++){
+			String stringUser = lesTweets.get(i).getUser();
+			String stringTweet = lesTweets.get(i).getText();
 
 			JPanel tweetPanel = new JPanel();
 			tweetPanel.setOpaque(false);
 
 			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
 
-			// Split avec ","
-			String [] tweet = stringTweet.split("\",\"");
 			
 
-			tweetPanel.add(new JLabel(tweet[0]));
-			tweetPanel.add(new JLabel(tweet[1]));
-			tweetPanel.add(new JTextField(50));
-
+			tweetPanel.add(new JLabel(stringUser));
+			tweetPanel.add(new JLabel( stringTweet));
+			String[] elements = {"non defini", "positif", "negatif", "neutre" } ;
+			JComboBox<String> liste = new JComboBox<String>(elements);
+			tweetPanel.add(liste);
 			JButton validation = new JButton("Valider");
-			validation.addActionListener(new ValidationListener(this));
+			validation.addActionListener(new ValidationListener(this,lesTweets.get(i),tweetPanel));
 			tweetPanel.add(validation);
 			
 			tweetsPanel.add(tweetPanel);
