@@ -191,7 +191,7 @@ public class Annotation {
 			
 			HashMap<Polarite, Integer> map = Tweet.getPolariteFrequency(Model.lesTweets);
 			
-			Model.frame.updateStats(map.get(Polarite.))
+			Model.frame.updateStats(map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 			
 			
 		} catch(Exception e){
