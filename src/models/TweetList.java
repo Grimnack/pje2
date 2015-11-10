@@ -14,4 +14,9 @@ public class TweetList implements Serializable{
 		tweetlist = l ;
 	}
 
+	public void fusionne(TweetList liste2) {
+		this.tweetlist.addAll(liste2.tweetlist) ;
+		
+	}
+
 }
