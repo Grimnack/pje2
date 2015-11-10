@@ -168,7 +168,7 @@ public class Annotation {
 			}
 						
 			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
-			for(Tweet tweet : Model.lesTweets){
+			for(Tweet tweet : Model.lesTweets.tweetlist){
 				tweetDistance = new HashMap<Tweet, Double>();
 				
 				for(Tweet tweetEtiquete : tweetBase)
@@ -191,12 +191,11 @@ public class Annotation {
 				
 			}
 			
-			HashMap<Polarite, Integer> map = Tweet.getPolariteFrequency(Model.lesTweets);
-			
-			System.out.println(Model.lesTweets);
+			HashMap<Polarite, Integer> map = Tweet.getPolariteFrequency(Model.lesTweets.tweetlist);
 			
 			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
-			
+
+			br.close();
 			
 		} catch(Exception e){
 			e.printStackTrace();

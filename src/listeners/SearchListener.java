@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import models.Model;
 import models.Tweet;
+import models.TweetList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -122,7 +123,7 @@ public class SearchListener implements ActionListener{
 
 		// Lecture dans un fichier et nettoyage des tweets
 
-		Model.lesTweets = new ArrayList<Tweet>(lesTweets);
+		Model.lesTweets = new TweetList(lesTweets);
 		Model.frame.addTweets(stringTweets);
 	}
 

@@ -1,10 +1,15 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class Tweet {
+public class Tweet implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3977451258097107705L;
 	protected String user;
 	protected String text;
 	protected Polarite polarite;
