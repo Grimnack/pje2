@@ -97,29 +97,35 @@ public class Tweet {
 	
 	public static HashMap<Polarite, Integer> getPolariteFrequency(List<Tweet> tweets){
 		HashMap<Polarite, Integer> map = new HashMap<Polarite, Integer>();
+		map.put(Polarite.NEGATIF, 0);
+		map.put(Polarite.NEUTRE, 0);
+		map.put(Polarite.POSITIF, 0);
 		
 		for(Tweet tweet : tweets){
 			Polarite polarite;
 			if(tweet.isNegatif()){
-				polarite = Polarite.NEGATIF;			
+				polarite = Polarite.NEGATIF;
+				System.out.println("Negatif");
 
 			} else if(tweet.isPositif()){
 				polarite = Polarite.POSITIF;			
+				System.out.println("Positif");
 				
 			} else {
 				polarite = Polarite.NEUTRE;
+				System.out.println("Neutre");
 				
 			}
 			
 			Integer value = map.get(polarite); 
-			if(value == null)
-				map.put(polarite, 0);
-			
-			else
-				map.put(polarite, value++);
+			map.put(polarite, value + 1);
 		}
 		
 		return map;
+	}
+	
+	public String toString(){
+		return "[" + user + ", " + text + ", " + polarite + "]";
 	}
 	
 }
