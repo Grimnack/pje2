@@ -9,15 +9,14 @@ import models.Model;
 
 public class TagListener implements ActionListener {
 
-	protected Frame mainframe;
+	protected Frame mainFrame;
 	
 	public TagListener(Frame frame) {
-		this.mainframe = frame ;
+		this.mainFrame = frame ;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		mainframe.addTweetsWithTag(Model.lesTweets.tweetlist);
-		
+		mainFrame.addTweetsWithTag(Model.lesTweets);
 	}
 
 }

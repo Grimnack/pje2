@@ -14,6 +14,7 @@ import models.CollectionUtil;
 import models.Model;
 import models.Polarite;
 import models.Tweet;
+import models.TweetList;
 
 
 public class Annotation {
@@ -168,7 +169,7 @@ public class Annotation {
 			}
 						
 			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
-			for(Tweet tweet : Model.lesTweets.tweetlist){
+			for(Tweet tweet : Model.lesTweets.tweetList){
 				tweetDistance = new HashMap<Tweet, Double>();
 				
 				for(Tweet tweetEtiquete : tweetBase)
@@ -191,7 +192,7 @@ public class Annotation {
 				
 			}
 			
-			HashMap<Polarite, Integer> map = Tweet.getPolariteFrequency(Model.lesTweets.tweetlist);
+			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
 			
 			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 
@@ -200,6 +201,23 @@ public class Annotation {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+
+
+	public static void predictTweetsClass(TweetList learningBase){
+		for(Tweet tweet : Model.lesTweets.tweetList){
+			Map<Polarite, Double> map = new HashMap<Polarite, Double>();
+			
+			map.put(Polarite.NEGATIF, tweet.bayes(Polarite.NEGATIF, learningBase));
+			map.put(Polarite.NEUTRE, tweet.bayes(Polarite.NEUTRE, learningBase));
+			map.put(Polarite.POSITIF, tweet.bayes(Polarite.POSITIF, learningBase));
+			
+			tweet.setPolarite(CollectionUtil.getPolariteFromHighestProb(map));
+			
+
+			
+		}
+		
 	}
 	
 	

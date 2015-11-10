@@ -33,4 +33,14 @@ public class CollectionUtil {
 		return sum / list.size();
 		
 	}
+	
+	public static Polarite getPolariteFromHighestProb(Map<Polarite, Double> map){
+		if(map.get(Polarite.NEGATIF) > map.get(Polarite.NEUTRE) && map.get(Polarite.NEGATIF) > map.get(Polarite.POSITIF))
+			return Polarite.NEGATIF;
+		else if(map.get(Polarite.NEUTRE) > map.get(Polarite.POSITIF))
+			return Polarite.NEUTRE;
+		
+		return Polarite.POSITIF;
+
+	}
 }

@@ -23,7 +23,7 @@ import listeners.NaifListener;
 import listeners.SearchListener;
 import listeners.TagListener;
 import listeners.ValidationListener;
-import models.Tweet;
+import models.TweetList;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -176,20 +176,17 @@ public class Frame extends JFrame{
 		repaint();
 	}
 
-	public void addTweetsWithTag(List<Tweet> lesTweets){
+	public void addTweetsWithTag(TweetList tweetList){
 
 		tweetsPanel.removeAll();
 
-		for(int i=0;i<lesTweets.size();i++){
-			String stringUser = lesTweets.get(i).getUser();
-			String stringTweet = lesTweets.get(i).getText();
+		for(int i=0;i<tweetList.size();i++){
+			String stringUser = tweetList.get(i).getUser();
+			String stringTweet = tweetList.get(i).getText();
 
 			JPanel tweetPanel = new JPanel();
 			tweetPanel.setOpaque(false);
-
 			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
-
-			
 
 			tweetPanel.add(new JLabel(stringUser));
 			tweetPanel.add(new JLabel( stringTweet));
@@ -197,11 +194,10 @@ public class Frame extends JFrame{
 			JComboBox<String> liste = new JComboBox<String>(elements);
 			tweetPanel.add(liste);
 			JButton validation = new JButton("Valider");
-			validation.addActionListener(new ValidationListener(this,lesTweets.get(i),tweetPanel));
+			validation.addActionListener(new ValidationListener(this, tweetList.get(i),tweetPanel));
 			tweetPanel.add(validation);
 			
 			tweetsPanel.add(tweetPanel);
-			
 		}
 
 		revalidate(); 

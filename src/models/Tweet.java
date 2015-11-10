@@ -99,35 +99,23 @@ public class Tweet implements Serializable {
 		return user; 
 	}
 	
+	public Polarite getPolarite(){
+		return polarite;
+	}
 	
-	public static HashMap<Polarite, Integer> getPolariteFrequency(List<Tweet> tweets){
-		HashMap<Polarite, Integer> map = new HashMap<Polarite, Integer>();
-		map.put(Polarite.NEGATIF, 0);
-		map.put(Polarite.NEUTRE, 0);
-		map.put(Polarite.POSITIF, 0);
+	
+	public double bayes(Polarite polarite, TweetList learningBase){
+		String [] mots = text.split("\\s+");
 		
-		for(Tweet tweet : tweets){
-			Polarite polarite;
-			if(tweet.isNegatif()){
-				polarite = Polarite.NEGATIF;
-				System.out.println("Negatif");
-
-			} else if(tweet.isPositif()){
-				polarite = Polarite.POSITIF;			
-				System.out.println("Positif");
-				
-			} else {
-				polarite = Polarite.NEUTRE;
-				System.out.println("Neutre");
-				
-			}
-			
-			Integer value = map.get(polarite); 
-			map.put(polarite, value + 1);
+		double proba = learningBase.nbTweetsClass(polarite);
+		for(String mot : mots){
+			proba = proba * learningBase.probaOccMotDansClass(mot, polarite); 
 		}
 		
-		return map;
+		
+		return proba;
 	}
+	
 	
 	public String toString(){
 		return "[" + user + ", " + text + ", " + polarite + "]";

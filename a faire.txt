@@ -5,15 +5,9 @@ Graphisme:
 - affichage des tweets plus propre
 - trouver un style graphique à l'appli
 - chevauchement des labels 
-
+- 2 boutons (Search from scratch, More tweets);
 
 
 OBLIGATOIRE :
-
-1) distance minimum : (nombre de mots total - nombre de mots en commun) / nombre de mots total
-	ex: super il fait beau / super il fait chaud : 8 - 6 / 8
-
-2) KNN
-
 
 EN PLUS : Levenshtem, Simmetrics
