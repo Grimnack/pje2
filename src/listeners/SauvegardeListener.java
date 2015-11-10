@@ -6,7 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
 
@@ -28,8 +31,9 @@ public class SauvegardeListener implements ActionListener {
 		if(retour==JFileChooser.APPROVE_OPTION){
 			String pathname = choix.getSelectedFile().getAbsolutePath();
 			File file = new File(pathname);
+			// Si le fichier existe deja
 			// LECTURE ET FUSION
-			if(file.exists() && file.isFile()){
+			if(file.exists()){
 				if(!file.canRead()){
 					System.out.println("tu peux pas lire");
 					System.exit(0);
@@ -37,6 +41,7 @@ public class SauvegardeListener implements ActionListener {
 				try {
 					ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(file));
 					Object lu = flotLecture.readObject();
+					flotLecture.close();
 					if(lu instanceof TweetList) {
 						TweetList bdd = (TweetList) lu;
 						Model.lesTweets.fusionne(bdd) ;
@@ -47,7 +52,26 @@ public class SauvegardeListener implements ActionListener {
 				}
 				
 			}
+			if(!file.exists()){
+				try {
+					file.createNewFile();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			//ECRITURE
+			if (file.canWrite()) {
+			       try {
+			         ObjectOutputStream flotEcriture = 
+			             new ObjectOutputStream(
+			                new FileOutputStream(file)); 
+			         flotEcriture.writeObject(Model.lesTweets);
+			         flotEcriture.close();
+			       } catch (IOException e3) {
+			         System.out.println(" erreur :" + e3.toString());
+			       }   
+			     }
+			  }
 		}
 	}
-
-}
