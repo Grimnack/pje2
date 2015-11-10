@@ -122,4 +122,9 @@ public class TweetList implements Serializable{
 		return count;
 	}
 
+	public void fusionne(TweetList liste2) {
+		this.tweetList.addAll(liste2.tweetList) ;
+		
+	}
+
 }

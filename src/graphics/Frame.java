@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,10 +21,14 @@ import javax.swing.JTextField;
 
 import listeners.KNNListener;
 import listeners.NaifListener;
+import listeners.SauvegardeListener;
 import listeners.SearchListener;
 import listeners.TagListener;
 import listeners.ValidationListener;
+
 import models.TweetList;
+import models.Model;
+import models.Tweet;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -199,7 +204,22 @@ public class Frame extends JFrame{
 			
 			tweetsPanel.add(tweetPanel);
 		}
-
+		/* 
+		 * ici j'aimerai avoir un bouton pour ajouter les tweets annoté à la BDD 
+		 * CAS 1 
+		 * Aucun fichier n'est crée on enregistre tout simplement Models.lesTweets actuel dans le fichier
+		 * CAS 2
+		 * Un fichier est déjà crée, on ne souhaite pas écraser le fichier, on va donc charger la base de donnée, fusionner l'objet TweetList avec
+		 * notre Model.lesTweets et en suite on sauvegarde
+		 * */
+		JPanel sauvegardePanel = new JPanel();
+		sauvegardePanel.setOpaque(false);
+		JButton sauvegarde = new JButton("sauvegarder");
+		sauvegarde.addActionListener(new SauvegardeListener(this,Model.lesTweets));
+		sauvegardePanel.add(sauvegarde);
+		tweetsPanel.add(sauvegardePanel);
+		
+		
 		revalidate(); 
 		repaint();
 	}
