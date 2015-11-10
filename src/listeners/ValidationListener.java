@@ -24,6 +24,7 @@ public class ValidationListener implements ActionListener {
 		this.tweetPanel = tweetPanel;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
 		String resultat = (String) ((JComboBox<String>) tweetPanel.getComponent(2)).getSelectedItem();
 		Polarite pol;
