@@ -55,6 +55,7 @@ public class Annotation {
 			brp.close();
 			
 		} catch (Exception exception){
+			System.out.println("Annote naif 1");
 			System.out.println(exception.toString());
 		}
 
@@ -132,10 +133,11 @@ public class Annotation {
 			
 			//System.out.println("Ecriture finie");
 			
-			Model.frame.updateStats(tweetNegatif, tweetNeutre, tweetPositif);
+			Model.frame.updateStats("Algorithme naïf", tweetNegatif, tweetNeutre, tweetPositif);
 			
 		} catch (Exception exception){
-			System.out.println(exception.toString());
+			System.out.println("Annote naif 2");
+			System.out.println(exception.getMessage());
 		}
 
 
@@ -191,11 +193,12 @@ public class Annotation {
 			
 			HashMap<Polarite, Integer> map = Tweet.getPolariteFrequency(Model.lesTweets.tweetlist);
 			
-			Model.frame.updateStats(map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+
 			br.close();
 			
 		} catch(Exception e){
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	

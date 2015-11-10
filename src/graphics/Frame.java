@@ -228,7 +228,7 @@ public class Frame extends JFrame{
 		repaint();
 	}
 
-	public void updateStats(double negatif, double neutre, double positif){
+	public void updateStats(String title, double negatif, double neutre, double positif){
 
 		statsPanel.removeAll();
 
@@ -243,7 +243,7 @@ public class Frame extends JFrame{
 		union.setValue("Neutre", neutrePourcentage);
 		union.setValue("Positif", positifPourcentage);
 
-		JFreeChart repart = ChartFactory.createPieChart("Répartition par sentiments (algo naïf)", union, true, true, false);
+		JFreeChart repart = ChartFactory.createPieChart("Répartition par sentiments - " + title, union, true, true, false);
 		ChartPanel crepart = new ChartPanel(repart);
 
 		PiePlot plot = (PiePlot)repart.getPlot();
