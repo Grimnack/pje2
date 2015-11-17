@@ -74,10 +74,10 @@ public class Frame extends JFrame{
 		textField.setPreferredSize(new Dimension(200, 24));
 
 		search = new JButton("Search from scratch!");
-		search.addActionListener(new SearchListener(this, textField.getText()));
+		search.addActionListener(new SearchListener(this, textField,true));
 		
 		search2 = new JButton("More tweets");
-		search2.addActionListener(new SearchListener(this, Model.theme));
+		search2.addActionListener(new SearchListener(this, textField,false));
 		
 
 		searchPanel = new JPanel();
@@ -86,6 +86,7 @@ public class Frame extends JFrame{
 
 		searchPanel.add(textField);
 		searchPanel.add(search);
+		searchPanel.add(search2);
 
 		// Algo Panel
 		naifButton = new JButton("Algo naïf");
@@ -159,10 +160,10 @@ public class Frame extends JFrame{
 	}
 
 
-	public void addTweets(List<String> tweets){
-
-		tweetsPanel.removeAll();
-
+	public void addTweets(List<String> tweets,boolean fromScratch){
+		if(fromScratch){
+			tweetsPanel.removeAll();
+		}
 		for(int i=0;i<tweets.size();i++){
 			String stringTweet = tweets.get(i);
 
