@@ -29,17 +29,20 @@ import twitter4j.conf.ConfigurationBuilder;
 public class SearchListener implements ActionListener{
 
 	protected JTextField textField;
+	protected boolean fromScratch;
 
-	public SearchListener(Frame mainFrame, JTextField textField){
+	public SearchListener(Frame mainFrame, JTextField textField, boolean fromScratch){
 		this.textField = textField;
+		this.fromScratch = fromScratch;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		
 		// Mise a jour du theme dans le model
-		Model.theme =  textField.getText();
-
-		String fileName = textField.getText() + ".csv";
+		if(fromScratch){
+			Model.theme =  textField.getText();
+		}
+		String fileName = Model.theme + ".csv";
 
 
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -56,7 +59,7 @@ public class SearchListener implements ActionListener{
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
 
-		Query query = new Query(textField.getText());
+		Query query = new Query(Model.theme);
 		QueryResult result = null;
 		try {
 			result = twitter.search(query);
@@ -122,9 +125,13 @@ public class SearchListener implements ActionListener{
 		}
 
 		// Lecture dans un fichier et nettoyage des tweets
-
-		Model.lesTweets = new TweetList(lesTweets);
-		Model.frame.addTweets(stringTweets);
+		if(!this.fromScratch ){
+			Model.lesTweets.fusionne(new TweetList(lesTweets)) ;
+		}else{
+			Model.lesTweets = new TweetList(lesTweets) ;
+		}
+		Model.frame.addTweets(stringTweets,this.fromScratch);
+		
 	}
 
 
