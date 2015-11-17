@@ -151,11 +151,11 @@ public class Annotation {
 	public static void annoteKNN(){
 		try{
 
-			
+			// Si la base n'est pas chargée ou est vide, on ne fait rien
 			if(Model.base == null || Model.base.size() == 0)
 				return;
 			
-			TweetList
+			List<Tweet> tweetBase = Model.base.tweetList;
 
 			Map<Tweet, Double> tweetDistance;
 
@@ -186,8 +186,6 @@ public class Annotation {
 			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
 
 			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
-
-			br.close();
 
 		} catch(Exception e){
 			e.printStackTrace();
