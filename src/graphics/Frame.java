@@ -49,6 +49,7 @@ public class Frame extends JFrame{
 	JTextField textField;
 	JButton search;
 	JButton search2;
+	JButton load;
 	JButton naifButton;
 	JButton tagButton;
 	JButton knnButton;
