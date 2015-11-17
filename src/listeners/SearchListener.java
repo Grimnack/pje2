@@ -28,18 +28,18 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class SearchListener implements ActionListener{
 
-	protected JTextField textField;
+	protected String textField;
 
-	public SearchListener(Frame mainFrame, JTextField textField){
+	public SearchListener(Frame mainFrame, String textField){
 		this.textField = textField;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		
 		// Mise a jour du theme dans le model
-		Model.theme =  textField.getText();
+		Model.theme =  textField;
 
-		String fileName = textField.getText() + ".csv";
+		String fileName = textField + ".csv";
 
 
 		ConfigurationBuilder cb = new ConfigurationBuilder();
@@ -56,7 +56,7 @@ public class SearchListener implements ActionListener{
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
 
-		Query query = new Query(textField.getText());
+		Query query = new Query(textField);
 		QueryResult result = null;
 		try {
 			result = twitter.search(query);

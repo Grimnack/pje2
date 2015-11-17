@@ -48,6 +48,7 @@ public class Frame extends JFrame{
 
 	JTextField textField;
 	JButton search;
+	JButton search2;
 	JButton naifButton;
 	JButton tagButton;
 	JButton knnButton;
@@ -72,8 +73,12 @@ public class Frame extends JFrame{
 		textField = new JTextField(15);
 		textField.setPreferredSize(new Dimension(200, 24));
 
-		search = new JButton("Search !");
-		search.addActionListener(new SearchListener(this, textField));
+		search = new JButton("Search from scratch!");
+		search.addActionListener(new SearchListener(this, textField.getText()));
+		
+		search2 = new JButton("More tweets");
+		search2.addActionListener(new SearchListener(this, Model.theme));
+		
 
 		searchPanel = new JPanel();
 		searchPanel.setOpaque(false);
