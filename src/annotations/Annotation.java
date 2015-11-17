@@ -205,6 +205,7 @@ public class Annotation {
 
 
 	public static void predictTweetsClass(TweetList learningBase){
+		System.out.println("Into Bayes");
 		for(Tweet tweet : Model.lesTweets.tweetList){
 			Map<Polarite, Double> map = new HashMap<Polarite, Double>();
 			
