@@ -2,15 +2,15 @@ package annotations;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JOptionPane;
 
 import models.CollectionUtil;
 import models.Model;
@@ -58,8 +58,9 @@ public class Annotation {
 			brp.close();
 
 		} catch (Exception exception){
-			System.out.println("Annote naif 1");
-			System.out.println(exception.toString());
+			// Une exception est levée car il y a un pb sur l'un des dicos. N'existe pas ou autre
+			// Si les dicos ont mal lus, on ne fait rien
+			return;
 		}
 
 		// Lecture dans un fichier et nettoyage des tweets
@@ -142,18 +143,16 @@ public class Annotation {
 			System.out.println("Annote naif 2");
 			System.out.println(exception.getMessage());
 		}
-
-
-
 	}
-
 
 	public static void annoteKNN(){
 		try{
 
 			// Si la base n'est pas chargée ou est vide, on ne fait rien
-			if(Model.base == null || Model.base.size() == 0)
+			if(Model.base == null || Model.base.size() == 0){
+				JOptionPane.showMessageDialog(null, "KNN ne peut être effectué car la bae d'apprentissage n'est pas chargée. Chargez la base avant de pouvoir faire KNN", "Échec !", JOptionPane.INFORMATION_MESSAGE);
 				return;
+			}
 			
 			List<Tweet> tweetBase = Model.base.tweetList;
 
@@ -203,12 +202,7 @@ public class Annotation {
 
 			tweet.setPolarite(CollectionUtil.getPolariteFromHighestProb(map));
 
-
-
 		}
-
 	}
-
-
 
 }

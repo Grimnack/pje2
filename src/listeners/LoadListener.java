@@ -16,7 +16,7 @@ public class LoadListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser choix = new JFileChooser();
 		int retour=choix.showOpenDialog(null);
-		if(retour==JFileChooser.APPROVE_OPTION){
+		if(retour == JFileChooser.APPROVE_OPTION){
 			String pathname = choix.getSelectedFile().getAbsolutePath();
 			File file = new File(pathname);
 			// Si le fichier existe deja
