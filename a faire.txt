@@ -5,7 +5,7 @@ Graphisme:
 - affichage des tweets plus propre
 - trouver un style graphique à l'appli
 - chevauchement des labels 
-- 2 boutons (Search from scratch, More tweets);
+- aussi un bouton pour charger une base d'apprentissage
 
 
 OBLIGATOIRE :
