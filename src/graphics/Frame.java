@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import listeners.KNNListener;
+import listeners.LoadListener;
 import listeners.NaifListener;
 import listeners.SauvegardeListener;
 import listeners.SearchListener;
@@ -80,6 +81,9 @@ public class Frame extends JFrame{
 		search2 = new JButton("More tweets");
 		search2.addActionListener(new SearchListener(this, textField,false));
 		
+		load = new JButton("Load");
+		load.addActionListener(new LoadListener());
+		
 
 		searchPanel = new JPanel();
 		searchPanel.setOpaque(false);
@@ -88,6 +92,7 @@ public class Frame extends JFrame{
 		searchPanel.add(textField);
 		searchPanel.add(search);
 		searchPanel.add(search2);
+		searchPanel.add(load);
 
 		// Algo Panel
 		naifButton = new JButton("Algo naïf");
