@@ -13,12 +13,12 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import listeners.BayesListener;
 import listeners.KNNListener;
 import listeners.LoadListener;
 import listeners.NaifListener;
@@ -26,10 +26,9 @@ import listeners.SauvegardeListener;
 import listeners.SearchListener;
 import listeners.TagListener;
 import listeners.ValidationListener;
-
-import models.TweetList;
 import models.Model;
 import models.Tweet;
+import models.TweetList;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -54,6 +53,7 @@ public class Frame extends JFrame{
 	JButton naifButton;
 	JButton tagButton;
 	JButton knnButton;
+	JButton bayesButton;
 	
 	JPanel searchPanel;
 	JPanel algoPanel;
@@ -104,6 +104,11 @@ public class Frame extends JFrame{
 		knnButton = new JButton("KNN");
 		knnButton.addActionListener(new KNNListener(this));
 		
+		bayesButton = new JButton("Bayes");
+		bayesButton.addActionListener(new BayesListener());
+		
+		
+		
 		
 		algoPanel = new JPanel();
 		algoPanel.setOpaque(false);
@@ -111,6 +116,7 @@ public class Frame extends JFrame{
 		algoPanel.add(naifButton);
 		algoPanel.add(tagButton);
 		algoPanel.add(knnButton);
+		algoPanel.add(bayesButton);
 
 		
 		// Tweet panel
@@ -191,6 +197,25 @@ public class Frame extends JFrame{
 
 		revalidate(); 
 		repaint();
+	}
+	
+	public void addTweetsWithPolarite(TweetList tweetList){
+		tweetsPanel.removeAll();
+
+		for(Tweet tweet : tweetList.tweetList){
+
+			JPanel tweetPanel = new JPanel();
+			tweetPanel.setOpaque(false);
+			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
+
+			tweetPanel.add(new JLabel(tweet.getUser()));
+			tweetPanel.add(new JLabel(tweet.getText()));
+			tweetPanel.add(new JLabel(tweet.getPolarite() + ""));
+			
+			
+			tweetsPanel.add(tweetPanel);
+		}
+		
 	}
 
 	public void addTweetsWithTag(TweetList tweetList){

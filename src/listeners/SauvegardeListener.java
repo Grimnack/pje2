@@ -28,50 +28,44 @@ public class SauvegardeListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser choix = new JFileChooser();
 		int retour=choix.showOpenDialog(null);
-		if(retour==JFileChooser.APPROVE_OPTION){
-			String pathname = choix.getSelectedFile().getAbsolutePath();
-			File file = new File(pathname);
+		if(retour!=JFileChooser.APPROVE_OPTION){
+			return;
+		}
+
+		String pathName = choix.getSelectedFile().getAbsolutePath();
+		File file = new File(pathName);
+
+		if(file.exists() && file.canRead()){
 			// Si le fichier existe deja
 			// LECTURE ET FUSION
-			if(file.exists()){
-				if(!file.canRead()){
-					System.out.println("tu peux pas lire");
-					System.exit(0);
+			try {
+				ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(file));
+				Object lu = flotLecture.readObject();
+				flotLecture.close();
+				if(lu instanceof TweetList) {
+					TweetList bdd = (TweetList) lu;
+					Model.lesTweets.fusionne(bdd) ;
 				}
-				try {
-					ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(file));
-					Object lu = flotLecture.readObject();
-					flotLecture.close();
-					if(lu instanceof TweetList) {
-						TweetList bdd = (TweetList) lu;
-						Model.lesTweets.fusionne(bdd) ;
-					}
-					
-				} catch (Exception e2) {
-					// TODO: handle exception
-				}
-				
+
+			} catch (Exception e2) {
+				System.out.println("erreur2 : ");
+				e2.printStackTrace();
 			}
-			if(!file.exists()){
-				try {
-					file.createNewFile();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-			//ECRITURE
-			if (file.canWrite()) {
-			       try {
-			         ObjectOutputStream flotEcriture = 
-			             new ObjectOutputStream(
-			                new FileOutputStream(file)); 
-			         flotEcriture.writeObject(Model.lesTweets);
-			         flotEcriture.close();
-			       } catch (IOException e3) {
-			         System.out.println(" erreur :" + e3.toString());
-			       }   
-			     }
-			  }
+
 		}
+
+
+		try {
+			ObjectOutputStream flotEcriture = 
+					new ObjectOutputStream(
+							new FileOutputStream(pathName)); 
+			flotEcriture.writeObject(Model.lesTweets);
+			flotEcriture.close();
+		} catch (IOException e3) {
+			System.out.println(" erreur3 :");
+			e3.printStackTrace();
+		}   
+
 	}
+
+}
