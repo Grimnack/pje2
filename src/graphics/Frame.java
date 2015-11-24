@@ -216,14 +216,6 @@ public class Frame extends JFrame{
 			
 			tweetsPanel.add(tweetPanel);
 		}
-		/* 
-		 * ici j'aimerai avoir un bouton pour ajouter les tweets annoté à la BDD 
-		 * CAS 1 
-		 * Aucun fichier n'est crée on enregistre tout simplement Models.lesTweets actuel dans le fichier
-		 * CAS 2
-		 * Un fichier est déjà crée, on ne souhaite pas écraser le fichier, on va donc charger la base de donnée, fusionner l'objet TweetList avec
-		 * notre Model.lesTweets et en suite on sauvegarde
-		 * */
 		JPanel sauvegardePanel = new JPanel();
 		sauvegardePanel.setOpaque(false);
 		JButton sauvegarde = new JButton("sauvegarder");
