@@ -1,13 +1,13 @@
 package listeners;
 
-import graphics.Frame;
+import graphics.MainFrame;
+import graphics.JMessagePopup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -17,28 +17,30 @@ import models.Model;
 import models.TweetList;
 
 public class SauvegardeListener implements ActionListener {
-	protected Frame mainFrame ;
+	protected MainFrame mainFrame ;
 	protected TweetList lesTweets;
 
-	public SauvegardeListener(Frame frame, TweetList lesTweets) {
+	public SauvegardeListener(MainFrame frame, TweetList lesTweets) {
 		mainFrame = frame ;
 		this.lesTweets = lesTweets ;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		JFileChooser choix = new JFileChooser();
-		int retour=choix.showOpenDialog(null);
-		if(retour!=JFileChooser.APPROVE_OPTION){
-			return;
-		}
 
-		String pathName = choix.getSelectedFile().getAbsolutePath();
-		File file = new File(pathName);
+		try {
+			JFileChooser choix = new JFileChooser();
+			int retour=choix.showOpenDialog(null);
+			if(retour!=JFileChooser.APPROVE_OPTION){
+				return;
+			}
 
-		if(file.exists() && file.canRead()){
-			// Si le fichier existe deja
-			// LECTURE ET FUSION
-			try {
+			String pathName = choix.getSelectedFile().getAbsolutePath();
+			File file = new File(pathName);
+
+			if(file.exists() && file.canRead()){
+				// Si le fichier existe deja
+				// LECTURE ET FUSION
+
 				ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(file));
 				Object lu = flotLecture.readObject();
 				flotLecture.close();
@@ -46,25 +48,23 @@ public class SauvegardeListener implements ActionListener {
 					TweetList bdd = (TweetList) lu;
 					Model.lesTweets.fusionne(bdd) ;
 				}
-
-			} catch (Exception e2) {
-				System.out.println("erreur2 : ");
-				e2.printStackTrace();
 			}
 
-		}
-
-
-		try {
 			ObjectOutputStream flotEcriture = 
 					new ObjectOutputStream(
 							new FileOutputStream(pathName)); 
 			flotEcriture.writeObject(Model.lesTweets);
 			flotEcriture.close();
-		} catch (IOException e3) {
-			System.out.println(" erreur3 :");
-			e3.printStackTrace();
+		} catch (Exception exception) {
+			String message = "La base ne peut être chargée. Vérifiez que le fichier est bien celui de la base et veuillez réessayer.",
+					titre = "Échec !";
+			JMessagePopup.showMessage(message, titre);
+			exception.printStackTrace();
 		}   
+
+		String message = "La base a bien été sauvegardée.",
+				titre = "Succès !";
+		JMessagePopup.showMessage(message, titre);
 
 	}
 

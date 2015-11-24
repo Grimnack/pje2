@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -39,7 +38,7 @@ import org.jfree.chart.plot.PieLabelLinkStyle;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
-public class Frame extends JFrame{
+public class MainFrame extends JFrame{
 
 	/**
 	 * 
@@ -60,9 +59,7 @@ public class Frame extends JFrame{
 	JPanel tweetsPanel;
 	JPanel statsPanel;
 
-
-
-	public Frame(){
+	public MainFrame(){
 		super();
 
 		getContentPane().setBackground(Color.white);
@@ -107,9 +104,7 @@ public class Frame extends JFrame{
 		bayesButton = new JButton("Bayes");
 		bayesButton.addActionListener(new BayesListener());
 		
-		
-		
-		
+
 		algoPanel = new JPanel();
 		algoPanel.setOpaque(false);
 		algoPanel.setLayout(new BoxLayout(algoPanel, BoxLayout.X_AXIS));
@@ -172,26 +167,22 @@ public class Frame extends JFrame{
 	}
 
 
-	public void addTweets(List<String> tweets,boolean fromScratch){
+	public void addTweets(TweetList tweetList, boolean fromScratch){
 		if(fromScratch){
 			tweetsPanel.removeAll();
 		}
-		for(int i=0;i<tweets.size();i++){
-			String stringTweet = tweets.get(i);
+		
+
+		
+		for(Tweet tweet : tweetList.tweetList){
 
 			JPanel tweetPanel = new JPanel();
 			tweetPanel.setOpaque(false);
-
 			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
 
-			// Split avec ","
-			String [] tweet = stringTweet.split("\",\"");
-
-			tweetPanel.add(new JLabel(tweet[0]));
-			tweetPanel.add(new JLabel(tweet[1]));
+			tweetPanel.add(new JLabel(tweet.getUser()));
+			tweetPanel.add(new JLabel(tweet.getText()));
 			
-			//	tweetPanel.add(new JTextField(""));
-
 			tweetsPanel.add(tweetPanel);
 		}
 
@@ -221,6 +212,7 @@ public class Frame extends JFrame{
 	public void addTweetsWithTag(TweetList tweetList){
 
 		tweetsPanel.removeAll();
+		statsPanel.removeAll();
 
 		for(int i=0;i<tweetList.size();i++){
 			String stringUser = tweetList.get(i).getUser();

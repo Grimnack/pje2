@@ -1,6 +1,6 @@
 package listeners;
 
-import graphics.Frame;
+import graphics.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,9 +9,9 @@ import models.Model;
 
 public class TagListener implements ActionListener {
 
-	protected Frame mainFrame;
+	protected MainFrame mainFrame;
 	
-	public TagListener(Frame frame) {
+	public TagListener(MainFrame frame) {
 		this.mainFrame = frame ;
 	}
 

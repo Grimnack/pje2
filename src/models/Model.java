@@ -1,11 +1,11 @@
 package models;
 
-import graphics.Frame;
+import graphics.MainFrame;
 
 public class Model {
 	
 	public static String theme;
-	public static Frame frame;
+	public static MainFrame frame;
 	public static boolean etiquetage;
 	
 	// lesTweets représente les tweets chargés avec SearchFromScratch ou AddMore et devant être annotés selon une méthode

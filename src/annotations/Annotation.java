@@ -1,5 +1,7 @@
 package annotations;
 
+import graphics.JMessagePopup;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -10,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
-
 import models.CollectionUtil;
 import models.Model;
 import models.Polarite;
@@ -20,6 +20,8 @@ import models.TweetList;
 
 
 public class Annotation {
+	
+	public static boolean moinsDeTroisMots = false;
 
 	public static void annoteNaif(){
 		double tweetPositif = 0, tweetNeutre = 0, tweetNegatif = 0;
@@ -152,7 +154,7 @@ public class Annotation {
 			if(Model.base == null || Model.base.size() == 0){
 				String message = "KNN ne peut être effectué car la bae d'apprentissage n'est pas chargée. Chargez la base avant de pouvoir faire KNN",
 						 titre = "Échec !";
-				JOptionPane.showMessageDialog(null, message, titre, JOptionPane.INFORMATION_MESSAGE);
+				JMessagePopup.showMessage(message, titre);
 				return;
 			}
 			
@@ -190,7 +192,6 @@ public class Annotation {
 			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 			
 			
-
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -212,7 +213,7 @@ public class Annotation {
 
 		
 		Model.frame.addTweetsWithPolarite(Model.lesTweets);
-		Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+		Model.frame.updateStats("Bayes", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 
 
 		

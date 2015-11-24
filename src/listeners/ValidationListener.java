@@ -1,6 +1,6 @@
 package listeners;
 
-import graphics.Frame;
+import graphics.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,11 +14,11 @@ import models.Tweet;
 
 public class ValidationListener implements ActionListener {
 	
-	protected Frame mainframe ;
+	protected MainFrame mainframe ;
 	protected Tweet tweet ;
 	protected JPanel tweetPanel;
 
-	public ValidationListener(Frame frame, Tweet tweet, JPanel tweetPanel) {
+	public ValidationListener(MainFrame frame, Tweet tweet, JPanel tweetPanel) {
 		this.mainframe = frame;
 		this.tweet = tweet;
 		this.tweetPanel = tweetPanel;

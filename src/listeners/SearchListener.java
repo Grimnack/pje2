@@ -1,6 +1,7 @@
 package listeners;
 
-import graphics.Frame;
+import graphics.MainFrame;
+import graphics.JMessagePopup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +32,7 @@ public class SearchListener implements ActionListener{
 	protected JTextField textField;
 	protected boolean fromScratch;
 
-	public SearchListener(Frame mainFrame, JTextField textField, boolean fromScratch){
+	public SearchListener(MainFrame mainFrame, JTextField textField, boolean fromScratch){
 		this.textField = textField;
 		this.fromScratch = fromScratch;
 	}
@@ -64,7 +65,10 @@ public class SearchListener implements ActionListener{
 		try {
 			result = twitter.search(query);
 		} catch (TwitterException e1) {
-			System.out.println(e1.toString());
+			String message = "Impossible de récupérer de nouveaux tweets. Veuillez réessayer",
+					 titre = "Échec !";
+			JMessagePopup.showMessage(message, titre);
+			return;
 		}
 
 		List<String> stringTweets = new ArrayList<String>();
@@ -122,15 +126,21 @@ public class SearchListener implements ActionListener{
 			output.close();
 		} catch(Exception exception){
 			System.out.println(exception.toString());
+			String message = "Erreur lors du nettoyage de tweets. Contactez les auteurs de l'API.",
+					 titre = "Échec !";
+			JMessagePopup.showMessage(message, titre);
+			exception.printStackTrace();
+			return;
 		}
 
 		// Lecture dans un fichier et nettoyage des tweets
 		if(!this.fromScratch ){
 			Model.lesTweets.fusionne(new TweetList(lesTweets)) ;
-		}else{
+		} else {
 			Model.lesTweets = new TweetList(lesTweets) ;
 		}
-		Model.frame.addTweets(stringTweets,this.fromScratch);
+		
+		Model.frame.addTweets(Model.lesTweets, this.fromScratch);
 		
 	}
 
