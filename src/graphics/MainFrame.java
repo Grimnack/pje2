@@ -13,8 +13,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import listeners.BayesListener;
@@ -53,7 +54,7 @@ public class MainFrame extends JFrame{
 	JButton tagButton;
 	JButton knnButton;
 	JButton bayesButton;
-	
+
 	JPanel searchPanel;
 	JPanel algoPanel;
 	JPanel tweetsPanel;
@@ -74,13 +75,13 @@ public class MainFrame extends JFrame{
 
 		search = new JButton("Search from scratch!");
 		search.addActionListener(new SearchListener(this, textField,true));
-		
+
 		search2 = new JButton("More tweets");
 		search2.addActionListener(new SearchListener(this, textField,false));
-		
+
 		load = new JButton("Load");
 		load.addActionListener(new LoadListener());
-		
+
 
 		searchPanel = new JPanel();
 		searchPanel.setOpaque(false);
@@ -94,16 +95,16 @@ public class MainFrame extends JFrame{
 		// Algo Panel
 		naifButton = new JButton("Algo naïf");
 		naifButton.addActionListener(new NaifListener(this));
-		
+
 		tagButton = new JButton("Etiquetage");
 		tagButton.addActionListener(new TagListener(this));
-		
+
 		knnButton = new JButton("KNN");
 		knnButton.addActionListener(new KNNListener(this));
-		
+
 		bayesButton = new JButton("Bayes");
 		bayesButton.addActionListener(new BayesListener());
-		
+
 
 		algoPanel = new JPanel();
 		algoPanel.setOpaque(false);
@@ -113,7 +114,7 @@ public class MainFrame extends JFrame{
 		algoPanel.add(knnButton);
 		algoPanel.add(bayesButton);
 
-		
+
 		// Tweet panel
 		tweetsPanel = new JPanel();	
 		tweetsPanel.setOpaque(false);
@@ -171,42 +172,58 @@ public class MainFrame extends JFrame{
 		if(fromScratch){
 			tweetsPanel.removeAll();
 		}
+		String[] columnNames = {"Author",
+		"Tweet"};
+
+		Object[][] data = new Object[tweetList.size()][2];
 		
+		Table table = new Table(data, columnNames);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.getColumnModel().getColumn(0).setPreferredWidth(200);
+		table.getColumnModel().getColumn(1).setPreferredWidth(600);
 
-		
-		for(Tweet tweet : tweetList.tweetList){
-
-			JPanel tweetPanel = new JPanel();
-			tweetPanel.setOpaque(false);
-			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
-
-			tweetPanel.add(new JLabel(tweet.getUser()));
-			tweetPanel.add(new JLabel(tweet.getText()));
-			
-			tweetsPanel.add(tweetPanel);
+		for(int i=0;i<tweetList.size();i++){
+			Tweet tweet = tweetList.get(i);
+			data[i][0] = tweet.getUser();
+			data[i][1] = tweet.getText();
 		}
+		
+		
+		JScrollPane jsp = new JScrollPane(table);
+		jsp.setSize(900, 600);
+		tweetsPanel.add(jsp);
 
 		revalidate(); 
 		repaint();
 	}
-	
+
 	public void addTweetsWithPolarite(TweetList tweetList){
 		tweetsPanel.removeAll();
 
-		for(Tweet tweet : tweetList.tweetList){
+		String[] columnNames = {"Author",
+								"Tweet",
+								"Polarité"};
 
-			JPanel tweetPanel = new JPanel();
-			tweetPanel.setOpaque(false);
-			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
-
-			tweetPanel.add(new JLabel(tweet.getUser()));
-			tweetPanel.add(new JLabel(tweet.getText()));
-			tweetPanel.add(new JLabel(tweet.getPolarite() + ""));
-			
-			
-			tweetsPanel.add(tweetPanel);
-		}
+		Object[][] data = new Object[tweetList.size()][3];
+		Table table = new Table(data, columnNames);
 		
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.getColumnModel().getColumn(0).setPreferredWidth(200);
+		table.getColumnModel().getColumn(1).setPreferredWidth(600);
+		table.getColumnModel().getColumn(2).setPreferredWidth(200);
+
+		for(int i=0;i<tweetList.size();i++){
+			Tweet tweet = tweetList.get(i);
+			data[i][0] = tweet.getUser();
+			data[i][1] = tweet.getText();
+			data[i][2] = tweet.getPolarite();
+
+		}
+
+		JScrollPane jsp = new JScrollPane(table);
+		jsp.setSize(900, 600);
+		tweetsPanel.add(jsp);
+
 	}
 
 	public void addTweetsWithTag(TweetList tweetList){
@@ -214,33 +231,48 @@ public class MainFrame extends JFrame{
 		tweetsPanel.removeAll();
 		statsPanel.removeAll();
 
+		String[] columnNames = {"Author",
+								"Tweet",
+								"Polarité",
+								""};
+
+		Object[][] data = new Object[tweetList.size()][4];
+		
+		Table table = new Table(data, columnNames);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.getColumnModel().getColumn(0).setPreferredWidth(200);
+		table.getColumnModel().getColumn(1).setPreferredWidth(600);
+		table.getColumnModel().getColumn(2).setPreferredWidth(100);
+		table.getColumnModel().getColumn(3).setPreferredWidth(100);
+
 		for(int i=0;i<tweetList.size();i++){
-			String stringUser = tweetList.get(i).getUser();
-			String stringTweet = tweetList.get(i).getText();
-
-			JPanel tweetPanel = new JPanel();
-			tweetPanel.setOpaque(false);
-			tweetPanel.setLayout(new BoxLayout(tweetPanel, BoxLayout.X_AXIS));
-
-			tweetPanel.add(new JLabel(stringUser));
-			tweetPanel.add(new JLabel( stringTweet));
-			String[] elements = {"non defini", "positif", "negatif", "neutre" } ;
-			JComboBox<String> liste = new JComboBox<String>(elements);
-			tweetPanel.add(liste);
-			JButton validation = new JButton("Valider");
-			validation.addActionListener(new ValidationListener(this, tweetList.get(i),tweetPanel));
-			tweetPanel.add(validation);
+			Tweet tweet = tweetList.get(i);
+			data[i][0] = tweet.getUser();
+			data[i][1] = tweet.getText();
+			data[i][2] = new JComboBox<String>(new String[]{"Non défini", "Positif", "Négatif", "Neutre"});
 			
-			tweetsPanel.add(tweetPanel);
+
+			JButton validation = new JButton("Valider");
+			validation.addActionListener(new ValidationListener(this, tweetList.get(i), table, i));
+			data[i][3] = validation;
+
 		}
+		
+		JScrollPane jsp = new JScrollPane(table);
+		jsp.setSize(900, 600);
+		tweetsPanel.add(jsp);
+
+		
 		JPanel sauvegardePanel = new JPanel();
 		sauvegardePanel.setOpaque(false);
+		
 		JButton sauvegarde = new JButton("sauvegarder");
 		sauvegarde.addActionListener(new SauvegardeListener(this,Model.lesTweets));
 		sauvegardePanel.add(sauvegarde);
+		
 		tweetsPanel.add(sauvegardePanel);
-		
-		
+
+
 		revalidate(); 
 		repaint();
 	}
@@ -279,11 +311,11 @@ public class MainFrame extends JFrame{
 		plot.setMaximumLabelWidth(0.20);
 		plot.setLabelLinkStyle(PieLabelLinkStyle.CUBIC_CURVE);
 
-		((PiePlot)plot).setSimpleLabels(true);
+		plot.setSimpleLabels(true);
 
 
 		PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
-		((PiePlot)plot).setLabelGenerator(gen);
+		plot.setLabelGenerator(gen);
 
 		crepart.setVisible(true);
 		statsPanel.add(crepart);

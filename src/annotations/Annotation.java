@@ -138,7 +138,7 @@ public class Annotation {
 			output.close();
 
 			//System.out.println("Ecriture finie");
-
+			Model.frame.addTweetsWithPolarite(Model.lesTweets);
 			Model.frame.updateStats("Algorithme naïf", tweetNegatif, tweetNeutre, tweetPositif);
 
 		} catch (Exception exception){

@@ -7,7 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 import models.Polarite;
 import models.Tweet;
@@ -16,17 +17,20 @@ public class ValidationListener implements ActionListener {
 	
 	protected MainFrame mainframe ;
 	protected Tweet tweet ;
-	protected JPanel tweetPanel;
+	protected int i;
+	protected JTable table;
 
-	public ValidationListener(MainFrame frame, Tweet tweet, JPanel tweetPanel) {
+	public ValidationListener(MainFrame frame, Tweet tweet, JTable table, int iPanel) {
 		this.mainframe = frame;
 		this.tweet = tweet;
-		this.tweetPanel = tweetPanel;
+		this.i = iPanel;
+		this.table = table;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e) {
-		String resultat = (String) ((JComboBox<String>) tweetPanel.getComponent(2)).getSelectedItem();
+		TableModel dm = table.getModel();
+		String resultat = (String)((JComboBox<String>) dm.getValueAt(i, 2)).getSelectedItem();
 		Polarite pol;
 		if(resultat == "non defini") {
 			pol = Polarite.UNDEFINED;
@@ -38,9 +42,9 @@ public class ValidationListener implements ActionListener {
 			pol = Polarite.NEUTRE ;
 		}
 		tweet.setPolarite(pol);
-		tweetPanel.removeAll();
-		tweetPanel.add(new JLabel(tweet.getUser()));
-		tweetPanel.add(new JLabel(tweet.getText()));
+		dm.setValueAt(resultat, i, 2);
+		dm.setValueAt(null, i, 3);
+		
 		mainframe.revalidate(); 
 		mainframe.repaint();
 		System.out.println(resultat);
