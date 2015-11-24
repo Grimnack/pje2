@@ -41,7 +41,7 @@ public class SauvegardeListener implements ActionListener {
 				// Si le fichier existe deja
 				// LECTURE ET FUSION
 
-				ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(file));
+				ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()));
 				Object lu = flotLecture.readObject();
 				flotLecture.close();
 				if(lu instanceof TweetList) {
