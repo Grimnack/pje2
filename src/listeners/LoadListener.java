@@ -17,26 +17,27 @@ public class LoadListener implements ActionListener {
 		JFileChooser choix = new JFileChooser();
 		int retour=choix.showOpenDialog(null);
 		if(retour == JFileChooser.APPROVE_OPTION){
-			String pathname = choix.getSelectedFile().getAbsolutePath();
-			File file = new File(pathname);
+			String pathName = choix.getSelectedFile().getAbsolutePath();
+			File file = new File(pathName);
 			// Si le fichier existe deja
 			// LECTURE ET SAUVEGARDE DANS Model.base
 			if(file.exists()){
 				if(!file.canRead()){
 					System.out.println("tu peux pas lire");
-					System.exit(0);
+					return;
 				}
 				try {
-					ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(file));
+					ObjectInputStream flotLecture = new ObjectInputStream(new FileInputStream(pathName));
 					Object lu = flotLecture.readObject();
 					flotLecture.close();
 					if(lu instanceof TweetList) {
 						TweetList bdd = (TweetList) lu;
 						Model.base = bdd ;
 					}
-					
+
 				} catch (Exception e2) {
-					// TODO: handle exception
+					System.err.println("Echec. Une exception a été levée");
+					e2.printStackTrace();
 				}
 
 			}

@@ -150,7 +150,9 @@ public class Annotation {
 
 			// Si la base n'est pas chargée ou est vide, on ne fait rien
 			if(Model.base == null || Model.base.size() == 0){
-				JOptionPane.showMessageDialog(null, "KNN ne peut être effectué car la bae d'apprentissage n'est pas chargée. Chargez la base avant de pouvoir faire KNN", "Échec !", JOptionPane.INFORMATION_MESSAGE);
+				String message = "KNN ne peut être effectué car la bae d'apprentissage n'est pas chargée. Chargez la base avant de pouvoir faire KNN",
+						 titre = "Échec !";
+				JOptionPane.showMessageDialog(null, message, titre, JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 			
@@ -183,8 +185,11 @@ public class Annotation {
 			}
 
 			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
+			Model.frame.addTweetsWithPolarite(Model.lesTweets);
 
 			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+			
+			
 
 		} catch(Exception e){
 			e.printStackTrace();
@@ -203,6 +208,14 @@ public class Annotation {
 			tweet.setPolarite(CollectionUtil.getPolariteFromHighestProb(map));
 
 		}
+		HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
+
+		
+		Model.frame.addTweetsWithPolarite(Model.lesTweets);
+		Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+
+
+		
 	}
 
 }
