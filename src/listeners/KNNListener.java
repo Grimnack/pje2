@@ -1,6 +1,6 @@
 package listeners;
 
-import graphics.Frame;
+import graphics.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,9 +9,9 @@ import annotations.Annotation;
 
 public class KNNListener implements ActionListener{
 
-	protected Frame mainFrame;
+	protected MainFrame mainFrame;
 
-	public KNNListener(Frame mainFrame){
+	public KNNListener(MainFrame mainFrame){
 		this.mainFrame = mainFrame;
 	}
 	

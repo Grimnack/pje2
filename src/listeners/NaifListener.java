@@ -1,6 +1,6 @@
 package listeners;
 
-import graphics.Frame;
+import graphics.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,9 +9,9 @@ import annotations.Annotation;
 
 public class NaifListener implements ActionListener{
 
-	protected Frame mainFrame;
+	protected MainFrame mainFrame;
 
-	public NaifListener(Frame mainFrame){
+	public NaifListener(MainFrame mainFrame){
 		this.mainFrame = mainFrame;
 	}
 	
