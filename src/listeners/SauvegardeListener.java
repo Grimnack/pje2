@@ -1,7 +1,8 @@
 package listeners;
 
-import graphics.MainFrame;
 import graphics.JMessagePopup;
+import graphics.MainFrame;
+import graphics.Table;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
+import javax.swing.table.TableColumn;
 
 import models.Model;
 import models.TweetList;
@@ -19,8 +21,9 @@ import models.TweetList;
 public class SauvegardeListener implements ActionListener {
 	protected MainFrame mainFrame ;
 	protected TweetList lesTweets;
+	protected Table table;
 
-	public SauvegardeListener(MainFrame frame, TweetList lesTweets) {
+	public SauvegardeListener(MainFrame frame, TweetList lesTweets, Table table) {
 		mainFrame = frame ;
 		this.lesTweets = lesTweets ;
 	}

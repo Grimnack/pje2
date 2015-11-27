@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -17,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import listeners.BayesListener;
 import listeners.KNNListener;
@@ -25,7 +28,6 @@ import listeners.NaifListener;
 import listeners.SauvegardeListener;
 import listeners.SearchListener;
 import listeners.TagListener;
-import listeners.ValidationListener;
 import models.Model;
 import models.Tweet;
 import models.TweetList;
@@ -118,6 +120,7 @@ public class MainFrame extends JFrame{
 		// Tweet panel
 		tweetsPanel = new JPanel();	
 		tweetsPanel.setOpaque(false);
+		tweetsPanel.setPreferredSize(new Dimension(850, 800));
 		tweetsPanel.setLayout(new BoxLayout(tweetsPanel, BoxLayout.Y_AXIS));
 
 		setLayout(new GridBagLayout());
@@ -134,7 +137,6 @@ public class MainFrame extends JFrame{
 
 		this.add(searchPanel, c);
 
-
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 100;
@@ -146,15 +148,15 @@ public class MainFrame extends JFrame{
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 200;
-		c.gridwidth = 400;
+		c.gridwidth = 700;
 		c.gridheight = 800;
 
 		this.add(tweetsPanel, c);
 
 		c = new GridBagConstraints();
-		c.gridx = 400;
+		c.gridx = 700;
 		c.gridy = 200;
-		c.gridwidth = 600;
+		c.gridwidth = 300;
 		c.gridheight = 800;
 
 		this.add(statsPanel, c);
@@ -173,14 +175,19 @@ public class MainFrame extends JFrame{
 			tweetsPanel.removeAll();
 		}
 		String[] columnNames = {"Author",
-		"Tweet"};
+								"Tweet"};
 
 		Object[][] data = new Object[tweetList.size()][2];
 		
-		Table table = new Table(data, columnNames);
+		Table table = new Table(Model.lesTweets, data, columnNames);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(200);
 		table.getColumnModel().getColumn(1).setPreferredWidth(600);
+
+		tweetsPanel.setPreferredSize(new Dimension(810, 800));
+
+		table.setPreferredSize(new Dimension(800, 800));
+
 
 		for(int i=0;i<tweetList.size();i++){
 			Tweet tweet = tweetList.get(i);
@@ -190,7 +197,8 @@ public class MainFrame extends JFrame{
 		
 		
 		JScrollPane jsp = new JScrollPane(table);
-		jsp.setSize(900, 600);
+		jsp.setOpaque(false);
+		jsp.setPreferredSize(new Dimension(800, 800));
 		tweetsPanel.add(jsp);
 
 		revalidate(); 
@@ -199,28 +207,30 @@ public class MainFrame extends JFrame{
 
 	public void addTweetsWithPolarite(TweetList tweetList){
 		tweetsPanel.removeAll();
-
+		
 		String[] columnNames = {"Author",
 								"Tweet",
 								"Polarité"};
 
 		Object[][] data = new Object[tweetList.size()][3];
-		Table table = new Table(data, columnNames);
+		Table table = new Table(Model.lesTweets, data, columnNames);
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(200);
 		table.getColumnModel().getColumn(1).setPreferredWidth(600);
 		table.getColumnModel().getColumn(2).setPreferredWidth(200);
+		
+		tweetsPanel.setPreferredSize(new Dimension(1020, 800));
 
 		for(int i=0;i<tweetList.size();i++){
 			Tweet tweet = tweetList.get(i);
 			data[i][0] = tweet.getUser();
 			data[i][1] = tweet.getText();
 			data[i][2] = tweet.getPolarite();
-
 		}
 
 		JScrollPane jsp = new JScrollPane(table);
+		jsp.setOpaque(false);
 		jsp.setSize(900, 600);
 		tweetsPanel.add(jsp);
 
@@ -233,33 +243,40 @@ public class MainFrame extends JFrame{
 
 		String[] columnNames = {"Author",
 								"Tweet",
-								"Polarité",
-								""};
+								"Polarité"};
 
-		Object[][] data = new Object[tweetList.size()][4];
+		Object[][] data = new Object[tweetList.size()][3];
 		
-		Table table = new Table(data, columnNames);
+		Table table = new Table(Model.lesTweets, data, columnNames);
+		
+		// Size
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(200);
 		table.getColumnModel().getColumn(1).setPreferredWidth(600);
-		table.getColumnModel().getColumn(2).setPreferredWidth(100);
-		table.getColumnModel().getColumn(3).setPreferredWidth(100);
+		table.getColumnModel().getColumn(2).setPreferredWidth(200);
+		
+		JComboBox<String> comboBox = new JComboBox<String>(new String[]{"POSITIF", "NEGATIF", "NEUTRE"});
+		
+		TableColumn polariteColumn = table.getColumnModel().getColumn(2);
+		
+		polariteColumn.setCellEditor(new DefaultCellEditor(comboBox));
+
+	    //Set up tool tips for the polarite cells.
+	    DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+	    renderer.setToolTipText("Polarite");
+	    polariteColumn.setCellRenderer(renderer);
+		
+		tweetsPanel.setPreferredSize(new Dimension(1020, 800));
 
 		for(int i=0;i<tweetList.size();i++){
 			Tweet tweet = tweetList.get(i);
 			data[i][0] = tweet.getUser();
 			data[i][1] = tweet.getText();
-			data[i][2] = new JComboBox<String>(new String[]{"Non défini", "Positif", "Négatif", "Neutre"});
-			
-
-			JButton validation = new JButton("Valider");
-			validation.addActionListener(new ValidationListener(this, tweetList.get(i), table, i));
-			data[i][3] = validation;
-
 		}
 		
 		JScrollPane jsp = new JScrollPane(table);
 		jsp.setSize(900, 600);
+		jsp.setOpaque(false);
 		tweetsPanel.add(jsp);
 
 		
@@ -267,11 +284,10 @@ public class MainFrame extends JFrame{
 		sauvegardePanel.setOpaque(false);
 		
 		JButton sauvegarde = new JButton("sauvegarder");
-		sauvegarde.addActionListener(new SauvegardeListener(this,Model.lesTweets));
+		sauvegarde.addActionListener(new SauvegardeListener(this, Model.lesTweets, table));
 		sauvegardePanel.add(sauvegarde);
 		
 		tweetsPanel.add(sauvegardePanel);
-
 
 		revalidate(); 
 		repaint();
@@ -319,9 +335,7 @@ public class MainFrame extends JFrame{
 
 		crepart.setVisible(true);
 		statsPanel.add(crepart);
-
-
-
+		
 		revalidate(); 
 		repaint();
 

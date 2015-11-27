@@ -62,6 +62,7 @@ public class Annotation {
 		} catch (Exception exception){
 			// Une exception est levée car il y a un pb sur l'un des dicos. N'existe pas ou autre
 			// Si les dicos ont mal lus, on ne fait rien
+			System.out.println("Exception sur les dicos");
 			return;
 		}
 
@@ -72,33 +73,13 @@ public class Annotation {
 
 		try{
 
-			String pathNameInput = Model.theme + ".csv";
-
-			// Ouverture/lecture du fichier
-			BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(pathNameInput)));
-
-			// Nom en sortie
-
-			String [] pathNameFragments = pathNameInput.split("\\.");
-
-			String pathNameOutput = pathNameFragments[0] + "-polariteNaif." + pathNameFragments[1];
-
-			BufferedWriter output = new BufferedWriter(new FileWriter(pathNameOutput));
-
-			String ligne;
-			while ((ligne=br.readLine())!=null){
-
-				// Split avec ","
-				String [] tweetTab = ligne.split("\",\"");
-				String username = tweetTab[0].substring(1, tweetTab[0].length());
-				String cleaned = tweetTab[1].substring(0, tweetTab[1].length() -1);
-				//tweets.add(cleaned);
-
+			
+			for(Tweet tweet : Model.lesTweets.tweetList){
 
 				// Fichiers negatifs/positifs
 				int positif = 0, negatif = 0;
 
-				String [] tweetWords = cleaned.split("\\s+");
+				String [] tweetWords = tweet.getText().split("\\s+");
 
 				for(String tweetWord : tweetWords){
 					if(positifs.contains(tweetWord))
@@ -108,34 +89,23 @@ public class Annotation {
 						negatif++;
 				}
 
-				int resultat = positif - negatif, polarite;
-
+				int resultat = positif - negatif;
+				
+				Polarite polarite;
 				if(resultat < 0){
-					polarite = 0;
 					tweetNegatif++;
+					polarite = Polarite.NEGATIF;
 				} else if(resultat > 0){
-					polarite = 4;
 					tweetPositif++;
+					polarite = Polarite.POSITIF;
 				} else {
-					polarite = 2;
 					tweetNeutre++;
+					polarite = Polarite.NEUTRE;
 				}
-				// ajout dans le fichier
-				String string = "\"" + username + "\",\"" + cleaned + "\",\"" + polarite + "\"\n";
+				tweet.setPolarite(polarite);
 
-				output.write(string);
-
-				//System.out.println("Ecriture en cours");
 
 			}
-
-			// Fin de lecture
-			br.close(); 
-
-			// Fin d'ecriture
-			output.flush();
-
-			output.close();
 
 			//System.out.println("Ecriture finie");
 			Model.frame.addTweetsWithPolarite(Model.lesTweets);

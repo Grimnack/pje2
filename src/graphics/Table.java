@@ -1,6 +1,11 @@
 package graphics;
 
 import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
+
+import models.Polarite;
+import models.TweetList;
 
 public class Table extends JTable{
 
@@ -9,12 +14,27 @@ public class Table extends JTable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public Table(Object [][] data, String[] columns){
+	TweetList tweetList;
+	
+	public Table(TweetList tweetList, Object [][] data, String[] columns){
 		super(data, columns);
+		this.tweetList = tweetList;
 	}
 
 	public boolean isCellEditable(int row, int column){  
-        return false;  
+        return column == 2;  
     }
 
+	
+	public void setValueAt(Object value, int row, int col) {
+		if(value != null){
+			System.out.println(value.toString());
+			tweetList.get(col).setPolarite(Polarite.valueOf(value.toString()));
+			System.out.println("Updated !");
+			((AbstractTableModel) getModel()).setValueAt(value, row, col);
+			
+			
+		}
+    }
+	
 }
