@@ -2,7 +2,6 @@ package graphics;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 import models.Polarite;
 import models.TweetList;
@@ -30,7 +29,6 @@ public class Table extends JTable{
 		if(value != null){
 			System.out.println(value.toString());
 			tweetList.get(col).setPolarite(Polarite.valueOf(value.toString()));
-			System.out.println("Updated !");
 			((AbstractTableModel) getModel()).setValueAt(value, row, col);
 			
 			
