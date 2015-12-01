@@ -53,7 +53,7 @@ public class LoadListener implements ActionListener {
 
 
 
-		String message = "Base chargée !",
+		String message = "Base chargée ! " + Model.base.size() + " tweets chargés !",
 				titre = "Succès !";
 		JMessagePopup.showMessage(message, titre);
 

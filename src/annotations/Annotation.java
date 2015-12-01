@@ -134,6 +134,7 @@ public class Annotation {
 
 			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
 			for(Tweet tweet : Model.lesTweets.tweetList){
+				//tweetDistance.
 				tweetDistance = new HashMap<Tweet, Double>();
 
 				for(Tweet tweetEtiquete : tweetBase)
@@ -143,7 +144,7 @@ public class Annotation {
 
 				List<Double> values = new ArrayList<Double>(distanceSorted.values());
 
-				// On en prend 5, ou moins si la list est moins grande
+				// On en prend 5, ou moins si la liste est moins grande
 				int toInd=5;
 				if(toInd > values.size())
 					toInd = values.size();
