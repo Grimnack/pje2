@@ -4,9 +4,14 @@ package graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
@@ -61,12 +66,39 @@ public class MainFrame extends JFrame{
 	JPanel algoPanel;
 	JPanel tweetsPanel;
 	JPanel statsPanel;
+	
+	
 
-	public MainFrame(){
+	public MainFrame() {
 		super();
 
 		getContentPane().setBackground(Color.white);
 
+		//////////////////////////////////////////////////////////
+		// Configuration police 
+		//////////////////////////////////////////////////////////
+		
+		
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		File fontFile = new File("fonts/open-sans/OpenSans-Regular.ttf");
+		Font openSans = new Font("TimesRoman", Font.PLAIN, 18);
+		try {
+			openSans = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+			openSans = openSans.deriveFont(18);
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ge.registerFont(openSans);
+		this.setFont(openSans) ;
+			
+		
+		
+		//////////////////////////////////////////////////////////
+		
 		this.setTitle("Twitter");
 		this.setVisible(true);
 
@@ -74,6 +106,7 @@ public class MainFrame extends JFrame{
 
 		textField = new JTextField(15);
 		textField.setPreferredSize(new Dimension(200, 24));
+		//textField.setFont(openSans);
 
 		search = new JButton("Search from scratch!");
 		search.addActionListener(new SearchListener(this, textField,true));
