@@ -74,6 +74,9 @@ public class Tweet implements Serializable {
 		double neutreDiff = Math.abs(2-avgKNN);
 		double posDiff = Math.abs(4-avgKNN);
 		
+		System.out.println(negDiff + " " + neutreDiff + " " + posDiff);
+		
+		
 		// avg est plus proche de negatif
 		if(negDiff < neutreDiff && negDiff < posDiff)
 			this.polarite = Polarite.NEGATIF;
@@ -83,6 +86,7 @@ public class Tweet implements Serializable {
 		
 		else
 			this.polarite = Polarite.POSITIF;
+
 		
 	}
 	

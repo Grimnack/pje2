@@ -22,9 +22,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import listeners.BayesListener;
-import listeners.KNNListener;
+import listeners.ConfigListener;
+import listeners.LaunchListener;
 import listeners.LoadListener;
-import listeners.NaifListener;
 import listeners.SauvegardeListener;
 import listeners.SearchListener;
 import listeners.TagListener;
@@ -52,15 +52,18 @@ public class MainFrame extends JFrame{
 	JButton search;
 	JButton search2;
 	JButton load;
-	JButton naifButton;
+	
 	JButton tagButton;
-	JButton knnButton;
-	JButton bayesButton;
+	JButton configButton;
+	JButton launchButton;
+	
 
 	JPanel searchPanel;
 	JPanel algoPanel;
 	JPanel tweetsPanel;
 	JPanel statsPanel;
+	
+	ConfigFrame configFrame;
 
 	public MainFrame(){
 		super();
@@ -69,6 +72,9 @@ public class MainFrame extends JFrame{
 
 		this.setTitle("Twitter");
 		this.setVisible(true);
+		
+		// configFrame
+		configFrame = new ConfigFrame();
 
 		// Search Panel
 
@@ -95,26 +101,24 @@ public class MainFrame extends JFrame{
 		searchPanel.add(load);
 
 		// Algo Panel
-		naifButton = new JButton("Algo naïf");
-		naifButton.addActionListener(new NaifListener(this));
+
 
 		tagButton = new JButton("Etiquetage");
 		tagButton.addActionListener(new TagListener(this));
 
-		knnButton = new JButton("KNN");
-		knnButton.addActionListener(new KNNListener(this));
+		configButton = new JButton("Configurer");
+		configButton.addActionListener(new ConfigListener(configFrame));
 
-		bayesButton = new JButton("Bayes");
-		bayesButton.addActionListener(new BayesListener());
+		launchButton = new JButton("Launch");
+		launchButton.addActionListener(new LaunchListener(configFrame));
 
 
 		algoPanel = new JPanel();
 		algoPanel.setOpaque(false);
 		algoPanel.setLayout(new BoxLayout(algoPanel, BoxLayout.X_AXIS));
-		algoPanel.add(naifButton);
 		algoPanel.add(tagButton);
-		algoPanel.add(knnButton);
-		algoPanel.add(bayesButton);
+		algoPanel.add(configButton);
+		algoPanel.add(launchButton);
 
 
 		// Tweet panel
