@@ -66,7 +66,7 @@ public class MainFrame extends JFrame{
 	JPanel algoPanel;
 	JPanel tweetsPanel;
 	JPanel statsPanel;
-	
+	Font openSans = new Font("TimesRoman", Font.PLAIN, 18);
 	
 
 	public MainFrame() {
@@ -81,7 +81,6 @@ public class MainFrame extends JFrame{
 		
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		File fontFile = new File("fonts/open-sans/OpenSans-Regular.ttf");
-		Font openSans = new Font("TimesRoman", Font.PLAIN, 18);
 		try {
 			openSans = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 			openSans = openSans.deriveFont(18);
@@ -130,6 +129,7 @@ public class MainFrame extends JFrame{
 		// Algo Panel
 		naifButton = new JButton("Algo naïf");
 		naifButton.addActionListener(new NaifListener(this));
+		naifButton.setFont(openSans);
 
 		tagButton = new JButton("Etiquetage");
 		tagButton.addActionListener(new TagListener(this));
