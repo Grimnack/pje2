@@ -59,7 +59,7 @@ public class SauvegardeListener implements ActionListener {
 			flotEcriture.writeObject(Model.lesTweets);
 			flotEcriture.close();
 		} catch (Exception exception) {
-			String message = "La base ne peut être chargée. Vérifiez que le fichier est bien celui de la base et veuillez réessayer.",
+			String message = "La base ne peut être sauvegardée. Vérifiez que le fichier est bien celui de la base et veuillez réessayer.",
 					titre = "Échec !";
 			JMessagePopup.showMessage(message, titre);
 			exception.printStackTrace();

@@ -21,6 +21,8 @@ import models.TweetList;
 
 public class Annotation {
 	
+	
+	public static boolean frequence;
 	public static boolean moinsDeTroisMots = false;
 
 	public static void annoteNaif(){
@@ -130,12 +132,11 @@ public class Annotation {
 			
 			List<Tweet> tweetBase = Model.base.tweetList;
 
-			Map<Tweet, Double> tweetDistance;
+			Map<Tweet, Double> tweetDistance = new HashMap<Tweet, Double>();
 
 			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
 			for(Tweet tweet : Model.lesTweets.tweetList){
-				//tweetDistance.
-				tweetDistance = new HashMap<Tweet, Double>();
+				tweetDistance.clear();
 
 				for(Tweet tweetEtiquete : tweetBase)
 					tweetDistance.put(tweetEtiquete, tweet.getDistanceWith(tweetEtiquete));
@@ -152,8 +153,6 @@ public class Annotation {
 
 				values = values.subList(0, toInd);
 				double moyennePolarite = CollectionUtil.listGetAvg(values);
-
-				tweet.setPolariteFromAvg(moyennePolarite);			
 
 			}
 

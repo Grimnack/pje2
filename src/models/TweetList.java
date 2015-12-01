@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import annotations.Annotation;
+
 public class TweetList implements Serializable{
 	/**
 	 * 
@@ -76,7 +78,8 @@ public class TweetList implements Serializable{
 				Matcher m = p.matcher(s);
 
 				while (m.find()){
-					nbOcc++;
+					if(nbOcc == 0 || Annotation.frequence)
+						nbOcc++;
 				}
 			}
 		}
@@ -85,15 +88,22 @@ public class TweetList implements Serializable{
 
 	}
 	
-	/* Compte le nombre total d'une mot d'une classe de la liste de tweets
+	/* Compte le nombre total des mots d'une classe de la liste de tweets
 	 * n(c) */
 	public int nbTotalMotsClass(Polarite polarite){
 		int sum = 0;
 
 		for(Tweet tweet : tweetList){
 			if(tweet.getPolarite() == polarite)
-				sum += tweet.getText().length();
-
+				if(!Annotation.moinsDeTroisMots)
+					sum += tweet.getText().length();
+				else {
+					String [] mots = tweet.getText().split("\\s+");
+					for(String mot : mots){
+						if(mot.length() >= 3 )
+							sum++;
+					}
+				}
 		}
 		return sum;
 	}
