@@ -84,10 +84,10 @@ public class MainFrame extends JFrame{
 		
 		
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		File fontFile = new File("fonts/open-sans/OpenSans-Regular.ttf");
+		File fontFile = new File("fonts/open-sans/OpenSans-Bold.ttf");
 		try {
 			openSans = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-			openSans = openSans.deriveFont(18);
+			openSans = openSans.deriveFont((float) 18.0);
 		} catch (FontFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,16 +112,19 @@ public class MainFrame extends JFrame{
 
 		textField = new JTextField(15);
 		textField.setPreferredSize(new Dimension(200, 24));
-		//textField.setFont(openSans);
+		textField.setFont(openSans);
 
 		search = new JButton("Search from scratch!");
 		search.addActionListener(new SearchListener(this, textField,true));
-
+		search.setFont(openSans);
+		
 		search2 = new JButton("More tweets");
 		search2.addActionListener(new SearchListener(this, textField,false));
+		search2.setFont(openSans);
 
 		load = new JButton("Load");
 		load.addActionListener(new LoadListener());
+		load.setFont(openSans);
 
 
 		searchPanel = new JPanel();
@@ -136,12 +139,15 @@ public class MainFrame extends JFrame{
 		// Algo Panel
 		tagButton = new JButton("Etiquetage");
 		tagButton.addActionListener(new TagListener(this));
+		tagButton.setFont(openSans);
 
 		configButton = new JButton("Configurer");
 		configButton.addActionListener(new ConfigListener(configFrame));
+		configButton.setFont(openSans);
 
 		launchButton = new JButton("Launch");
 		launchButton.addActionListener(new LaunchListener(configFrame));
+		launchButton.setFont(openSans);
 
 
 		algoPanel = new JPanel();
