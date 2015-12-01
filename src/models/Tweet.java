@@ -45,7 +45,7 @@ public class Tweet implements Serializable {
 				nbMotsCommun += 2;
 			}
 		}
-		return (nbMotsTotal - nbMotsCommun) / nbMotsCommun;
+		return (nbMotsTotal - nbMotsCommun) / nbMotsTotal;
 		
 	}
 	
@@ -88,6 +88,17 @@ public class Tweet implements Serializable {
 			this.polarite = Polarite.POSITIF;
 
 		
+	}
+	
+	public void setPolarite(String pol){
+		if(pol == "POSITIF")
+			this.polarite = Polarite.POSITIF;
+		
+		else if(pol == "NEGATIF")
+			this.polarite = Polarite.NEGATIF;
+		
+		else if(pol == "NEUTRE")
+			this.polarite = Polarite.NEUTRE;
 	}
 	
 	public void setPolarite(Polarite pol){

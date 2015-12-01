@@ -13,9 +13,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
-import javax.swing.table.TableColumn;
 
 import models.Model;
+import models.Polarite;
+import models.Tweet;
 import models.TweetList;
 
 public class SauvegardeListener implements ActionListener {
@@ -26,9 +27,15 @@ public class SauvegardeListener implements ActionListener {
 	public SauvegardeListener(MainFrame frame, TweetList lesTweets, Table table) {
 		mainFrame = frame ;
 		this.lesTweets = lesTweets ;
+		this.table = table;
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		for(int i=0;i<lesTweets.size();i++){
+			Tweet tweet = lesTweets.get(i);
+
+			tweet.setPolarite(table.getValueAt(i, 2).toString());
+		}
 
 		try {
 			JFileChooser choix = new JFileChooser();
