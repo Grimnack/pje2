@@ -27,11 +27,8 @@ public class Table extends JTable{
 	
 	public void setValueAt(Object value, int row, int col) {
 		if(value != null){
-			System.out.println(value.toString());
 			tweetList.get(col).setPolarite(Polarite.valueOf(value.toString()));
 			((AbstractTableModel) getModel()).setValueAt(value, row, col);
-			
-			
 		}
     }
 	

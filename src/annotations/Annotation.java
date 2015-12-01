@@ -3,9 +3,7 @@ package annotations;
 import graphics.JMessagePopup;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,6 +128,10 @@ public class Annotation {
 				return;
 			}
 			
+			for(Tweet tweet : Model.base.tweetList){
+				System.out.println(tweet.getPolarite());
+			}
+			
 			List<Tweet> tweetBase = Model.base.tweetList;
 
 			Map<Tweet, Double> tweetDistance = new HashMap<Tweet, Double>();
@@ -145,8 +147,8 @@ public class Annotation {
 
 				List<Double> values = new ArrayList<Double>(distanceSorted.values());
 
-				// On en prend 5, ou moins si la liste est moins grande
-				int toInd=5;
+				// On en prend 7, ou moins si la liste est moins grande
+				int toInd=7;
 				if(toInd > values.size())
 					toInd = values.size();
 
