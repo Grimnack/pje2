@@ -49,7 +49,8 @@ public class Table extends JTable{
 		ge.registerFont(openSansBold);
 		this.setFont(openSans) ;
 		this.getTableHeader().setFont(openSansBold);
-		this.getTableHeader().setBackground(new Color(0x1dcaff));
+		this.getTableHeader().setBackground(new Color(0x00aced));
+		this.getTableHeader().setForeground(new Color(0xffffff));
 		this.tweetList = tweetList;
 		
 	}

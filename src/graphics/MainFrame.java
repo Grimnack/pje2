@@ -11,7 +11,6 @@ import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
@@ -19,6 +18,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,7 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import listeners.BayesListener;
 import listeners.ConfigListener;
 import listeners.LaunchListener;
 import listeners.LoadListener;
@@ -62,13 +61,13 @@ public class MainFrame extends JFrame{
 	JButton configButton;
 	JButton launchButton;
 	
-
+	JLabel titre;
 	JPanel searchPanel;
 	JPanel algoPanel;
 	JPanel tweetsPanel;
 	JPanel statsPanel;
 	Font openSans = new Font("TimesRoman", Font.PLAIN, 18);
-
+	Font titreFont = new Font("TimesRoman", Font.PLAIN, 18);
 	
 	ConfigFrame configFrame;
 
@@ -88,6 +87,7 @@ public class MainFrame extends JFrame{
 		try {
 			openSans = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 			openSans = openSans.deriveFont((float) 18.0);
+			titreFont = openSans.deriveFont((float) 32.);
 		} catch (FontFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,6 +105,8 @@ public class MainFrame extends JFrame{
 		this.setTitle("Twitter");
 		this.setVisible(true);
 		
+		titre = new JLabel("Tweetemotions");
+		titre.setFont(titreFont);
 		// configFrame
 		configFrame = new ConfigFrame();
 
@@ -117,15 +119,20 @@ public class MainFrame extends JFrame{
 		search = new JButton("Search from scratch!");
 		search.addActionListener(new SearchListener(this, textField,true));
 		search.setFont(openSans);
+		search.setBackground(new Color(0x00aced));
+		search.setForeground(Color.WHITE);
 		
 		search2 = new JButton("More tweets");
 		search2.addActionListener(new SearchListener(this, textField,false));
 		search2.setFont(openSans);
-
+		search2.setBackground(new Color(0x00aced));
+		search2.setForeground(Color.WHITE);
+		
 		load = new JButton("Load");
 		load.addActionListener(new LoadListener());
 		load.setFont(openSans);
-
+		load.setBackground(new Color(0x00aced));
+		load.setForeground(Color.WHITE);
 
 		searchPanel = new JPanel();
 		searchPanel.setOpaque(false);
@@ -156,6 +163,12 @@ public class MainFrame extends JFrame{
 		algoPanel.add(tagButton);
 		algoPanel.add(configButton);
 		algoPanel.add(launchButton);
+		tagButton.setBackground(new Color(0x00aced));
+		tagButton.setForeground(Color.WHITE);
+		configButton.setBackground(new Color(0x00aced));
+		configButton.setForeground(Color.WHITE);
+		launchButton.setBackground(new Color(0x00aced));
+		launchButton.setForeground(Color.WHITE);
 
 
 		// Tweet panel
@@ -169,8 +182,16 @@ public class MainFrame extends JFrame{
 		statsPanel = new JPanel();
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
+		c.gridx = 500;
 		c.gridy = 0;
+		c.gridwidth = 1000;
+		c.gridheight = 100;
+		this.add(titre, c );
+
+		
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0 + 400;
 		c.gridwidth = 1000;
 		c.gridheight = 100;
 
@@ -180,7 +201,7 @@ public class MainFrame extends JFrame{
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
-		c.gridy = 100;
+		c.gridy = 100 + 400;
 		c.gridwidth = 1000;
 		c.gridheight = 100;
 
@@ -188,7 +209,7 @@ public class MainFrame extends JFrame{
 
 		c = new GridBagConstraints();
 		c.gridx = 0;
-		c.gridy = 200;
+		c.gridy = 200 + 400;
 		c.gridwidth = 700;
 		c.gridheight = 800;
 
@@ -196,7 +217,7 @@ public class MainFrame extends JFrame{
 
 		c = new GridBagConstraints();
 		c.gridx = 700;
-		c.gridy = 200;
+		c.gridy = 200 + 400;
 		c.gridwidth = 300;
 		c.gridheight = 800;
 
