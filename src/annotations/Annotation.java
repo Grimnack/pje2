@@ -19,11 +19,13 @@ import models.TweetList;
 
 public class Annotation {
 	
-	
-	public static boolean frequence;
+	public static int nbTweets = 50;
+	public static boolean frequence = false;
 	public static int moinsDeNMots = 0;
-	public static String poss[] = null;
-	public static String negs[] = null;
+	public static String poss[] = new String[0];
+	public static String negs[] = new String[0];
+	public static boolean ngramme = false;
+	public static int kCrossValidation = 10;
 
 	public static void annoteNaif(){
 		double tweetPositif = 0, tweetNeutre = 0, tweetNegatif = 0;

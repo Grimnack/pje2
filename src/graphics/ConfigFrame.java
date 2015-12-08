@@ -19,31 +19,31 @@ import annotations.Annotation;
 
 public class ConfigFrame extends JFrame implements WindowListener{
 
+	private JTextField nbTweetsField;
 	private JComboBox<String> algosBox;
 	private JTextField nMots;
 	public JTextArea ngrammePos;
 	public JTextArea ngrammeNeg;
+	public JTextField kCrossValidationField;
 	
 	
 	public ConfigFrame(){
 		setTitle("Configuration des algorithmes");
 		
+		nbTweetsField = new JTextField(Annotation.nbTweets + "", 14);
+		
 		algosBox = new JComboBox<String>(new String[] {"", "Mot clef", "KNN", "Bayes - Présence", "Bayes - Fréquence"});
 				
-		nMots = new JTextField("3", 14);
+		nMots = new JTextField(Annotation.moinsDeNMots + "", 14);
 
 		String stringPos = new String(),
 				stringNeg = new String();
-		if(Annotation.poss != null){
-			for(String pos : Annotation.poss){
-				stringPos = stringPos + pos + ",";
-			}
+		for(String pos : Annotation.poss){
+			stringPos = stringPos + pos + ",";
 		}
 		
-		if(Annotation.negs != null){
-			for(String neg : Annotation.negs){
-				stringNeg = stringNeg + neg + ",";
-			}
+		for(String neg : Annotation.negs){
+			stringNeg = stringNeg + neg + ",";
 		}
 		
 		ngrammePos = new JTextArea(stringPos, 10, 14);
@@ -52,26 +52,28 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		ngrammeNeg = new JTextArea(stringNeg, 10, 14);
 		ngrammeNeg.setBorder(new LineBorder(Color.black));
 		
+		kCrossValidationField = new JTextField(Annotation.kCrossValidation + "", 14);
+		
 		
 		setLayout(new GridBagLayout());
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = 200;
 		c.gridwidth = 200;
 		c.gridheight = 200;
 		
 		this.add(new JLabel("Algorithme"), c);
 		
 		c.gridx = 300;
-		c.gridy = 0;
+		c.gridy = 200;
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
 		this.add(algosBox, c);
 		
 		c.gridx = 0;
-		c.gridy = 200;
+		c.gridy = 400;
 		c.gridwidth = 200;
 		c.gridheight = 200;
 		
@@ -80,42 +82,42 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		
 
 		c.gridx = 300;
-		c.gridy = 200;
+		c.gridy = 400;
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
 		this.add(nMots, c);
 		
 		c.gridx = 0;
-		c.gridy = 400;
+		c.gridy = 600;
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
 		this.add(new JLabel("Bigramme positif"), c);
 		
 		c.gridx = 200;
-		c.gridy = 400;
+		c.gridy = 600;
 		//c.gridwidth = 200;
 		//c.gridheight = 200;
 
 		this.add(ngrammePos, c);
 		
 		c.gridx = 0;
-		c.gridy = 600;
+		c.gridy = 800;
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
 		this.add(new JLabel("Bigramme negatif"), c);
 		
 		c.gridx = 200;
-		c.gridy = 600;
+		c.gridy = 800;
 		//c.gridwidth = 200;
 		//c.gridheight = 200;
 
 		this.add(ngrammeNeg, c);
 		
 		c.gridx = 180;
-		c.gridy = 800;
+		c.gridy = 1200;
 		c.gridwidth = 40;
 		c.gridheight = 20;
 

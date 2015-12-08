@@ -130,8 +130,6 @@ public class SearchListener implements ActionListener{
 
 		}
 
-
-
 		// Lecture dans un fichier et nettoyage des tweets
 		if(!this.fromScratch ){
 			Model.lesTweets.fusionne(new TweetList(lesTweets)) ;
