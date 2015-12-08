@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,9 @@ public class Annotation {
 
 	public static void annoteNaif(){
 		double tweetPositif = 0, tweetNeutre = 0, tweetNegatif = 0;
-
+		long StartTime = new Date().getTime() ;
+		long EndTime ;
+		
 		List<String> negatifs = new ArrayList<String>();
 		List<String> positifs = new ArrayList<String>();
 		// Ouverture fichiers negatifs/positifs
@@ -105,10 +108,11 @@ public class Annotation {
 					polarite = Polarite.NEUTRE;
 				}
 				tweet.setPolarite(polarite);
-
+				
 
 			}
-
+			EndTime = new Date().getTime();
+			System.out.println("L'algorithme de dico a pris " + (EndTime-StartTime) +  " ms" ) ;
 			//System.out.println("Ecriture finie");
 			Model.frame.addTweetsWithPolarite(Model.lesTweets);
 			Model.frame.updateStats("Algorithme naïf", tweetNegatif, tweetNeutre, tweetPositif);
@@ -117,6 +121,8 @@ public class Annotation {
 			System.out.println("Annote naif 2");
 			System.out.println(exception.getMessage());
 		}
+		
+		
 	}
 
 	public static void annoteKNN(){
