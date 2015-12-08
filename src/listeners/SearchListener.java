@@ -20,6 +20,7 @@ import models.Tweet;
 import models.TweetList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
+import twitter4j.RateLimitStatus;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -59,7 +60,20 @@ public class SearchListener implements ActionListener{
 
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
-
+		RateLimitStatus rateLimitStatus = null;
+		int remaining = -1, limit = -1;
+		
+		try {
+			rateLimitStatus = twitter.getRateLimitStatus().get("/search/tweets");
+			remaining = rateLimitStatus.getRemaining();
+			limit = rateLimitStatus.getLimit();
+		} catch(Exception exception){
+			// Do nothing special when it's not working
+			exception.printStackTrace();
+		}
+		
+		
+		
 		Query query = new Query(Model.theme);
 		QueryResult result = null;
 		try {

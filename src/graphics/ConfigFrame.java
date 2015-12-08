@@ -2,17 +2,22 @@ package graphics;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import annotations.Annotation;
 
 public class ConfigFrame extends JFrame implements WindowListener{
 
 	private JComboBox<String> algosBox;
-	private JComboBox<String> moinsDeTroisMotsBox;
+	private JTextField nMots;
 	
 	
 	public ConfigFrame(){
@@ -20,7 +25,20 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		
 		algosBox = new JComboBox<String>(new String[] {"", "Mot clef", "KNN", "Bayes - Présence", "Bayes - Fréquence"});
 				
-		moinsDeTroisMotsBox = new JComboBox<String>(new String[]{"Non", "Oui"});	
+		nMots = new JTextField("3", 15);
+		nMots.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Annotation.moinsDeNMots = Integer.parseInt(nMots.getText());
+					
+				} catch(Exception exception){
+					JMessagePopup.showMessage("Erreur", "Ceci ne peut être parsé en integer. Erreur");
+				}
+				
+			}
+			
+		});
 		
 		
 		setLayout(new GridBagLayout());
@@ -38,7 +56,7 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		c.gridwidth = 200;
 		c.gridheight = 200;
 		
-		this.add(new JLabel("Accepter les mots de moins de 3 lettres"), c);
+		this.add(new JLabel("Ne pas accepter les mots de moins n  lettres"), c);
 		
 		c.gridx = 300;
 		c.gridy = 0;
@@ -52,9 +70,9 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
-		this.add(moinsDeTroisMotsBox, c);
+		this.add(nMots, c);
 
-		//setResizable(false);
+		setResizable(false);
 		setSize(500, 200);
 		setLocation(400, 300);
 	}
@@ -64,8 +82,8 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		return algosBox;
 	}
 	
-	public JComboBox<String> getMoinsDeTroisMotsBox(){
-		return moinsDeTroisMotsBox;
+	public JTextField getNMots(){
+		return nMots;
 	}
 
 

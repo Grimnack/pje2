@@ -95,12 +95,12 @@ public class TweetList implements Serializable{
 
 		for(Tweet tweet : tweetList){
 			if(tweet.getPolarite() == polarite)
-				if(!Annotation.moinsDeTroisMots)
+				if(Annotation.moinsDeNMots == 0)
 					sum += tweet.getText().length();
 				else {
 					String [] mots = tweet.getText().split("\\s+");
 					for(String mot : mots){
-						if(mot.length() >= 3 )
+						if(mot.length() >= Annotation.moinsDeNMots)
 							sum++;
 					}
 				}
