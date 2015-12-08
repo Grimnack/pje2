@@ -39,7 +39,7 @@ public class SearchListener implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
+
 		// Mise a jour du theme dans le model
 		if(fromScratch){
 			Model.theme =  textField.getText();
@@ -62,7 +62,7 @@ public class SearchListener implements ActionListener{
 		Twitter twitter = tf.getInstance();
 		RateLimitStatus rateLimitStatus = null;
 		int remaining = -1, limit = -1;
-		
+
 		try {
 			rateLimitStatus = twitter.getRateLimitStatus().get("/search/tweets");
 			remaining = rateLimitStatus.getRemaining();
@@ -71,19 +71,19 @@ public class SearchListener implements ActionListener{
 			// Do nothing special when it's not working
 			exception.printStackTrace();
 		}
-		
-		
-		
+
+
+
 		Query query = new Query(Model.theme);
 		query.setLang("fr");
 		query.count(50);
 		QueryResult result = null;
-		
+
 		try {
 			result = twitter.search(query);
 		} catch (TwitterException e1) {
 			String message = "Impossible de récupérer de nouveaux tweets. Veuillez réessayer",
-					 titre = "Échec !";
+					titre = "Échec !";
 			JMessagePopup.showMessage(message, titre);
 			return;
 		}
@@ -92,63 +92,45 @@ public class SearchListener implements ActionListener{
 		List<Tweet> lesTweets = new ArrayList<Tweet>();
 
 		// Ecriture dans un fichier
-		try {
 
-			File fileToBeDeleted = new File(fileName);
-			if(fileToBeDeleted.exists() && !fileToBeDeleted.isDirectory()) { 
-				fileToBeDeleted.delete();
+
+		for (Status status : result.getTweets()) {
+
+			Tweet tweet = new Tweet();
+
+			String toBeCleaned = status.getText();
+
+			// Pattern - Matcher
+			Pattern pattern = Pattern.compile("([@#\"\r\n(RT)]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
+			Matcher matcher = pattern.matcher(toBeCleaned);
+
+			String cleanedHalf = matcher.replaceAll(""); 
+
+			Pattern patternPonctu = Pattern.compile("\\p{Punct}");
+			Matcher matcherPonctu = patternPonctu.matcher(cleanedHalf);
+
+			String cleaned = matcherPonctu.replaceAll("");
+
+			tweet.setText(cleaned);
+			tweet.setUser(status.getUser().getScreenName()) ;
+			lesTweets.add(tweet);
+
+			// ajout dans le fichier
+			String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
+
+
+			// Verifier que le tweet n'est pas redondant
+			if(!stringTweets.contains(string)){
+
+
+
+				// ajout a la liste pour le graphique
+				stringTweets.add(string); 
 			}
 
-			File file = new File(fileName);
-
-			BufferedWriter output = new BufferedWriter(new FileWriter(file));
-
-			for (Status status : result.getTweets()) {
-				
-				Tweet tweet = new Tweet();
-
-				String toBeCleaned = status.getText();
-
-				// Pattern - Matcher
-				Pattern pattern = Pattern.compile("([@#\"\r\n(RT)]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
-				Matcher matcher = pattern.matcher(toBeCleaned);
-
-				String cleanedHalf = matcher.replaceAll(""); 
-				
-				Pattern patternPonctu = Pattern.compile("\\p{Punct}");
-				Matcher matcherPonctu = patternPonctu.matcher(cleanedHalf);
-				
-				String cleaned = matcherPonctu.replaceAll("");
-				
-				tweet.setText(cleaned);
-				tweet.setUser(status.getUser().getScreenName()) ;
-				lesTweets.add(tweet);
-				
-				// ajout dans le fichier
-				String string = "\"" + status.getUser().getScreenName() + "\",\"" + cleaned + "\"\n";
-
-
-				// Verifier que le tweet n'est pas redondant
-				if(!stringTweets.contains(string)){
-
-					output.write(string);
-
-					// ajout a la liste pour le graphique
-					stringTweets.add(string); 
-				}
-
-			}
-			output.flush();
-
-			output.close();
-		} catch(Exception exception){
-			System.out.println(exception.toString());
-			String message = "Erreur lors du nettoyage de tweets. Contactez les auteurs de l'API.",
-					 titre = "Échec !";
-			JMessagePopup.showMessage(message, titre);
-			exception.printStackTrace();
-			return;
 		}
+
+
 
 		// Lecture dans un fichier et nettoyage des tweets
 		if(!this.fromScratch ){
@@ -156,9 +138,9 @@ public class SearchListener implements ActionListener{
 		} else {
 			Model.lesTweets = new TweetList(lesTweets) ;
 		}
-		
+
 		Model.frame.addTweets(Model.lesTweets, this.fromScratch);
-		
+
 	}
 
 
