@@ -75,7 +75,10 @@ public class SearchListener implements ActionListener{
 		
 		
 		Query query = new Query(Model.theme);
+		query.setLang("fr");
+		query.count(50);
 		QueryResult result = null;
+		
 		try {
 			result = twitter.search(query);
 		} catch (TwitterException e1) {

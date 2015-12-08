@@ -1,23 +1,28 @@
 package graphics;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
+import listeners.SaveConfigListener;
 import annotations.Annotation;
 
 public class ConfigFrame extends JFrame implements WindowListener{
 
 	private JComboBox<String> algosBox;
 	private JTextField nMots;
+	public JTextArea ngrammePos;
+	public JTextArea ngrammeNeg;
 	
 	
 	public ConfigFrame(){
@@ -25,20 +30,27 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		
 		algosBox = new JComboBox<String>(new String[] {"", "Mot clef", "KNN", "Bayes - Présence", "Bayes - Fréquence"});
 				
-		nMots = new JTextField("3", 15);
-		nMots.addActionListener(new ActionListener(){
+		nMots = new JTextField("3", 14);
 
-			public void actionPerformed(ActionEvent e) {
-				try {
-					Annotation.moinsDeNMots = Integer.parseInt(nMots.getText());
-					
-				} catch(Exception exception){
-					JMessagePopup.showMessage("Erreur", "Ceci ne peut être parsé en integer. Erreur");
-				}
-				
+		String stringPos = new String(),
+				stringNeg = new String();
+		if(Annotation.poss != null){
+			for(String pos : Annotation.poss){
+				stringPos = stringPos + pos + ",";
 			}
-			
-		});
+		}
+		
+		if(Annotation.negs != null){
+			for(String neg : Annotation.negs){
+				stringNeg = stringNeg + neg + ",";
+			}
+		}
+		
+		ngrammePos = new JTextArea(stringPos, 10, 14);
+		ngrammePos.setBorder(new LineBorder(Color.black));
+		
+		ngrammeNeg = new JTextArea(stringNeg, 10, 14);
+		ngrammeNeg.setBorder(new LineBorder(Color.black));
 		
 		
 		setLayout(new GridBagLayout());
@@ -51,6 +63,13 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		
 		this.add(new JLabel("Algorithme"), c);
 		
+		c.gridx = 300;
+		c.gridy = 0;
+		c.gridwidth = 200;
+		c.gridheight = 200;
+
+		this.add(algosBox, c);
+		
 		c.gridx = 0;
 		c.gridy = 200;
 		c.gridwidth = 200;
@@ -58,12 +77,7 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		
 		this.add(new JLabel("Ne pas accepter les mots de moins n  lettres"), c);
 		
-		c.gridx = 300;
-		c.gridy = 0;
-		c.gridwidth = 200;
-		c.gridheight = 200;
-
-		this.add(algosBox, c);
+		
 
 		c.gridx = 300;
 		c.gridy = 200;
@@ -71,10 +85,49 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		c.gridheight = 200;
 
 		this.add(nMots, c);
+		
+		c.gridx = 0;
+		c.gridy = 400;
+		c.gridwidth = 200;
+		c.gridheight = 200;
+
+		this.add(new JLabel("Bigramme positif"), c);
+		
+		c.gridx = 200;
+		c.gridy = 400;
+		//c.gridwidth = 200;
+		//c.gridheight = 200;
+
+		this.add(ngrammePos, c);
+		
+		c.gridx = 0;
+		c.gridy = 600;
+		c.gridwidth = 200;
+		c.gridheight = 200;
+
+		this.add(new JLabel("Bigramme negatif"), c);
+		
+		c.gridx = 200;
+		c.gridy = 600;
+		//c.gridwidth = 200;
+		//c.gridheight = 200;
+
+		this.add(ngrammeNeg, c);
+		
+		c.gridx = 180;
+		c.gridy = 800;
+		c.gridwidth = 40;
+		c.gridheight = 20;
+
+		JButton button = new JButton("Sauvegarder les modifications");
+		button.addActionListener(new SaveConfigListener(this));
+		this.add(button, c);
+		
+		
 
 		setResizable(false);
-		setSize(500, 200);
-		setLocation(400, 300);
+		setSize(800, 400);
+		setLocation(100,100);
 	}
 	
 	

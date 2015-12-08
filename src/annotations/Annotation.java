@@ -22,6 +22,8 @@ public class Annotation {
 	
 	public static boolean frequence;
 	public static int moinsDeNMots = 0;
+	public static String poss[] = null;
+	public static String negs[] = null;
 
 	public static void annoteNaif(){
 		double tweetPositif = 0, tweetNeutre = 0, tweetNegatif = 0;
