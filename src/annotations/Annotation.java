@@ -20,14 +20,6 @@ import models.TweetList;
 
 public class Annotation {
 	
-	public static int nbTweets = 50;
-	public static boolean frequence = false;
-	public static int moinsDeNMots = 0;
-	public static String poss[] = new String[0];
-	public static String negs[] = new String[0];
-	public static boolean ngramme = false;
-	public static int kCrossValidation = 10;
-
 	public static void annoteNaif(){
 		double tweetPositif = 0, tweetNeutre = 0, tweetNegatif = 0;
 		long StartTime = new Date().getTime() ;
@@ -116,8 +108,8 @@ public class Annotation {
 			EndTime = new Date().getTime();
 			System.out.println("L'algorithme de dico a pris " + (EndTime-StartTime) +  " ms" ) ;
 			//System.out.println("Ecriture finie");
-			Model.frame.addTweetsWithPolarite(Model.lesTweets);
-			Model.frame.updateStats("Algorithme naïf", tweetNegatif, tweetNeutre, tweetPositif);
+			Model.frame.tweetsPanel.addTweetsWithPolarite(Model.lesTweets);
+			Model.frame.statsPanel.updateStats("Algorithme naïf", tweetNegatif, tweetNeutre, tweetPositif);
 
 		} catch (Exception exception){
 			System.out.println("Annote naif 2");
@@ -169,9 +161,9 @@ public class Annotation {
 			}
 
 			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
-			Model.frame.addTweetsWithPolarite(Model.lesTweets);
+			Model.frame.tweetsPanel.addTweetsWithPolarite(Model.lesTweets);
 
-			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+			Model.frame.statsPanel.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 			
 			
 		} catch(Exception e){
@@ -194,8 +186,8 @@ public class Annotation {
 		HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
 
 		
-		Model.frame.addTweetsWithPolarite(Model.lesTweets);
-		Model.frame.updateStats("Bayes", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+		Model.frame.tweetsPanel.addTweetsWithPolarite(Model.lesTweets);
+		Model.frame.statsPanel.updateStats("Bayes", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 
 
 		

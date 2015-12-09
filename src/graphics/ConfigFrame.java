@@ -14,11 +14,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+import listeners.LoadListener;
 import listeners.SaveConfigListener;
+import models.Configuration;
 import annotations.Annotation;
 
 public class ConfigFrame extends JFrame implements WindowListener{
 
+	public JComboBox<Boolean> proxyBox;
 	private JTextField nbTweetsField;
 	private JComboBox<String> algosBox;
 	private JTextField nMots;
@@ -30,19 +33,22 @@ public class ConfigFrame extends JFrame implements WindowListener{
 	public ConfigFrame(){
 		setTitle("Configuration des algorithmes");
 		
-		nbTweetsField = new JTextField(Annotation.nbTweets + "", 14);
+		proxyBox = new JComboBox<Boolean>(new Boolean[] {true, false});
+		proxyBox.setSelectedItem(Configuration.proxy);
+		
+		nbTweetsField = new JTextField(Configuration.nbTweets + "", 14);
 		
 		algosBox = new JComboBox<String>(new String[] {"", "Mot clef", "KNN", "Bayes - Présence", "Bayes - Fréquence"});
 				
-		nMots = new JTextField(Annotation.moinsDeNMots + "", 14);
+		nMots = new JTextField(Configuration.moinsDeNMots + "", 14);
 
 		String stringPos = new String(),
 				stringNeg = new String();
-		for(String pos : Annotation.poss){
+		for(String pos : Configuration.poss){
 			stringPos = stringPos + pos + ",";
 		}
 		
-		for(String neg : Annotation.negs){
+		for(String neg : Configuration.negs){
 			stringNeg = stringNeg + neg + ",";
 		}
 		
@@ -52,69 +58,97 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		ngrammeNeg = new JTextArea(stringNeg, 10, 14);
 		ngrammeNeg.setBorder(new LineBorder(Color.black));
 		
-		kCrossValidationField = new JTextField(Annotation.kCrossValidation + "", 14);
+		kCrossValidationField = new JTextField(Configuration.kCrossValidation + "", 14);
+		
+		JButton load = new JButton("Load");
+		load.addActionListener(new LoadListener());
+		load.setBackground(new Color(0x00aced));
+		load.setForeground(Color.WHITE);
 		
 		
 		setLayout(new GridBagLayout());
 		
+		// Proxy
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
-		c.gridy = 200;
+		c.gridy = 0;
 		c.gridwidth = 200;
-		c.gridheight = 200;
+		c.gridheight = 150;
+		
+		this.add(new JLabel("Utiliser le proxy Lille1"), c);
+		
+		c.gridx = 200;
+		c.gridy = 0;
+
+		this.add(proxyBox, c);
+		
+		// NbTweets
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 150;
+		
+		this.add(new JLabel("Nombre de tweets"), c);
+		
+		c.gridx = 200;
+		c.gridy = 150;
+
+		this.add(nbTweetsField, c);
+		
+		// Algo
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 300;
 		
 		this.add(new JLabel("Algorithme"), c);
 		
-		c.gridx = 300;
-		c.gridy = 200;
-		c.gridwidth = 200;
-		c.gridheight = 200;
+		c.gridx = 200;
+		c.gridy = 300;
+
 
 		this.add(algosBox, c);
 		
+		//Accepter mots moins de n lettres
 		c.gridx = 0;
 		c.gridy = 400;
-		c.gridwidth = 200;
-		c.gridheight = 200;
 		
 		this.add(new JLabel("Ne pas accepter les mots de moins n  lettres"), c);
 		
-		
-
-		c.gridx = 300;
+		c.gridx = 200;
 		c.gridy = 400;
-		c.gridwidth = 200;
-		c.gridheight = 200;
 
 		this.add(nMots, c);
-		
+
+		// N-gramme pos
 		c.gridx = 0;
 		c.gridy = 600;
-		c.gridwidth = 200;
-		c.gridheight = 200;
-
-		this.add(new JLabel("Bigramme positif"), c);
+		
+		this.add(new JLabel("N-gramme positif"), c);
 		
 		c.gridx = 200;
 		c.gridy = 600;
-		//c.gridwidth = 200;
-		//c.gridheight = 200;
+		
 
 		this.add(ngrammePos, c);
 		
 		c.gridx = 0;
 		c.gridy = 800;
-		c.gridwidth = 200;
-		c.gridheight = 200;
+		
 
-		this.add(new JLabel("Bigramme negatif"), c);
+		this.add(new JLabel("N-gramme negatif"), c);
 		
 		c.gridx = 200;
 		c.gridy = 800;
-		//c.gridwidth = 200;
-		//c.gridheight = 200;
 
 		this.add(ngrammeNeg, c);
+		
+		c.gridx = 0;
+		c.gridy = 1200;
+		c.gridwidth = 40;
+		c.gridheight = 20;
+
+		this.add(load, c);
+		
+		
 		
 		c.gridx = 180;
 		c.gridy = 1200;
@@ -128,8 +162,8 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		
 
 		setResizable(false);
-		setSize(800, 400);
-		setLocation(100,100);
+		setSize(800, 768);
+		setLocation(100, 0);
 	}
 	
 	
