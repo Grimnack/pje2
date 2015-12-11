@@ -17,24 +17,26 @@ import javax.swing.border.LineBorder;
 import listeners.LoadListener;
 import listeners.SaveConfigListener;
 import models.Configuration;
-import annotations.Annotation;
 
 public class ConfigFrame extends JFrame implements WindowListener{
 
-	public JComboBox<Boolean> proxyBox;
-	private JTextField nbTweetsField;
-	private JComboBox<String> algosBox;
-	private JTextField nMots;
-	public JTextArea ngrammePos;
-	public JTextArea ngrammeNeg;
-	public JTextField kCrossValidationField;
+	public JComboBox<String> proxyBox;
+	public JTextField nbTweetsField;
+	
+	public JComboBox<String> algosBox;
+	public JTextField nMots;
+	
+	public JComboBox<String> nGrammeBox;
+	public JTextArea nGrammePos;
+	public JTextArea nGrammeNeg;
+	
+	public JButton loadButton;
 	
 	
 	public ConfigFrame(){
 		setTitle("Configuration des algorithmes");
 		
-		proxyBox = new JComboBox<Boolean>(new Boolean[] {true, false});
-		proxyBox.setSelectedItem(Configuration.proxy);
+		proxyBox = new JComboBox<String>(new String[] {"Oui", "Non"});
 		
 		nbTweetsField = new JTextField(Configuration.nbTweets + "", 14);
 		
@@ -44,126 +46,143 @@ public class ConfigFrame extends JFrame implements WindowListener{
 
 		String stringPos = new String(),
 				stringNeg = new String();
-		for(String pos : Configuration.poss){
-			stringPos = stringPos + pos + ",";
+		if(Configuration.poss != null){
+			for(String pos : Configuration.poss){
+				stringPos = stringPos + pos + ",";
+			}
 		}
 		
-		for(String neg : Configuration.negs){
-			stringNeg = stringNeg + neg + ",";
+		if(Configuration.negs != null){
+			for(String neg : Configuration.negs){
+				stringNeg = stringNeg + neg + ",";
+			}
 		}
 		
-		ngrammePos = new JTextArea(stringPos, 10, 14);
-		ngrammePos.setBorder(new LineBorder(Color.black));
+		nGrammeBox = new JComboBox<String>(new String[]{"Oui", "Non"});
 		
-		ngrammeNeg = new JTextArea(stringNeg, 10, 14);
-		ngrammeNeg.setBorder(new LineBorder(Color.black));
+		nGrammePos = new JTextArea(stringPos, 10, 14);
+		nGrammePos.setBorder(new LineBorder(Color.black));
 		
-		kCrossValidationField = new JTextField(Configuration.kCrossValidation + "", 14);
+		nGrammeNeg = new JTextArea(stringNeg, 10, 14);
+		nGrammeNeg.setBorder(new LineBorder(Color.black));
 		
-		JButton load = new JButton("Load");
-		load.addActionListener(new LoadListener());
-		load.setBackground(new Color(0x00aced));
-		load.setForeground(Color.WHITE);
+		JButton button = new JButton("Sauvegarder les modifications");
+		button.addActionListener(new SaveConfigListener(this));
+		
+		loadButton = new JButton("Load base");
+		loadButton.addActionListener(new LoadListener());
 		
 		
 		setLayout(new GridBagLayout());
 		
-		// Proxy
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 200;
-		c.gridheight = 150;
+		c.gridwidth = 1;
+		c.gridheight = 2;
 		
-		this.add(new JLabel("Utiliser le proxy Lille1"), c);
+		this.add(new JLabel("Utiliser le proxy de Lille 1"), c);
 		
-		c.gridx = 200;
+		c.gridx = 1;
 		c.gridy = 0;
+		c.gridwidth = 3;
+		c.gridheight = 1;
 
 		this.add(proxyBox, c);
 		
-		// NbTweets
-		c = new GridBagConstraints();
 		c.gridx = 0;
-		c.gridy = 150;
+		c.gridy = 2;
+		c.gridwidth = 1;
+		c.gridheight = 2;
 		
 		this.add(new JLabel("Nombre de tweets"), c);
 		
-		c.gridx = 200;
-		c.gridy = 150;
+		c.gridx = 1;
+		c.gridy = 2;
+		c.gridwidth = 3;
+		c.gridheight = 1;
 
 		this.add(nbTweetsField, c);
 		
-		// Algo
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 300;
 		
+		c.gridx = 0;
+		c.gridy = 4;
+		c.gridwidth = 1;
+		c.gridheight = 2;
 		this.add(new JLabel("Algorithme"), c);
 		
-		c.gridx = 200;
-		c.gridy = 300;
-
-
+		c.gridx = 1;
+		c.gridy = 4;
+		c.gridwidth = 3;
+		c.gridheight = 1;
 		this.add(algosBox, c);
 		
-		//Accepter mots moins de n lettres
 		c.gridx = 0;
-		c.gridy = 400;
-		
-		this.add(new JLabel("Ne pas accepter les mots de moins n  lettres"), c);
-		
-		c.gridx = 200;
-		c.gridy = 400;
+		c.gridy = 6;
+		c.gridwidth = 1;
+		c.gridheight = 2;
+		this.add(new JLabel("Ne pas accepter les mots de moins n lettres"), c);
+				
 
+		c.gridx = 1;
+		c.gridy = 6;
+		c.gridwidth = 3;
+		c.gridheight = 1;
 		this.add(nMots, c);
-
-		// N-gramme pos
-		c.gridx = 0;
-		c.gridy = 600;
 		
+		
+		c.gridx = 0;
+		c.gridy = 8;
+		c.gridwidth = 1;
+		c.gridheight = 2;
+		this.add(new JLabel("Accepter les n-grammes"), c);
+		
+		c.gridx = 1;
+		c.gridy = 8;
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		this.add(nGrammeBox, c);
+		
+		
+		c.gridx = 0;
+		c.gridy = 10;
+		c.gridwidth = 1;
+		c.gridheight = 2;
 		this.add(new JLabel("N-gramme positif"), c);
 		
-		c.gridx = 200;
-		c.gridy = 600;
-		
-
-		this.add(ngrammePos, c);
+		c.gridx = 1;
+		c.gridy = 10;
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		this.add(nGrammePos, c);
 		
 		c.gridx = 0;
-		c.gridy = 800;
-		
-
+		c.gridy = 12;
+		c.gridwidth = 1;
+		c.gridheight = 2;
 		this.add(new JLabel("N-gramme negatif"), c);
 		
-		c.gridx = 200;
-		c.gridy = 800;
-
-		this.add(ngrammeNeg, c);
+		c.gridx = 1;
+		c.gridy = 12;
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		this.add(nGrammeNeg, c);
 		
 		c.gridx = 0;
-		c.gridy = 1200;
-		c.gridwidth = 40;
-		c.gridheight = 20;
-
-		this.add(load, c);
-		
-		
-		
-		c.gridx = 180;
-		c.gridy = 1200;
-		c.gridwidth = 40;
-		c.gridheight = 20;
-
-		JButton button = new JButton("Sauvegarder les modifications");
-		button.addActionListener(new SaveConfigListener(this));
+		c.gridy = 14;
+		c.gridwidth = 1;
+		c.gridheight = 1;
 		this.add(button, c);
-		
-		
+
+		c.gridx = 0;
+		c.gridy = 15;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		this.add(loadButton, c);		
 
 		setResizable(false);
-		setSize(800, 768);
-		setLocation(100, 0);
+		setSize(600, 600);
+		setLocation(100,100);
 	}
 	
 	

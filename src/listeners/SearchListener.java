@@ -26,14 +26,10 @@ public class SearchListener implements ActionListener{
 		// Mise a jour du theme dans le model
 		Model.theme =  textField.getText();
 		
-		String fileName = Model.theme + ".csv";
-
-
 		TweetList tweetsList = TwitterHelper.getTweets(Configuration.proxy, Configuration.nbTweets);
 		
-		Model.lesTweets = tweetsList;
+		Model.lesTweets = tweetsList;	
+		
 		Model.frame.addTweets(Model.lesTweets);
-
-
 	}
 }

@@ -175,5 +175,14 @@ public class TweetList implements Serializable{
 		
 		return new TweetList(lesTweets);
 	}
+	
+	
+	public String toString(){
+		String s = "";
+		for(Tweet tweet : tweetList){
+			s += tweet.toString() + " . ";
+		}
+		return s;
+	}
 
 }
