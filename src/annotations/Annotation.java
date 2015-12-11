@@ -108,8 +108,8 @@ public class Annotation {
 			EndTime = new Date().getTime();
 			System.out.println("L'algorithme de dico a pris " + (EndTime-StartTime) +  " ms" ) ;
 			//System.out.println("Ecriture finie");
-			Model.frame.tweetsPanel.addTweetsWithPolarite(Model.lesTweets);
-			Model.frame.statsPanel.updateStats("Algorithme naïf", tweetNegatif, tweetNeutre, tweetPositif);
+			Model.frame.addTweetsWithPolarite(Model.lesTweets);
+			Model.frame.updateStats("Algorithme naïf", tweetNegatif, tweetNeutre, tweetPositif);
 
 		} catch (Exception exception){
 			System.out.println("Annote naif 2");
@@ -161,9 +161,9 @@ public class Annotation {
 			}
 
 			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
-			Model.frame.tweetsPanel.addTweetsWithPolarite(Model.lesTweets);
+			Model.frame.addTweetsWithPolarite(Model.lesTweets);
 
-			Model.frame.statsPanel.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 			
 			
 		} catch(Exception e){
@@ -185,12 +185,8 @@ public class Annotation {
 		}
 		HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
 
-		
-		Model.frame.tweetsPanel.addTweetsWithPolarite(Model.lesTweets);
-		Model.frame.statsPanel.updateStats("Bayes", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
-
-
-		
+		Model.frame.addTweetsWithPolarite(Model.lesTweets);
+		Model.frame.updateStats("Bayes", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 	}
 
 }

@@ -5,9 +5,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.File;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,7 +26,7 @@ public class TopPanel extends JPanel{
 		frame = mainFrame;
 		
 		//setOpaque(false);
-		setPreferredSize(new Dimension(1000, 300));
+		//setPreferredSize(new Dimension(1000, 300));
 		Font openSans = new Font("TimesRoman", Font.PLAIN, 18);
 		Font titreFont = new Font("TimesRoman", Font.PLAIN, 18);		
 		
@@ -77,6 +77,8 @@ public class TopPanel extends JPanel{
 		launchButton.setBackground(new Color(0x00aced));
 		launchButton.setForeground(Color.WHITE);
 		
+
+		GridBagLayout gbl = new GridBagLayout();
 		
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -84,7 +86,7 @@ public class TopPanel extends JPanel{
 		c.gridy = 0;
 		c.gridwidth = 50;
 		c.gridheight = 100;
-		this.add(titre, c);
+		gbl.addLayoutComponent(titre, c);
 
 		
 		c = new GridBagConstraints();
@@ -93,7 +95,7 @@ public class TopPanel extends JPanel{
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
-		this.add(textField, c);
+		gbl.addLayoutComponent(textField, c);
 		
 		c = new GridBagConstraints();
 		c.gridx = 300;
@@ -101,7 +103,7 @@ public class TopPanel extends JPanel{
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
-		this.add(searchButton, c);
+		gbl.addLayoutComponent(searchButton, c);
 		
 		c = new GridBagConstraints();
 		c.gridx = 500;
@@ -109,7 +111,7 @@ public class TopPanel extends JPanel{
 		c.gridwidth = 200;
 		c.gridheight = 200;
 
-		this.add(tagButton, c);
+		gbl.addLayoutComponent(tagButton, c);
 		
 		c = new GridBagConstraints();
 		c.gridx = 700;
@@ -130,7 +132,8 @@ public class TopPanel extends JPanel{
 
 		
 		
-		
+		setLayout(gbl);
+
 		
 		
 	}

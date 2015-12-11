@@ -16,7 +16,7 @@ public class TagListener implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		mainFrame.tweetsPanel.addTweetsWithTag(Model.lesTweets);
+		mainFrame.addTweetsWithTag(Model.lesTweets);
 	}
 
 }

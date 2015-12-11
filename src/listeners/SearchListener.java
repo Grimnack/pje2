@@ -32,7 +32,7 @@ public class SearchListener implements ActionListener{
 		TweetList tweetsList = TwitterHelper.getTweets(Configuration.proxy, Configuration.nbTweets);
 		
 		Model.lesTweets = tweetsList;
-		Model.frame.tweetsPanel.addTweets(Model.lesTweets);
+		Model.frame.addTweets(Model.lesTweets);
 
 
 	}
