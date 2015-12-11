@@ -1,26 +1,28 @@
 
 \documentclass[a4paper,10pt]{report}
 \usepackage[utf8]{inputenc}
+\usepackage{hyperref}
 
 % Title Page
 \title{Analyse de Comportements avec Twitter}
 \author{Antonin Durey Matthieu Caron}
 
 
+
+
 \begin{document}
 \maketitle
-
 \chapter{Description générale du projet}
+  \section{Lien vers le git}
+    \url{https://github.com/Grimnack/pje2}
   \section{Description de la problématique}
     L'idée c'est de créer une application permettant de tester différents algorithmes
     afin de faire une analyse de sentiments sur twitter. La problématique est donc la suivante,
     quel est l'algorithme le plus efficace (qui donne le plus souvent la vérité) pour faire de la 
     classification de sentiments?
   \section{Description générale de l'architecture de votre application}
-    Nous avons fait une application java swing. Voici notre diagramme de classes.
-    %%
-    %%	todo diagramme de classes
-    %%
+    Nous avons fait une application java swing. On utilise donc une architecture MVC, le controlleur étant 
+    essentiellement 
 \chapter{Détails des différents travaux réalisés}
   Le projet se divise en quatre taches majeures, utilisation de une API twitter afin de récupérer 
   des tweets, préparer une base d'apprentissage afin de ne pas avoir de bruit mais aussi de créer notre 
@@ -58,6 +60,20 @@
   \section{Interface graphique}
     \subsection{copie d'ecran}
     \subsection{manuel d'utilisation}
+      On lance l'application, la fenetre principale est composée d'un champ de texte, un bouton ``get tweets'', un bouton ``Etiquettage'', un bonton ``Configurer'' et 
+      un bouton ``Launch''.
+      \subsubsection{Le bouton ``Get Tweets''}
+	Si vous cliquez sur le bouton ``Get Tweets'', l'application va vous demander combien de tweets vous souhaitez récupérer. Une fois le nombre de tweet choisit,
+	il va chercher les tweets contenant la chaine de caractère écrite au préalable dans le champ de texte et va afficher ces tweets à l'écran.
+	À partir de ce moment tous les calculs (dico, knn et bayes) se feront sur ces tweets.
+      \subsubsection{Le bouton ``Etiquetage''}
+	Ce bouton est utile pour ajouter des tweets à une base de données, il faut avoir au préalable cherché des tweets avec le bouton ``Get Tweets''.
+	A côté de chaque tweet vous allez devoir choisir qu'elle est leur polarité, neutre, positif ou négatif. Une fois ceci fait pour tous les tweets, vous 
+	allez pouvoir sauvegarder vos tweets étiquetés. Pour la sauvegarde un selecteur de fichiers s'ouvre, si vous choisissez un fichier de type .base existant
+	les tweets annotés vont être ajouté a la base de tweets choisit. Vous pouvez aussi créer une nouvelle base, il est préférable de choisir l'extension .base
+	pour se retrouver dans ses fichiers.
+      \subsubsection{Le bouton ``Configurer''}
+	Ce bouton sert a choisir l'algorithme de classification entre Dico, KNN et Bayes. 
 \chapter{Résultats de la classification avec les différentes méthodes et analyse}
 \chapter{Conclusions}
 
