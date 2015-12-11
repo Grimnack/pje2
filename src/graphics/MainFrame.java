@@ -7,12 +7,10 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.io.File;
 import java.text.DecimalFormat;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -61,6 +59,8 @@ public class MainFrame extends JFrame{
 	
 	Table table;
 	JScrollPane jsp;
+	
+	ChartPanel crepart;
 	
 	JLabel titre;
 
@@ -143,6 +143,11 @@ public class MainFrame extends JFrame{
 		configButton.setForeground(Color.WHITE);
 		launchButton.setBackground(new Color(0x00aced));
 		launchButton.setForeground(Color.WHITE);
+		
+		table = new Table();
+		jsp = new JScrollPane(table);
+		
+		crepart = new ChartPanel(null);
 
 
 		setLayout(new GridBagLayout());
@@ -194,7 +199,7 @@ public class MainFrame extends JFrame{
 		c.gridwidth = 6;
 		c.gridheight = 10;
 
-		this.add(tweetsPanel, c);
+		this.add(jsp, c);
 
 		c = new GridBagConstraints();
 		c.gridx = 6;
@@ -202,7 +207,7 @@ public class MainFrame extends JFrame{
 		c.gridwidth = 2;
 		c.gridheight = 10;
 
-		this.add(statsPanel, c);
+		this.add(crepart, c);
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
@@ -239,14 +244,12 @@ public class MainFrame extends JFrame{
 		jsp = new JScrollPane(table);
 		jsp.setOpaque(false);
 		jsp.setPreferredSize(new Dimension(800, 800));
-		tweetsPanel.add(jsp);
 
 		revalidate(); 
 		repaint();
 	}
 
 	public void addTweetsWithPolarite(TweetList tweetList){
-		tweetsPanel.removeAll();
 		
 		String[] columnNames = {"Author",
 								"Tweet",
@@ -260,8 +263,6 @@ public class MainFrame extends JFrame{
 		table.getColumnModel().getColumn(1).setPreferredWidth(600);
 		table.getColumnModel().getColumn(2).setPreferredWidth(200);
 		
-		tweetsPanel.setPreferredSize(new Dimension(1020, 800));
-
 		for(int i=0;i<tweetList.size();i++){
 			Tweet tweet = tweetList.get(i);
 			data[i][0] = tweet.getUser();
@@ -272,14 +273,10 @@ public class MainFrame extends JFrame{
 		JScrollPane jsp = new JScrollPane(table);
 		jsp.setOpaque(false);
 		jsp.setSize(900, 600);
-		tweetsPanel.add(jsp);
 
 	}
 
 	public void addTweetsWithTag(TweetList tweetList){
-
-		tweetsPanel.removeAll();
-		statsPanel.removeAll();
 
 		String[] columnNames = {"Author",
 								"Tweet",
@@ -306,19 +303,15 @@ public class MainFrame extends JFrame{
 	    renderer.setToolTipText("Polarite");
 	    polariteColumn.setCellRenderer(renderer);
 		
-		tweetsPanel.setPreferredSize(new Dimension(1020, 800));
-
 		for(int i=0;i<tweetList.size();i++){
 			Tweet tweet = tweetList.get(i);
 			data[i][0] = tweet.getUser();
 			data[i][1] = tweet.getText();
 		}
 		
-		JScrollPane jsp = new JScrollPane(table);
+		jsp = new JScrollPane(table);
 		jsp.setSize(900, 600);
 		jsp.setOpaque(false);
-		tweetsPanel.add(jsp);
-
 		
 		JPanel sauvegardePanel = new JPanel();
 		sauvegardePanel.setOpaque(false);
@@ -327,16 +320,11 @@ public class MainFrame extends JFrame{
 		sauvegarde.addActionListener(new SauvegardeListener(this, Model.lesTweets, table));
 		sauvegardePanel.add(sauvegarde);
 		
-		tweetsPanel.add(sauvegardePanel);
-
 		revalidate(); 
 		repaint();
 	}
 
 	public void updateStats(String title, double negatif, double neutre, double positif){
-
-		statsPanel.removeAll();
-
 
 		DefaultPieDataset union = new DefaultPieDataset();
 		//remplir l'ensemble
@@ -349,7 +337,7 @@ public class MainFrame extends JFrame{
 		union.setValue("Positif", positifPourcentage);
 
 		JFreeChart repart = ChartFactory.createPieChart("Répartition par sentiments - " + title, union, true, true, false);
-		ChartPanel crepart = new ChartPanel(repart);
+		crepart = new ChartPanel(repart);
 
 		PiePlot plot = (PiePlot)repart.getPlot();
 		plot.setSectionPaint("Negatif", new Color(255,100,0));
@@ -374,7 +362,6 @@ public class MainFrame extends JFrame{
 		plot.setLabelGenerator(gen);
 
 		crepart.setVisible(true);
-		statsPanel.add(crepart);
 		
 		revalidate(); 
 		repaint();

@@ -100,7 +100,7 @@ public class TweetPanel extends JPanel{
 	public void addTweetsWithTag(TweetList tweetList){
 
 		removeAll();
-		mainFrame.statsPanel.removeAll();
+		//mainFrame.statsPanel.removeAll();
 
 		String[] columnNames = {"Author",
 								"Tweet",

@@ -24,6 +24,11 @@ public class Table extends JTable{
 	Font openSans;
 	Font openSansBold;
 	
+	public Table(){
+		super();
+		
+	}
+	
 	public Table(TweetList tweetList, Object [][] data, String[] columns){
 		super(data, columns);
 		//////////////////////////////////////////////////////////
