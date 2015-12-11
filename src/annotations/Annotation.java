@@ -20,12 +20,6 @@ import models.TweetList;
 
 public class Annotation {
 	
-	
-	public static boolean frequence;
-	public static int moinsDeNMots = 0;
-	public static String poss[] = null;
-	public static String negs[] = null;
-
 	public static void annoteNaif(){
 		double tweetPositif = 0, tweetNeutre = 0, tweetNegatif = 0;
 		long StartTime = new Date().getTime() ;
@@ -191,12 +185,8 @@ public class Annotation {
 		}
 		HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
 
-		
 		Model.frame.addTweetsWithPolarite(Model.lesTweets);
 		Model.frame.updateStats("Bayes", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
-
-
-		
 	}
 
 }

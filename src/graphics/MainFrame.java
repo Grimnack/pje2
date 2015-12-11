@@ -4,16 +4,13 @@ package graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.IOException;
 import java.text.DecimalFormat;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -54,18 +51,19 @@ public class MainFrame extends JFrame{
 
 	JTextField textField;
 	JButton search;
-	JButton search2;
 	JButton load;
 	
 	JButton tagButton;
 	JButton configButton;
 	JButton launchButton;
 	
+	Table table;
+	JScrollPane jsp;
+	
+	ChartPanel crepart;
+	
 	JLabel titre;
-	JPanel searchPanel;
-	JPanel algoPanel;
-	JPanel tweetsPanel;
-	JPanel statsPanel;
+
 	Font openSans = new Font("TimesRoman", Font.PLAIN, 18);
 	Font titreFont = new Font("TimesRoman", Font.PLAIN, 18);
 	
@@ -88,12 +86,10 @@ public class MainFrame extends JFrame{
 			openSans = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 			openSans = openSans.deriveFont((float) 18.0);
 			titreFont = openSans.deriveFont((float) 32.);
-		} catch (FontFormatException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.exit(0);
 		}
 		ge.registerFont(openSans);
 		this.setFont(openSans) ;
@@ -122,26 +118,11 @@ public class MainFrame extends JFrame{
 		search.setBackground(new Color(0x00aced));
 		search.setForeground(Color.WHITE);
 		
-		search2 = new JButton("More tweets");
-		search2.addActionListener(new SearchListener(this, textField,false));
-		search2.setFont(openSans);
-		search2.setBackground(new Color(0x00aced));
-		search2.setForeground(Color.WHITE);
-		
 		load = new JButton("Load");
 		load.addActionListener(new LoadListener());
 		load.setFont(openSans);
 		load.setBackground(new Color(0x00aced));
 		load.setForeground(Color.WHITE);
-
-		searchPanel = new JPanel();
-		searchPanel.setOpaque(false);
-		searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
-
-		searchPanel.add(textField);
-		searchPanel.add(search);
-		searchPanel.add(search2);
-		searchPanel.add(load);
 
 		// Algo Panel
 		tagButton = new JButton("Etiquetage");
@@ -153,75 +134,80 @@ public class MainFrame extends JFrame{
 		configButton.setFont(openSans);
 
 		launchButton = new JButton("Launch");
-		launchButton.addActionListener(new LaunchListener(configFrame));
+		launchButton.addActionListener(new LaunchListener());
 		launchButton.setFont(openSans);
 
-
-		algoPanel = new JPanel();
-		algoPanel.setOpaque(false);
-		algoPanel.setLayout(new BoxLayout(algoPanel, BoxLayout.X_AXIS));
-		algoPanel.add(tagButton);
-		algoPanel.add(configButton);
-		algoPanel.add(launchButton);
 		tagButton.setBackground(new Color(0x00aced));
 		tagButton.setForeground(Color.WHITE);
 		configButton.setBackground(new Color(0x00aced));
 		configButton.setForeground(Color.WHITE);
 		launchButton.setBackground(new Color(0x00aced));
 		launchButton.setForeground(Color.WHITE);
+		
+		table = new Table();
+		jsp = new JScrollPane(table);
+		
+		crepart = new ChartPanel(null);
 
-
-		// Tweet panel
-		tweetsPanel = new JPanel();	
-		tweetsPanel.setOpaque(false);
-		tweetsPanel.setPreferredSize(new Dimension(850, 800));
-		tweetsPanel.setLayout(new BoxLayout(tweetsPanel, BoxLayout.Y_AXIS));
 
 		setLayout(new GridBagLayout());
 
-		statsPanel = new JPanel();
-
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 500;
+		c.gridx = 3;
 		c.gridy = 0;
-		c.gridwidth = 1000;
-		c.gridheight = 100;
-		this.add(titre, c );
-
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		this.add(titre, c);
 		
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+		this.add(textField, c);
+		
+		c.gridx = 1;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+
+		this.add(search, c);
+
+		c.gridx = 6;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+
+		this.add(tagButton, c);
+		
+		c.gridx = 7;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+
+		this.add(configButton, c);
+		
+		c.gridx = 8;
+		c.gridy = 1;
+		c.gridwidth = 1;
+		c.gridheight = 1;
+
+		this.add(launchButton, c);
+
 		c = new GridBagConstraints();
 		c.gridx = 0;
-		c.gridy = 0 + 400;
-		c.gridwidth = 1000;
-		c.gridheight = 100;
+		c.gridy = 3;
+		c.gridwidth = 6;
+		c.gridheight = 10;
 
-		//gridx, gridy , gridwidth, gridheight
-
-		this.add(searchPanel, c);
+		this.add(jsp, c);
 
 		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 100 + 400;
-		c.gridwidth = 1000;
-		c.gridheight = 100;
+		c.gridx = 6;
+		c.gridy = 3;
+		c.gridwidth = 2;
+		c.gridheight = 10;
 
-		this.add(algoPanel, c);
-
-		c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 200 + 400;
-		c.gridwidth = 700;
-		c.gridheight = 800;
-
-		this.add(tweetsPanel, c);
-
-		c = new GridBagConstraints();
-		c.gridx = 700;
-		c.gridy = 200 + 400;
-		c.gridwidth = 300;
-		c.gridheight = 800;
-
-		this.add(statsPanel, c);
+		this.add(crepart, c);
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		int xSize = ((int) tk.getScreenSize().getWidth());
@@ -232,21 +218,18 @@ public class MainFrame extends JFrame{
 	}
 
 
-	public void addTweets(TweetList tweetList, boolean fromScratch){
-		if(fromScratch){
-			tweetsPanel.removeAll();
-		}
+	public void addTweets(TweetList tweetList){
+
 		String[] columnNames = {"Author",
 								"Tweet"};
 
 		Object[][] data = new Object[tweetList.size()][2];
 		
-		Table table = new Table(Model.lesTweets, data, columnNames);
+		table = new Table(Model.lesTweets, data, columnNames);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(200);
 		table.getColumnModel().getColumn(1).setPreferredWidth(600);
 
-		tweetsPanel.setPreferredSize(new Dimension(810, 800));
 
 		table.setPreferredSize(new Dimension(800, 800));
 
@@ -258,17 +241,15 @@ public class MainFrame extends JFrame{
 		}
 		
 		
-		JScrollPane jsp = new JScrollPane(table);
+		jsp = new JScrollPane(table);
 		jsp.setOpaque(false);
 		jsp.setPreferredSize(new Dimension(800, 800));
-		tweetsPanel.add(jsp);
 
 		revalidate(); 
 		repaint();
 	}
 
 	public void addTweetsWithPolarite(TweetList tweetList){
-		tweetsPanel.removeAll();
 		
 		String[] columnNames = {"Author",
 								"Tweet",
@@ -282,8 +263,6 @@ public class MainFrame extends JFrame{
 		table.getColumnModel().getColumn(1).setPreferredWidth(600);
 		table.getColumnModel().getColumn(2).setPreferredWidth(200);
 		
-		tweetsPanel.setPreferredSize(new Dimension(1020, 800));
-
 		for(int i=0;i<tweetList.size();i++){
 			Tweet tweet = tweetList.get(i);
 			data[i][0] = tweet.getUser();
@@ -294,14 +273,10 @@ public class MainFrame extends JFrame{
 		JScrollPane jsp = new JScrollPane(table);
 		jsp.setOpaque(false);
 		jsp.setSize(900, 600);
-		tweetsPanel.add(jsp);
 
 	}
 
 	public void addTweetsWithTag(TweetList tweetList){
-
-		tweetsPanel.removeAll();
-		statsPanel.removeAll();
 
 		String[] columnNames = {"Author",
 								"Tweet",
@@ -328,19 +303,15 @@ public class MainFrame extends JFrame{
 	    renderer.setToolTipText("Polarite");
 	    polariteColumn.setCellRenderer(renderer);
 		
-		tweetsPanel.setPreferredSize(new Dimension(1020, 800));
-
 		for(int i=0;i<tweetList.size();i++){
 			Tweet tweet = tweetList.get(i);
 			data[i][0] = tweet.getUser();
 			data[i][1] = tweet.getText();
 		}
 		
-		JScrollPane jsp = new JScrollPane(table);
+		jsp = new JScrollPane(table);
 		jsp.setSize(900, 600);
 		jsp.setOpaque(false);
-		tweetsPanel.add(jsp);
-
 		
 		JPanel sauvegardePanel = new JPanel();
 		sauvegardePanel.setOpaque(false);
@@ -349,16 +320,11 @@ public class MainFrame extends JFrame{
 		sauvegarde.addActionListener(new SauvegardeListener(this, Model.lesTweets, table));
 		sauvegardePanel.add(sauvegarde);
 		
-		tweetsPanel.add(sauvegardePanel);
-
 		revalidate(); 
 		repaint();
 	}
 
 	public void updateStats(String title, double negatif, double neutre, double positif){
-
-		statsPanel.removeAll();
-
 
 		DefaultPieDataset union = new DefaultPieDataset();
 		//remplir l'ensemble
@@ -371,7 +337,7 @@ public class MainFrame extends JFrame{
 		union.setValue("Positif", positifPourcentage);
 
 		JFreeChart repart = ChartFactory.createPieChart("Répartition par sentiments - " + title, union, true, true, false);
-		ChartPanel crepart = new ChartPanel(repart);
+		crepart = new ChartPanel(repart);
 
 		PiePlot plot = (PiePlot)repart.getPlot();
 		plot.setSectionPaint("Negatif", new Color(255,100,0));
@@ -396,7 +362,6 @@ public class MainFrame extends JFrame{
 		plot.setLabelGenerator(gen);
 
 		crepart.setVisible(true);
-		statsPanel.add(crepart);
 		
 		revalidate(); 
 		repaint();

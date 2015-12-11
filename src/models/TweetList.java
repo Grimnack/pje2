@@ -1,12 +1,14 @@
 package models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import annotations.Annotation;
+import twitter4j.QueryResult;
+import twitter4j.Status;
 
 public class TweetList implements Serializable{
 	/**
@@ -15,6 +17,11 @@ public class TweetList implements Serializable{
 	private static final long serialVersionUID = 646410961337631943L;
 	public List<Tweet> tweetList ;
 
+	
+	public TweetList(){
+		
+	}
+	
 	public TweetList(List<Tweet> l){
 		tweetList = l ;
 	}
@@ -78,7 +85,7 @@ public class TweetList implements Serializable{
 				Matcher m = p.matcher(s);
 
 				while (m.find()){
-					if(nbOcc == 0 || Annotation.frequence)
+					if(nbOcc == 0 || Configuration.frequence)
 						nbOcc++;
 				}
 			}
@@ -95,12 +102,12 @@ public class TweetList implements Serializable{
 
 		for(Tweet tweet : tweetList){
 			if(tweet.getPolarite() == polarite)
-				if(Annotation.moinsDeNMots == 0)
+				if(Configuration.moinsDeNMots == 0)
 					sum += tweet.getText().length();
 				else {
 					String [] mots = tweet.getText().split("\\s+");
 					for(String mot : mots){
-						if(mot.length() >= Annotation.moinsDeNMots)
+						if(mot.length() >= Configuration.moinsDeNMots)
 							sum++;
 					}
 				}
@@ -135,6 +142,38 @@ public class TweetList implements Serializable{
 	public void fusionne(TweetList liste2) {
 		this.tweetList.addAll(liste2.tweetList) ;
 		
+	}
+	
+	public static TweetList cleanTweets(QueryResult result){
+		List<Tweet> lesTweets = new ArrayList<Tweet>();
+
+		// Ecriture dans un fichier
+
+
+		for (Status status : result.getTweets()) {
+
+			Tweet tweet = new Tweet();
+
+			String toBeCleaned = status.getText();
+
+			// Pattern - Matcher
+			Pattern pattern = Pattern.compile("([@#\"\r\n(RT)]|https?:[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)*");
+			Matcher matcher = pattern.matcher(toBeCleaned);
+
+			String cleanedHalf = matcher.replaceAll(""); 
+
+			Pattern patternPonctu = Pattern.compile("\\p{Punct}");
+			Matcher matcherPonctu = patternPonctu.matcher(cleanedHalf);
+
+			String cleaned = matcherPonctu.replaceAll("");
+
+			tweet.setText(cleaned);
+			tweet.setUser(status.getUser().getScreenName()) ;
+			lesTweets.add(tweet);
+
+		}
+		
+		return new TweetList(lesTweets);
 	}
 
 }

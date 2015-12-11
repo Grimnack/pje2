@@ -6,6 +6,7 @@ import graphics.JMessagePopup;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import models.Configuration;
 import annotations.Annotation;
 
 public class SaveConfigListener implements ActionListener{
@@ -18,14 +19,15 @@ public class SaveConfigListener implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		try {
-			Annotation.moinsDeNMots = Integer.parseInt(configFrame.getNMots().getText());
-			Annotation.poss = configFrame.ngrammePos.getText().split(",");
-			Annotation.negs = configFrame.ngrammeNeg.getText().split(",");
+			Configuration.moinsDeNMots = Integer.parseInt(configFrame.getNMots().getText());
+			Configuration.poss = configFrame.ngrammePos.getText().split(",");
+			Configuration.negs = configFrame.ngrammeNeg.getText().split(",");
+			Configuration.proxy = (Boolean)configFrame.proxyBox.getSelectedItem(); 
 		} catch(Exception exception){
 			exception.printStackTrace();
 			JMessagePopup.showMessage("Erreur", "Attention ! Certaines options ont mal été sauvegardées");
 		}
-		for(String string : Annotation.poss){
+		for(String string : Configuration.poss){
 			System.out.println(string);
 		}
 	}
