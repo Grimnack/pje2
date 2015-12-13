@@ -1,7 +1,7 @@
-
 \documentclass[a4paper,10pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
+\usepackage{graphicx}
 
 % Title Page
 \title{Analyse de Comportements avec Twitter}
@@ -11,7 +11,10 @@
 
 
 \begin{document}
+\pagenumbering{alph}
 \maketitle
+\clearpage
+\pagenumbering{arabic}
 \chapter{Description générale du projet}
   \section{Lien vers le git}
     \url{https://github.com/Grimnack/pje2}
@@ -20,7 +23,7 @@
     afin de faire une analyse de sentiments sur twitter. La problématique est donc la suivante,
     quel est l'algorithme le plus efficace (qui donne le plus souvent la vérité) pour faire de la 
     classification de sentiments?
-  \section{Description générale de l'architecture de votre application}
+  \section{Architecture de l'application}
     Nous avons fait une application java swing. On utilise donc une architecture MVC, le controlleur étant 
     essentiellement 
 \chapter{Détails des différents travaux réalisés}
@@ -59,6 +62,28 @@
     \subsection{Bayes}
   \section{Interface graphique}
     \subsection{copie d'ecran}
+      \begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.2]{impressions-ecran/accueil.png}
+	\caption{Page d'accueil}
+	\label{accueil}
+      \end{figure}
+      \begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.2]{impressions-ecran/tweets.png}
+	\caption{Affichage des tweets}
+	\label{tweets}
+      \end{figure}
+      \begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.2]{impressions-ecran/etiquetage.png}
+	\caption{Étiquetage des tweets}
+	\label{etiquetage}
+      \end{figure}
+
+
+
+    
     \subsection{manuel d'utilisation}
       On lance l'application, la fenetre principale est composée d'un champ de texte, un bouton ``get tweets'', un bouton ``Etiquettage'', un bonton ``Configurer'' et 
       un bouton ``Launch''.
