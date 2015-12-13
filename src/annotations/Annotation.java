@@ -130,10 +130,6 @@ public class Annotation {
 				return;
 			}
 			
-			for(Tweet tweet : Model.base.tweetList){
-				System.out.println(tweet.getPolarite());
-			}
-			
 			List<Tweet> tweetBase = Model.base.tweetList;
 
 			Map<Tweet, Double> tweetDistance = new HashMap<Tweet, Double>();
@@ -172,8 +168,8 @@ public class Annotation {
 	}
 
 
-	public static void predictTweetsClass(TweetList learningBase){
-		for(Tweet tweet : Model.lesTweets.tweetList){
+	public static HashMap<Polarite, Integer> predictTweetsClass(TweetList learningBase, TweetList toPredict){
+		for(Tweet tweet : toPredict.tweetList){
 			Map<Polarite, Double> map = new HashMap<Polarite, Double>();
 
 			map.put(Polarite.NEGATIF, tweet.bayes(Polarite.NEGATIF, learningBase));
@@ -183,10 +179,35 @@ public class Annotation {
 			tweet.setPolarite(CollectionUtil.getPolariteFromHighestProb(map));
 
 		}
-		HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
+		return toPredict.getPolariteFrequency();
+	}
+	
+	public static void checkBase(){
+		
+		System.out.println(Model.base);
+		
+		int splitNb = 10;
+		TweetList[] tab = Model.base.split(splitNb);
 
-		Model.frame.addTweetsWithPolarite(Model.lesTweets);
-		Model.frame.updateStats("Bayes", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
+		TweetList[] tabBase = new TweetList[tab.length];
+		TweetList[] tabList = new TweetList[tab.length];
+		
+		// On génère les listes qui vont être vérifiés à partir des bases générées, et on vérifie
+		for(int i=0;i<tab.length;i++){
+			tabList[i] = tab[i];
+			tabBase[i] = TweetList.fusionneExcept(tab, i);
+			Annotation.predictTweetsClass(tabList[i], tabBase[i]);
+		}
+		
+		TweetList checked = TweetList.fusionneExcept(tabList, -1);
+		
+		Model.frame.addTweetsWithPolarite(checked);
+		
+		Map<String, Integer> map = checked.getErrorMarginWithBase(Model.base);
+		
+		Model.frame.updateErrorMargin(map);
+		
+		
 	}
 
 }

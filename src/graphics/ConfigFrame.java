@@ -27,8 +27,7 @@ public class ConfigFrame extends JFrame implements WindowListener{
 	public JTextField nMots;
 	
 	public JComboBox<String> nGrammeBox;
-	public JTextArea nGrammePos;
-	public JTextArea nGrammeNeg;
+	public JTextArea nGrammes;
 	
 	public JButton loadButton;
 	
@@ -37,37 +36,40 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		setTitle("Configuration des algorithmes");
 		
 		proxyBox = new JComboBox<String>(new String[] {"Oui", "Non"});
+		if(Configuration.proxy)
+			proxyBox.setSelectedItem("Oui");
+		else 
+			proxyBox.setSelectedItem("Non");
 		
 		nbTweetsField = new JTextField(Configuration.nbTweets + "", 14);
 		
-		algosBox = new JComboBox<String>(new String[] {"", "Mot clef", "KNN", "Bayes - Présence", "Bayes - Fréquence"});
+		algosBox = new JComboBox<String>(new String[] {"", "Mot clef", "KNN", "Bayes - Présence", "Bayes - Fréquence", "Vérifier la base"});
+		algosBox.setSelectedItem(Configuration.selectedAlgo);
 				
-		nMots = new JTextField(Configuration.moinsDeNMots + "", 14);
+		nMots = new JTextField(Configuration.moinsDeN + "", 14);
+		
+		nGrammeBox = new JComboBox<String>(new String[] {"Oui", "Non"});
+		if(Configuration.useNGramme)
+			nGrammeBox.setSelectedItem("Oui");
+		else
+			nGrammeBox.setSelectedItem("Non");
 
-		String stringPos = new String(),
-				stringNeg = new String();
-		if(Configuration.poss != null){
-			for(String pos : Configuration.poss){
+		String stringPos = new String();
+		if(Configuration.nGrammes != null){
+			for(String pos : Configuration.nGrammes){
 				stringPos = stringPos + pos + ",";
 			}
 		}
 		
-		if(Configuration.negs != null){
-			for(String neg : Configuration.negs){
-				stringNeg = stringNeg + neg + ",";
-			}
-		}
+		
 		
 		nGrammeBox = new JComboBox<String>(new String[]{"Oui", "Non"});
 		
-		nGrammePos = new JTextArea(stringPos, 10, 14);
-		nGrammePos.setBorder(new LineBorder(Color.black));
-		
-		nGrammeNeg = new JTextArea(stringNeg, 10, 14);
-		nGrammeNeg.setBorder(new LineBorder(Color.black));
-		
-		JButton button = new JButton("Sauvegarder les modifications");
-		button.addActionListener(new SaveConfigListener(this));
+		nGrammes = new JTextArea(stringPos, 10, 14);
+		nGrammes.setBorder(new LineBorder(Color.black));
+				
+		JButton saveButton = new JButton("Sauvegarder les modifications");
+		saveButton.addActionListener(new SaveConfigListener(this));
 		
 		loadButton = new JButton("Load base");
 		loadButton.addActionListener(new LoadListener());
@@ -148,37 +150,28 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		c.gridy = 10;
 		c.gridwidth = 1;
 		c.gridheight = 2;
-		this.add(new JLabel("N-gramme positif"), c);
+		this.add(new JLabel("N-gramme"), c);
 		
 		c.gridx = 1;
 		c.gridy = 10;
 		c.gridwidth = 3;
 		c.gridheight = 1;
-		this.add(nGrammePos, c);
+		this.add(nGrammes, c);
+		
 		
 		c.gridx = 0;
 		c.gridy = 12;
 		c.gridwidth = 1;
-		c.gridheight = 2;
-		this.add(new JLabel("N-gramme negatif"), c);
-		
-		c.gridx = 1;
-		c.gridy = 12;
-		c.gridwidth = 3;
 		c.gridheight = 1;
-		this.add(nGrammeNeg, c);
+		this.add(loadButton, c);
 		
 		c.gridx = 0;
-		c.gridy = 14;
+		c.gridy = 13;
 		c.gridwidth = 1;
 		c.gridheight = 1;
-		this.add(button, c);
+		this.add(saveButton, c);
 
-		c.gridx = 0;
-		c.gridy = 15;
-		c.gridwidth = 1;
-		c.gridheight = 1;
-		this.add(loadButton, c);		
+				
 
 		setResizable(false);
 		setSize(600, 600);

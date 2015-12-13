@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import javax.swing.JFileChooser;
 
 import models.Model;
+import models.Tweet;
 import models.TweetList;
 
 public class LoadListener implements ActionListener {
@@ -50,8 +51,8 @@ public class LoadListener implements ActionListener {
 			}
 
 		}
-
-
+		
+		System.out.println(Model.base);
 
 		String message = "Base chargée ! " + Model.base.size() + " tweets chargés !",
 				titre = "Succès !";

@@ -1,12 +1,12 @@
 package listeners;
 
-import graphics.ConfigFrame;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 import models.Configuration;
 import models.Model;
+import models.Polarite;
 import annotations.Annotation;
 
 public class LaunchListener implements ActionListener{
@@ -23,10 +23,19 @@ public class LaunchListener implements ActionListener{
 
 		} else if(selectedAlgo == "Bayes - Présence"){
 			Configuration.frequence = false;
-			Annotation.predictTweetsClass(Model.base);
+			
+			Map<Polarite, Integer> predicted = Annotation.predictTweetsClass(Model.base, Model.lesTweets);
+			
+			Model.frame.addTweetsWithPolarite(Model.lesTweets);
+			Model.frame.updateStats("Bayes", predicted.get(Polarite.NEGATIF), predicted.get(Polarite.NEUTRE), predicted.get(Polarite.POSITIF));
 		} else if(selectedAlgo == "Bayes - Fréquence"){
 			Configuration.frequence = true;
-			Annotation.predictTweetsClass(Model.base);
+			Map<Polarite, Integer> predicted = Annotation.predictTweetsClass(Model.base, Model.lesTweets);
+			
+			Model.frame.addTweetsWithPolarite(Model.lesTweets);
+			Model.frame.updateStats("Bayes", predicted.get(Polarite.NEGATIF), predicted.get(Polarite.NEUTRE), predicted.get(Polarite.POSITIF));
+		} else if(selectedAlgo == "Vérifier la base"){
+			Annotation.checkBase();
 		}
 
 

@@ -41,10 +41,20 @@ public class Tweet implements Serializable {
 		int nbMotsTotal = splitCleaned1.size() + splitCleaned2.size(), nbMotsCommun = 0;
 		
 		for(String mot1 : splitCleaned1){
-			if(splitCleaned2.contains(mot1)){
+			// Si mot est contenu et de la bonne taille
+			if(splitCleaned2.contains(mot1) && mot1.length() >= Configuration.moinsDeN){
 				nbMotsCommun += 2;
 			}
 		}
+		// NGramme
+		if(Configuration.useNGramme){
+			for(String nGramme: Configuration.nGrammes){
+				if(text.contains(nGramme))
+					nbMotsCommun += 2 * nGramme.length();
+			}
+			
+		}
+		
 		return (nbMotsTotal - nbMotsCommun) / nbMotsTotal;
 		
 	}
