@@ -16,15 +16,17 @@
   \section{Lien vers le git}
     \url{https://github.com/Grimnack/pje2}
   \section{Description de la problématique}
-    L'idée c'est de créer une application permettant de tester différents algorithmes
-    afin de faire une analyse de sentiments sur twitter. La problématique est donc la suivante,
-    quel est l'algorithme le plus efficace (qui donne le plus souvent la vérité) pour faire de la 
-    classification de sentiments?
+    Le but est de créer une application permettant de tester différents algorithmes
+    afin de faire une analyse de sentiments sur Twitter. La problématique est donc la suivante :
+    quel est l'algorithme le plus efficace, c'est à dire qui donne le plus souvent la vérité, pour faire de la 
+    classification de sentiments ?
   \section{Description générale de l'architecture de votre application}
-    Nous avons fait une application java swing. On utilise donc une architecture MVC, le controlleur étant 
-    essentiellement 
+    Nous avons fait une application java swing. Ainsi, nous avons privilégié une architecture MVC.
+    Les modèles contiennent les différentes informations permettant à l'application de fonctionner : les éléments graphiques, les tweets, les éléments de configuration...
+    Les vues sont représentés par les différents éléments graphiques de l'application.
+    Le contrôle est principalement effectué par la classe Annotation qui s'occupe de classer les tweets en fonction de l'algorithme choisi. 
 \chapter{Détails des différents travaux réalisés}
-  Le projet se divise en quatre taches majeures, utilisation de une API twitter afin de récupérer 
+  Le projet se divise en quatre taches majeures, utilisation d'une API twitter afin de récupérer 
   des tweets, préparer une base d'apprentissage afin de ne pas avoir de bruit mais aussi de créer notre 
   base de vérité pour l'apprentissage supervisé. Implémenter et tester différents algorithmes de classification de sentiments et
   enfin pouvoir utiliser ses algorithme depuis une application avec son interface graphique.
@@ -32,25 +34,24 @@
   % image de l'interface graphique et explication
   \section{Préparation de la base d'apprentissage}
     \subsection{Nettoyage des données}
-      Pour nettoyer nos données :
+      Pour nettoyer nos données, nous avons effectué les opérations suivante : 
       \begin{itemize}
-       \item Pour les doublons, nous n'avons pas compté les retweets car un retweet c est donner un avis à nouveau.
-       \item Nous avons retiré les tweets qui comportent des smileys positifs et négatifs en même temps.
-       \item Nous avons fait un filtrage pour retirer  (enlever les @,  \#,  RT,  URL  et  l’URL  associé)
+       \item Pour les doublons, nous vérifions que les tweets ne sont pas présents en double. Néanmoins, nous considérons qu'un retweet n'est pas un doublon car c'est une manière d'exprimer le même avis que la personne ayant initialement tweeté.
+       \item Une option de l'API permet de sélectionner une langue pour les tweets - option que nous avons activé pour s'assurer de ne récupérer que des tweets français.
+       \item Nous avons fait un filtrage pour retirer tous les symboles de ponctutation, "RT" signifiant retweet, URL et l'url associée.
       \end{itemize}
+      Ce nettoyage comporte plusieurs problèmes. Ne pas considérer que les retweets sont des doublons peut s'avérer problématique. De plus, retirer tous les symboles de ponctuation est très risqué quant à l'interprétation de certaines données. Par exemple, '11.5Mds' devient '115Mds' après avoir appliqué le filtre.
+      
 
     \subsection{Construction de la base}
-      Pour construire notre base de tweets, nous le faisons directemment depuis notre application, nous récupèrons des tweets par 
-      paquet de dix, et on peut cliquer sur \emph{Etiquettage} et ça permet de pouvoir ettiqueter chaque tweet en lui donnant la classe positive, negative ou neutre,
-      pour ensuite ajouter ces tweets à notre base d'apprentissage grace a une selection de fichier.
-      % image de l'interface
+      Pour construire notre base de tweets, nous le faisons directemment depuis notre application. Nous récupèrons un nombre de tweet paramétrable. En cliquant sur \emph{Etiquetage}, il est par la suite possible d'affecter une classe à un tweet. Enfin, la sauvegarde dans un fichier permet de créer une nouvelle base, ou d'ajouter des tweets dans une base.
+
   \section{Algorithme de classification}
-    Pour tester les différents algorithmes nous avons d'une part regardé si il y a une forte différence entre ce que trouve un humain et ce que trouve l'algorithme, d'autre part
-    regardé le temps de calcul, lorsqu'on travaille sur les bigdata ce n'est pas négligeable.
-    Pour 
+    Pour tester les différents algorithmes nous avons d'une part regardé s'il y a une forte différence entre la classe qu'un humain affecterait à un tweet et ce que trouve l'algorithme. D'autre part, nous avons analysé le temps de calcul. Nous avons en effet pensé que c'était un facteur très important dans le domaine de la bigdata, même si avions peu de données.
+     
     \subsection{mots clefs}
-      Pour l'algorithme des mots clefs nous avons gardé le dictionnaire de mots intact, on a juste retiré ``communiste'' de la liste de mots négatifs.
-      Pour ce qui est de l'efficacité en terme de réponses (si le jugement positif, negatif ou neutre est correcte) : on a 64\% de réponses correctes.
+      Pour l'algorithme des mots clefs, nous avons gardé le dictionnaire de mots intact.
+      Après analyse, nous avons constaté que 64\% des tweets étaient classés correctement par l'algorithme des mots clefs.
       Pour ce qui est du temps de calcul %%TODO chercher la valeur de la complexité
       
       

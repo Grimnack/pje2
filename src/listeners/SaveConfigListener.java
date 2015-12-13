@@ -19,9 +19,8 @@ public class SaveConfigListener implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e) {
 		try {
-			Configuration.moinsDeNMots = Integer.parseInt(configFrame.getNMots().getText());
-			Configuration.poss = configFrame.nGrammePos.getText().split(",");
-			Configuration.negs = configFrame.nGrammeNeg.getText().split(",");
+			Configuration.moinsDeN = Integer.parseInt(configFrame.getNMots().getText());
+			Configuration.nGrammes = configFrame.nGrammes.getText().split(",");
 			if(configFrame.proxyBox.getSelectedItem() == "Oui")
 				Configuration.proxy = true;
 			else
@@ -35,6 +34,8 @@ public class SaveConfigListener implements ActionListener{
 			Configuration.selectedAlgo = (String)configFrame.algosBox.getSelectedItem();
 			
 			Configuration.nbTweets = Integer.parseInt(configFrame.nbTweetsField.getText());
+			
+			System.out.println(Configuration.nbTweets);
 		
 		
 		} catch(Exception exception){

@@ -21,18 +21,16 @@ import models.TweetList;
 
 public class SauvegardeListener implements ActionListener {
 	protected MainFrame mainFrame ;
-	protected TweetList lesTweets;
 	protected Table table;
 
-	public SauvegardeListener(MainFrame frame, TweetList lesTweets, Table table) {
+	public SauvegardeListener(MainFrame frame, Table table) {
 		mainFrame = frame ;
-		this.lesTweets = lesTweets ;
 		this.table = table;
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		for(int i=0;i<lesTweets.size();i++){
-			Tweet tweet = lesTweets.get(i);
+		for(int i=0;i<Model.lesTweets.size();i++){
+			Tweet tweet = Model.lesTweets.get(i);
 
 			tweet.setPolarite(table.getValueAt(i, 2).toString());
 		}
