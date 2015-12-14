@@ -24,39 +24,45 @@
     quel est l'algorithme le plus efficace, c'est à dire qui donne le plus souvent la vérité, pour faire de la 
     classification de sentiments ?
   \section{Description générale de l'architecture de votre application}
-    Nous avons fait une application java swing. Ainsi, nous avons privilégié une architecture MVC.
+    Nous avons fait une application Java Swing. Ainsi, nous avons privilégié une architecture MVC.
     Les modèles contiennent les différentes informations permettant à l'application de fonctionner : les éléments graphiques, les tweets, les éléments de configuration...
     Les vues sont représentés par les différents éléments graphiques de l'application.
     Le contrôle est principalement effectué par la classe Annotation qui s'occupe de classer les tweets en fonction de l'algorithme choisi. 
 \chapter{Détails des différents travaux réalisés}
-  Le projet se divise en quatre taches majeures, utilisation d'une API twitter afin de récupérer 
-  des tweets, préparer une base d'apprentissage afin de ne pas avoir de bruit mais aussi de créer notre 
-  base de vérité pour l'apprentissage supervisé. Implémenter et tester différents algorithmes de classification de sentiments et
-  enfin pouvoir utiliser ses algorithme depuis une application avec son interface graphique.
+  Le projet se divise en quatre tâches majeures : 
+  \begin{itemize}
+   \item utilisation d'une API twitter afin de récupérer des tweets
+   \item préparation une base afin de classifier les tweets selon un algorithme utilisant des techniques d'apprentissage supervisé
+   \item implémenter et tester différents algorithmes de classification
+   \item se servir de l'application depuis une interface graphique
+  \end{itemize}
   \section{API Twitter}
   % image de l'interface graphique et explication
   \section{Préparation de la base d'apprentissage}
     \subsection{Nettoyage des données}
-      Pour nettoyer nos données, nous avons effectué les opérations suivante : 
+      Pour nettoyer nos données, nous avons effectué les opérations suivantes : 
       \begin{itemize}
        \item Pour les doublons, nous vérifions que les tweets ne sont pas présents en double. Néanmoins, nous considérons qu'un retweet n'est pas un doublon car c'est une manière d'exprimer le même avis que la personne ayant initialement tweeté.
        \item Une option de l'API permet de sélectionner une langue pour les tweets - option que nous avons activé pour s'assurer de ne récupérer que des tweets français.
-       \item Nous avons fait un filtrage pour retirer tous les symboles de ponctutation, "RT" signifiant retweet, URL et l'url associée.
+       \item Nous avons fait un filtrage pour retirer tous les symboles de ponctuation, "RT" signifiant retweet, URL et l'url associée.
       \end{itemize}
-      Ce nettoyage comporte plusieurs problèmes. Ne pas considérer que les retweets sont des doublons peut s'avérer problématique. De plus, retirer tous les symboles de ponctuation est très risqué quant à l'interprétation de certaines données. Par exemple, '11.5Mds' devient '115Mds' après avoir appliqué le filtre.
+      Ce nettoyage comporte plusieurs problèmes. Ne pas considérer que les retweets sont des doublons peut s'avérer problématique.
+      De plus, retirer tous les symboles de ponctuation est très risqué quant à l'interprétation de certaines données.
+      Par exemple, \textit{11.5Mds} devient \textit{115Mds} après avoir appliqué le filtre.
       
 
     \subsection{Construction de la base}
-      Pour construire notre base de tweets, nous le faisons directemment depuis notre application. Nous récupèrons un nombre de tweet paramétrable. En cliquant sur \emph{Etiquetage}, il est par la suite possible d'affecter une classe à un tweet. Enfin, la sauvegarde dans un fichier permet de créer une nouvelle base, ou d'ajouter des tweets dans une base.
+      Pour construire notre base de tweets, nous le faisons directement depuis notre application. Nous récupèrons un nombre de tweet paramétrable.
+      En cliquant sur \emph{Etiquetage}, il est par la suite possible d'affecter une classe à un tweet.
+      Enfin, la sauvegarde dans un fichier permet de créer une nouvelle base, ou d'ajouter des tweets dans une base.
 
   \section{Algorithme de classification}
-    Pour tester les différents algorithmes nous avons d'une part regardé s'il y a une forte différence entre la classe qu'un humain affecterait à un tweet et ce que trouve l'algorithme. D'autre part, nous avons analysé le temps de calcul. Nous avons en effet pensé que c'était un facteur très important dans le domaine de la bigdata, même si avions peu de données.
+    Pour tester les différents algorithmes nous avons d'une part regardé s'il y a une forte différence entre la classe qu'un humain affecterait à un tweet et ce que trouve l'algorithme.
+    D'autre part, nous avons analysé le temps de calcul. Nous avons en effet pensé que c'était un facteur très important dans le domaine de la bigdata, même si avions peu de données.
      
     \subsection{mots clefs}
       Pour l'algorithme des mots clefs, nous avons gardé le dictionnaire de mots intact.
-      Après analyse, nous avons constaté que 64\% des tweets étaient classés correctement par l'algorithme des mots clefs.
-      Pour ce qui est du temps de calcul %%TODO chercher la valeur de la complexité
-      
+          
       
     \subsection{KNN}
     
@@ -70,6 +76,14 @@
       \end{itemize}
       De plus, nous laissons le choix de lancer l'algorithme de Bayes en comptant les mots selon leur présence ou selon leur fréquence.
       Nous nous en sommes rendus compte par la suite : dans le cas d'un tweet où le nombre de mots est réduit, ce changement n'apporte pas beaucoup de différence.
+      
+      %analyse de Bayes
+      
+      La vérification de la base consiste à découper la base en n parties - dans notre application, n est égale à 10.
+      Elle permet par la suite d'utiliser l'algorithme de Bayes sur chacun des 10 parties de la base en prenant comme base les 9 autres parties de l'ancienne base.
+      Cela permet de regarder si la base est cohérente et suffisamment peuplé pour que l'algorithme de Bayes trouve la même classe pour de nombreux tweets de la base.
+      Dans notre application, la vérification de la base est implémentée mais ne fonctionne pas.
+
   \section{Interface graphique}
     \subsection{copie d'ecran}
       \begin{figure}[H]
@@ -101,22 +115,43 @@
 
     
     \subsection{manuel d'utilisation}
-      On lance l'application, la fenetre principale est composée d'un champ de texte, un bouton ``get tweets'', un bouton ``Etiquettage'', un bonton ``Configurer'' et 
-      un bouton ``Launch''.
-      \subsubsection{Le bouton ``Get Tweets''}
+      On lance l'application, la fenetre principale est composée d'un champ de texte, et de boutons \textit{get tweets}, \textit{Etiquettage}, \textit{Configurer} et 
+      \textit{Launch}.
+      \subsubsection{Le bouton \textit{Get Tweets}}
 	Si vous cliquez sur le bouton ``Get Tweets'', l'application va vous demander combien de tweets vous souhaitez récupérer. Une fois le nombre de tweet choisit,
 	il va chercher les tweets contenant la chaine de caractère écrite au préalable dans le champ de texte et va afficher ces tweets à l'écran.
 	À partir de ce moment tous les calculs (dico, knn et bayes) se feront sur ces tweets.
-      \subsubsection{Le bouton ``Etiquetage''}
-	Ce bouton est utile pour ajouter des tweets à une base de données, il faut avoir au préalable cherché des tweets avec le bouton ``Get Tweets''.
-	A côté de chaque tweet vous allez devoir choisir qu'elle est leur polarité, neutre, positif ou négatif. Une fois ceci fait pour tous les tweets, vous 
-	allez pouvoir sauvegarder vos tweets étiquetés. Pour la sauvegarde un selecteur de fichiers s'ouvre, si vous choisissez un fichier de type .base existant
-	les tweets annotés vont être ajouté a la base de tweets choisit. Vous pouvez aussi créer une nouvelle base, il est préférable de choisir l'extension .base
-	pour se retrouver dans ses fichiers.
-      \subsubsection{Le bouton ``Configurer''}
-	Ce bouton sert a choisir l'algorithme de classification entre Dico, KNN et Bayes.On peut aussi choisir si on utilise ou pas le proxy de lille 1, enfin on peut charger une base de tweets depuis
-	le menu Configurer.
+      \subsubsection{Le bouton \textit{Etiquetage}}
+	Ce bouton est utile pour ajouter des tweets à une base de données, il faut avoir au préalable cherché des tweets avec le bouton \textit{Get Tweets}.
+	A côté de chaque tweet, il faut choisir quelle est leur polarité : neutre, positif ou négatif. Une fois ceci fait pour tous les tweets,
+	il est possible de sauvegarder les tweets étiquetés. Pour la sauvegarde, un sélecteur de fichiers s'ouvre et 2 choix s'offrent à vous :
+	Sauvegarder dans un fichier déjà existant, les tweets seront alors ajoutés au modèle précédemment sauvegardé.
+	Sauvegarder dans un nouveau fichier.  
+	Dans les 2 cas, il est préférable de choisir un fichier avec l'extension .base puisque c'est ce que nous avons commencé à faire dans notre application.
+      \subsubsection{Le bouton \textit{Configurer}}
+	
+	Ce bouton sert à configurer l'application. Les options suivantes sont configurables :
+	\begin{itemize}
+	 \item Utilisation ou non du proxy Lille 1
+	 \item Nombre de tweets à récupérer à chaque appel de \textit{Get tweets}
+	 \item Algorithme à lancer sur les tweets obtenus
+	 \item Uniquement pour Bayes : ne pas accepter les mots de moins de \textit{n} lettres
+	 \item Uniquement pour Bayes : prendre en compte les n-gramme insérés ci-dessous
+	 \item Uniquement pour Bayes : les n-grammes, séparés par des virgules. Attention, comme nous avons retiré tout signe de ponctuation, \textit{à l'heure} doit s'écrire \textit{à lheure}.
+	 \item Le bouton \textit{Load base} sert à charger la base voulue. La base est stockée sous forme d'objet dans les fichiers comportant l'extension \textit{.base}
+	\end{itemize}
+	Il est important de sauvegarder les modifications avec le bouton associé, sans quoi celles-ci ne seraient pas prises en compte.
+
 \chapter{Résultats de la classification avec les différentes méthodes et analyse}
+    \subsection{mots clefs}
+      Après analyse, nous avons constaté que 64\% des tweets étaient classés correctement par l'algorithme des mots clefs.
+      Pour ce qui est du temps de calcul %%TODO chercher la valeur de la complexité
+    \subsection{KNN}
+    
+    \subsection{Bayes}
+
+    
+    
 \chapter{Conclusions}
 Il faut prendre les resultats des sondages de sentiments avec des pincettes, puisque la réponse affichée à l'écran ne répond pas à 
 est-ce que les gens sont pour ou contre tel sujet, mais plutot combien de tweets contenant tel sujet sont positif ou negatif. 
