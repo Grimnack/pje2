@@ -53,7 +53,7 @@ public class CollectionUtil {
 		else if(map.get(Polarite.POSITIF) > map.get(Polarite.NEUTRE) && map.get(Polarite.POSITIF) > map.get(Polarite.NEGATIF))
 			return Polarite.POSITIF;
 		
-		return Polarite.UNDEFINED;
+		return Polarite.NEUTRE;
 
 	}
 }

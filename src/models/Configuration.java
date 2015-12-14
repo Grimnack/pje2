@@ -3,7 +3,7 @@ package models;
 public class Configuration {
 
 	public static int nbTweets = 50;
-	public static boolean memeNbClassTweet = true;
+	public static boolean memeNbClassTweet = false;
 	public static boolean proxy = true;
 	public static String selectedAlgo;
 	public static boolean frequence = false;

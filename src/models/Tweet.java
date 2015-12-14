@@ -138,7 +138,7 @@ public class Tweet implements Serializable {
 		for(String mot : mots){
 			proba = proba * learningBase.probaOccMotDansClass(mot, polarite); 
 		}
-		
+	
 		return proba;
 	}
 

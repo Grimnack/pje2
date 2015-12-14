@@ -400,6 +400,8 @@ jsp.setBackground(Color.WHITE);
 		double bienClassePourcentage = map.get("Bien classé") / size*100,
 				malClassePourcentage = map.get("Mal classé") / size*100,
 				tresMalClassePourcentage = map.get("Très mal classé") / size*100;
+
+		union.clear();
 		
 		union.setValue("Bien classé", bienClassePourcentage);
 		union.setValue("Mal classé", malClassePourcentage);

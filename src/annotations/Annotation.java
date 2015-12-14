@@ -19,12 +19,12 @@ import models.TweetList;
 
 
 public class Annotation {
-	
+
 	public static void annoteNaif(){
 		double tweetPositif = 0, tweetNeutre = 0, tweetNegatif = 0;
 		long StartTime = new Date().getTime() ;
 		long EndTime ;
-		
+
 		List<String> negatifs = new ArrayList<String>();
 		List<String> positifs = new ArrayList<String>();
 		// Ouverture fichiers negatifs/positifs
@@ -72,7 +72,7 @@ public class Annotation {
 
 		try{
 
-			
+
 			for(Tweet tweet : Model.lesTweets.tweetList){
 
 				// Fichiers negatifs/positifs
@@ -89,7 +89,7 @@ public class Annotation {
 				}
 
 				int resultat = positif - negatif;
-				
+
 				Polarite polarite;
 				if(resultat < 0){
 					tweetNegatif++;
@@ -102,7 +102,7 @@ public class Annotation {
 					polarite = Polarite.NEUTRE;
 				}
 				tweet.setPolarite(polarite);
-				
+
 
 			}
 			EndTime = new Date().getTime();
@@ -115,8 +115,8 @@ public class Annotation {
 			System.out.println("Annote naif 2");
 			System.out.println(exception.getMessage());
 		}
-		
-		
+
+
 	}
 
 	public static void annoteKNN(){
@@ -125,11 +125,11 @@ public class Annotation {
 			// Si la base n'est pas chargée ou est vide, on ne fait rien
 			if(Model.base == null || Model.base.size() == 0){
 				String message = "KNN ne peut être effectué car la bae d'apprentissage n'est pas chargée. Chargez la base avant de pouvoir faire KNN",
-						 titre = "Échec !";
+						titre = "Échec !";
 				JMessagePopup.showMessage(message, titre);
 				return;
 			}
-			
+
 			List<Tweet> tweetBase = Model.base.tweetList;
 
 			Map<Tweet, Double> tweetDistance = new HashMap<Tweet, Double>();
@@ -144,20 +144,20 @@ public class Annotation {
 					tweetDistance.put(tweetEtiquete, tweet.getDistanceWith(tweetEtiquete));
 
 				Map<Tweet, Double> distanceSorted = CollectionUtil.mapSortByValue(tweetDistance);
-				
+
 
 				tweet.setPolarite(CollectionUtil.listGetClassFromValue(distanceSorted, 7));
-				
+
 			}
 			EndTime = new Date().getTime() - StartTime ;
 			System.out.println("Knn a pris : " + EndTime + "ms");
 			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
-		
+
 			Model.frame.addTweetsWithPolarite(Model.lesTweets);
-			
+
 			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
-			
-			
+
+
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -171,7 +171,7 @@ public class Annotation {
 		int neutre = 0;
 
 
-		for(Tweet t : Model.base.tweetList){
+		for(Tweet t : learningBase.tweetList){
 			if(t.getPolarite() == Polarite.NEGATIF)
 				neg++;
 			else if(t.getPolarite() == Polarite.NEUTRE)
@@ -181,7 +181,7 @@ public class Annotation {
 		}
 
 		System.out.println(pos + " " + neutre + " " + neg);
-		
+
 		long StartTime = new Date().getTime() ;
 		long EndTime ;
 		for(Tweet tweet : toPredict.tweetList){
@@ -190,44 +190,50 @@ public class Annotation {
 			map.put(Polarite.NEGATIF, tweet.bayes(Polarite.NEGATIF, learningBase));
 			map.put(Polarite.NEUTRE, tweet.bayes(Polarite.NEUTRE, learningBase));
 			map.put(Polarite.POSITIF, tweet.bayes(Polarite.POSITIF, learningBase));
-			
-			System.out.println(map);
-			
+
 			tweet.setPolarite(CollectionUtil.getPolariteFromHighestNb(map));
 
 		}
 		EndTime = new Date().getTime() - StartTime ;
 		System.out.println("Bayes a pris : " + EndTime + "ms");
-		
+
 		return toPredict.getPolariteFrequency();
 	}
-	
+
 	public static void checkBase(){
-		
+		System.out.println("Base");
 		System.out.println(Model.base);
-		
+
 		int splitNb = 10;
 		TweetList[] tab = Model.base.split(splitNb);
 
+		/*int pos = 0;
+		int neg = 0;
+		int neutre = 0;
+
+		for(TweetList tweetList : tab){
+			tweetList.printNbTweetsPerClass();
+		}*/
+
 		TweetList[] tabBase = new TweetList[tab.length];
 		TweetList[] tabList = new TweetList[tab.length];
-		
+
 		// On génère les listes qui vont être vérifiés à partir des bases générées, et on vérifie
 		for(int i=0;i<tab.length;i++){
-			tabList[i] = tab[i];
-			tabBase[i] = TweetList.fusionneExcept(tab, i);
-			Annotation.predictTweetsClass(tabList[i], tabBase[i]);
+			tabList[i] = new TweetList(tab[i]);
+			tabBase[i] = new TweetList(TweetList.fusionneExcept(tab, i));
+			Annotation.predictTweetsClass(tabBase[i], tabList[i]);
 		}
-		
+
 		TweetList checked = TweetList.fusionneExcept(tabList, -1);
-		
+
 		Model.frame.addTweetsWithPolarite(checked);
-		
+
 		Map<String, Integer> map = checked.getErrorMarginWithBase(Model.base);
-		
+
 		Model.frame.updateErrorMargin(map);
-		
-		
+
+
 	}
 
 }

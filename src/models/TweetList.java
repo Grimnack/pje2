@@ -25,7 +25,11 @@ public class TweetList implements Serializable{
 	}
 
 	public TweetList(List<Tweet> l){
-		tweetList = l ;
+		tweetList = new ArrayList<Tweet>(l) ;
+	}
+	
+	public TweetList(TweetList tweetList){
+		this(tweetList.tweetList);
 	}
 
 
@@ -65,18 +69,13 @@ public class TweetList implements Serializable{
 
 	/* Formule : P(m|c) = ((n(m,c) +1) / (n(c) + N) */
 	public double probaOccMotDansClass(String mot, Polarite polarite){
-		return (probaOccClass(mot, polarite) +1) / (nbTotalMotsClass(polarite) + nbTotalMots());
+		return (nbOccClass(mot, polarite) +1) / (nbTotalMotsClass(polarite) + nbTotalMots());
 
-	}
-
-	public double probaOccClass(String mot, Polarite polarite){
-		//System.out.println(polarite);
-		return nbOccClass(mot, polarite)/(nbTotalMotsClass(polarite) + 1);
 	}
 
 	/* Compte le nombre de fois que le mot 'mot' apparaît dans les tweets ayant la polarite 'polarite' 
 	 * n(m, c)	*/
-	public int nbOccClass(String mot, Polarite polarite){
+	public double nbOccClass(String mot, Polarite polarite){
 		int nbOcc = 0;
 		boolean trouve;
 		for(Tweet tweet : tweetList){
@@ -95,13 +94,13 @@ public class TweetList implements Serializable{
 			}
 			
 		}
-		return nbOcc;
+				return nbOcc;
 
 	}
 
 	/* Compte le nombre total des mots d'une classe de la liste de tweets
 	 * n(c) */
-	public int nbTotalMotsClass(Polarite polarite){
+	public double nbTotalMotsClass(Polarite polarite){
 		int sum = 0;
 
 		for(Tweet tweet : tweetList){
@@ -121,8 +120,8 @@ public class TweetList implements Serializable{
 	}
 
 	/* Compte le nombre total de mots de la liste de tweets 
-	 * N*/
-	public int nbTotalMots(){
+	 * N */
+	public double nbTotalMots(){
 		int sum = 0;
 
 		for(Tweet tweet : tweetList)
@@ -206,7 +205,8 @@ public class TweetList implements Serializable{
 		List<Tweet> list = new ArrayList<Tweet>();
 		for(int i=0;i<tab.length;i++){
 			if(i != except){
-				list.addAll(tab[i].tweetList);
+				for(Tweet tweet : tab[i].tweetList)
+					list.add(tweet);
 			}
 		}
 
@@ -243,6 +243,24 @@ public class TweetList implements Serializable{
 		System.out.println(base.toString());
 
 		return map;
+	}
+	
+	public void printNbTweetsPerClass(){
+		int pos = 0;
+		int neg = 0;
+		int neutre = 0;
+
+
+		for(Tweet t : tweetList){
+			if(t.getPolarite() == Polarite.NEGATIF)
+				neg++;
+			else if(t.getPolarite() == Polarite.NEUTRE)
+				neutre++;
+			else if(t.getPolarite() == Polarite.POSITIF)
+				pos++;
+		}
+
+		System.out.println("Positif : " + pos + ", neutre : " + neutre + ", négatif : " + neg);
 	}
 
 }
