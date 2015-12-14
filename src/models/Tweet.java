@@ -35,27 +35,30 @@ public class Tweet implements Serializable {
 	public double getDistanceWith(Tweet tweet){
 		
 		// Split
-		List<String> splitCleaned1 = Arrays.asList(this.getText().split("\\s*"));
-		List<String> splitCleaned2 = Arrays.asList(tweet.getText().split("\\s*"));
+		List<String> splitCleaned1 = Arrays.asList(this.getText().split("\\s+"));
+		List<String> splitCleaned2 = Arrays.asList(tweet.getText().split("\\s+"));
 		
 		int nbMotsTotal = splitCleaned1.size() + splitCleaned2.size(), nbMotsCommun = 0;
-		
+				
 		for(String mot1 : splitCleaned1){
 			// Si mot est contenu et de la bonne taille
-			if(splitCleaned2.contains(mot1) && mot1.length() >= Configuration.moinsDeN){
-				nbMotsCommun += 2;
+			for(String mot2 : splitCleaned2){
+				if(mot2.toLowerCase().equals(mot1.toLowerCase()) && mot1.length() >= Configuration.moinsDeN){
+					nbMotsCommun += 2;
+				}
 			}
 		}
 		// NGramme
-		if(Configuration.useNGramme){
+		if(Configuration.selectedAlgo != "KNN" && Configuration.useNGramme){
 			for(String nGramme: Configuration.nGrammes){
 				if(text.contains(nGramme))
-					nbMotsCommun += 2 * nGramme.length();
+					nbMotsCommun += 2 * nGramme.split("\\s+").length;
 			}
-			
 		}
 		
-		return (nbMotsTotal - nbMotsCommun) / nbMotsTotal;
+		double diff = nbMotsTotal - nbMotsCommun;
+		System.out.println(diff / nbMotsTotal);
+		return diff / nbMotsTotal;
 		
 	}
 	

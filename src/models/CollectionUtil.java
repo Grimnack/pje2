@@ -1,7 +1,9 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,15 +28,23 @@ public class CollectionUtil {
 
 	}
 	
-	public static int listGetAvg(List<Double> list){
-		int sum = 0;
-		for(Double d : list)
-			sum += d;
-		return sum / list.size();
+	public static Polarite listGetClassFromValue(Map<Tweet, Double> map, int n){
+		Map<Polarite, Double> mapNb = new HashMap<Polarite, Double>();
+		mapNb.put(Polarite.NEGATIF, 0.0);
+		mapNb.put(Polarite.NEUTRE, 0.0);
+		mapNb.put(Polarite.POSITIF, 0.0);
+		List<Tweet> tweets = new ArrayList<Tweet>(map.keySet());
+		for(int i=0;i<n;i++){
+			Tweet tweet = tweets.get(i);
+			System.out.println(tweet.getPolarite());
+			mapNb.put(tweet.getPolarite(), mapNb.get(tweet.getPolarite()) + 1);
+		}
+		
+		return getPolariteFromHighestNb(mapNb);
 		
 	}
 	
-	public static Polarite getPolariteFromHighestProb(Map<Polarite, Double> map){
+	public static Polarite getPolariteFromHighestNb(Map<Polarite, Double> map){
 		if(map.get(Polarite.NEGATIF) > map.get(Polarite.NEUTRE) && map.get(Polarite.NEGATIF) > map.get(Polarite.POSITIF))
 			return Polarite.NEGATIF;
 		else if(map.get(Polarite.NEUTRE) > map.get(Polarite.POSITIF))
