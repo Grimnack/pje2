@@ -170,11 +170,13 @@
       Pour faire fonctionner bayes il faut que la difference du nombre de mots par classe soit négligeable, pendant qu'on a fait les test on avait la classe neutre qui comportait
       beaucoup trop de tweets, on a donc tronqué notre base pour obtenir un meme nombre de tweet pour chaque classe, le resultat était légerement plus cohérent mais pas satisfaisant
       nous avions donc tenté d'équilibrer à la main et nous nous sommes rendu compte que pour obtenir un résultat cohérent il fallait un nombre de mots quasi équivalent pour chaque classe.
+      Enfin pour Bayes on a un score de 70\% de tweets correctes, et le tout calculé en 1307ms.
     
     
 \chapter{Conclusions}
 Suite a nos experimentations, nous pouvons conclure que l'algorithme de mots clefs à l'avantage d'être efficace en temps pour une bonne classification de 64\%
-presque autant que KNN.
+presque autant que KNN. En conclusion si l'on souhaite un temps de calcule rapide on préferera les mots clefs, si on veut approcher le plus possible un resultat correcte
+on choisira l'algorithme de Bayes. 
 Il faut prendre les resultats des sondages de sentiments avec des pincettes, puisque la réponse affichée à l'écran ne répond pas à 
 est-ce que les gens sont pour ou contre tel sujet, mais plutot combien de tweets contenant tel sujet sont positif ou negatif.
 Une autre difficulté dans la classification de tweets, c est le sarcasme, si le sarcasme n'existait pas, la classification serait plus efficace...
