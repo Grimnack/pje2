@@ -133,6 +133,7 @@ public class Annotation {
 			List<Tweet> tweetBase = Model.base.tweetList;
 
 			Map<Tweet, Double> tweetDistance = new HashMap<Tweet, Double>();
+			
 
 			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
 			for(Tweet tweet : Model.lesTweets.tweetList){
@@ -141,19 +142,11 @@ public class Annotation {
 				for(Tweet tweetEtiquete : tweetBase)
 					tweetDistance.put(tweetEtiquete, tweet.getDistanceWith(tweetEtiquete));
 
-				Map<Tweet, Double> distanceSorted = CollectionUtil.mapSortByValue(tweetDistance);			
+				Map<Tweet, Double> distanceSorted = CollectionUtil.mapSortByValue(tweetDistance);
+				
 
-				List<Double> values = new ArrayList<Double>(distanceSorted.values());
-
-				// On en prend 7, ou moins si la liste est moins grande
-				int toInd=7;
-				if(toInd > values.size())
-					toInd = values.size();
-
-
-				values = values.subList(0, toInd);
-				double moyennePolarite = CollectionUtil.listGetAvg(values);
-
+				tweet.setPolarite(CollectionUtil.listGetClassFromValue(distanceSorted, 7));
+				
 			}
 
 			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
@@ -176,7 +169,7 @@ public class Annotation {
 			map.put(Polarite.NEUTRE, tweet.bayes(Polarite.NEUTRE, learningBase));
 			map.put(Polarite.POSITIF, tweet.bayes(Polarite.POSITIF, learningBase));
 
-			tweet.setPolarite(CollectionUtil.getPolariteFromHighestProb(map));
+			tweet.setPolarite(CollectionUtil.getPolariteFromHighestNb(map));
 
 		}
 		return toPredict.getPolariteFrequency();
