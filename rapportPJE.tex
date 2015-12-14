@@ -71,7 +71,9 @@
       \end{itemize}
 
     \subsection{KNN}
-      KNN est un algorithme fonctionnant avec une base d'apprentissage.
+      KNN est un algorithme fonctionnant avec une base d'apprentissage. Il compte le nombre de mots communs entre un tweet donné et chacun des tweet de la base.
+      Pour les m tweets ayant le nombre de mots en commun le plus élevé (m fixé à 7 dans notre application), on regarde la classe dominante.
+      Cette classe est la classe du tweet.
       
     \subsection{Bayes}
       Bayes a été utilisé dans notre programme pour nous permettre d'estimer la classe des tweets qui vont être ajoutés dans notre base. Ainsi, si l'algorithme de Bayes est bien implémenté et qu'il y a une base conséquence de données, il devient possible d'inclure des tweets dans la base grâce à cet algorithme.
@@ -82,8 +84,6 @@
       \end{itemize}
       De plus, nous laissons le choix de lancer l'algorithme de Bayes en comptant les mots selon leur présence ou selon leur fréquence.
       Nous nous en sommes rendus compte par la suite : dans le cas d'un tweet où le nombre de mots est réduit, ce changement n'apporte pas beaucoup de différence.
-      
-      %analyse de Bayes
       
       La vérification de la base consiste à découper la base en n parties - dans notre application, n est égale à 10.
       Elle permet par la suite d'utiliser l'algorithme de Bayes sur chacun des 10 parties de la base en prenant comme base les 9 autres parties de l'ancienne base.

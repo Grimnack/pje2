@@ -1,6 +1,7 @@
 package graphics;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.WindowEvent;
@@ -22,6 +23,7 @@ public class ConfigFrame extends JFrame implements WindowListener{
 
 	public JComboBox<String> proxyBox;
 	public JTextField nbTweetsField;
+	public JComboBox<String> memeNbClassTweetBox;
 	
 	public JComboBox<String> algosBox;
 	public JTextField nMots;
@@ -42,6 +44,12 @@ public class ConfigFrame extends JFrame implements WindowListener{
 			proxyBox.setSelectedItem("Non");
 		
 		nbTweetsField = new JTextField(Configuration.nbTweets + "", 14);
+		
+		memeNbClassTweetBox = new JComboBox<String>(new String[]{"Oui", "Non"});
+		if(Configuration.memeNbClassTweet)
+			memeNbClassTweetBox.setSelectedItem("Oui");
+		else
+			memeNbClassTweetBox.setSelectedItem("Non");
 		
 		algosBox = new JComboBox<String>(new String[] {"", "Mot clef", "KNN", "Bayes - Présence", "Bayes - Fréquence", "Vérifier la base"});
 		algosBox.setSelectedItem(Configuration.selectedAlgo);
@@ -67,6 +75,7 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		
 		nGrammes = new JTextArea(stringPos, 10, 14);
 		nGrammes.setBorder(new LineBorder(Color.black));
+		nGrammes.setPreferredSize(new Dimension(30, 50));
 				
 		JButton saveButton = new JButton("Sauvegarder les modifications");
 		saveButton.addActionListener(new SaveConfigListener(this));
@@ -158,15 +167,27 @@ public class ConfigFrame extends JFrame implements WindowListener{
 		c.gridheight = 1;
 		this.add(nGrammes, c);
 		
-		
 		c.gridx = 0;
 		c.gridy = 12;
+		c.gridwidth = 1;
+		c.gridheight = 2;
+		this.add(new JLabel("Meme nombre de tweets de chaque classe"), c);
+		
+		c.gridx = 1;
+		c.gridy = 12;
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		this.add(memeNbClassTweetBox, c);
+		
+		
+		c.gridx = 0;
+		c.gridy = 14;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		this.add(loadButton, c);
 		
 		c.gridx = 0;
-		c.gridy = 13;
+		c.gridy = 15;
 		c.gridwidth = 1;
 		c.gridheight = 1;
 		this.add(saveButton, c);

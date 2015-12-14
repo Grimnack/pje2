@@ -78,19 +78,23 @@ public class TweetList implements Serializable{
 	 * n(m, c)	*/
 	public int nbOccClass(String mot, Polarite polarite){
 		int nbOcc = 0;
+		boolean trouve;
 		for(Tweet tweet : tweetList){
+			trouve = false;
 			if(tweet.getPolarite() == polarite){
 				String s = tweet.getText();
 				Pattern p = Pattern.compile(mot);
 				Matcher m = p.matcher(s);
 
 				while (m.find()){
-					if(nbOcc == 0 || Configuration.frequence)
+					if(!trouve)
 						nbOcc++;
+						if(!Configuration.frequence)
+							trouve = true;
 				}
 			}
+			
 		}
-
 		return nbOcc;
 
 	}
@@ -103,7 +107,8 @@ public class TweetList implements Serializable{
 		for(Tweet tweet : tweetList){
 			if(tweet.getPolarite() == polarite)
 				if(Configuration.moinsDeN == 0)
-					sum += tweet.getText().length();
+					
+					sum += tweet.getText().split("\\s+").length;
 				else {
 					String [] mots = tweet.getText().split("\\s+");
 					for(String mot : mots){
@@ -127,7 +132,7 @@ public class TweetList implements Serializable{
 		return sum;
 	}
 
-	/* Compte le nombre de tweetayant la classe donnée */
+	/* Compte le nombre de tweet ayant la classe donnée */
 	public int nbTweetsClass(Polarite polarite){
 		int count = 0;
 

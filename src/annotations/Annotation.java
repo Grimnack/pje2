@@ -165,6 +165,23 @@ public class Annotation {
 
 
 	public static HashMap<Polarite, Integer> predictTweetsClass(TweetList learningBase, TweetList toPredict){
+
+		int pos = 0;
+		int neg = 0;
+		int neutre = 0;
+
+
+		for(Tweet t : Model.base.tweetList){
+			if(t.getPolarite() == Polarite.NEGATIF)
+				neg++;
+			else if(t.getPolarite() == Polarite.NEUTRE)
+				neutre++;
+			else if(t.getPolarite() == Polarite.POSITIF)
+				pos++;
+		}
+
+		System.out.println(pos + " " + neutre + " " + neg);
+		
 		long StartTime = new Date().getTime() ;
 		long EndTime ;
 		for(Tweet tweet : toPredict.tweetList){
@@ -180,7 +197,8 @@ public class Annotation {
 
 		}
 		EndTime = new Date().getTime() - StartTime ;
-		System.out.println("Knn a pris : " + EndTime + "ms");
+		System.out.println("Bayes a pris : " + EndTime + "ms");
+		
 		return toPredict.getPolariteFrequency();
 	}
 	

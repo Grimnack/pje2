@@ -139,7 +139,6 @@ public class Tweet implements Serializable {
 			proba = proba * learningBase.probaOccMotDansClass(mot, polarite); 
 		}
 		
-		
 		return proba;
 	}
 

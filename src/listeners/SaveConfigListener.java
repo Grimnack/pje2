@@ -34,6 +34,12 @@ public class SaveConfigListener implements ActionListener{
 			
 			Configuration.nbTweets = Integer.parseInt(configFrame.nbTweetsField.getText());
 			
+			if(configFrame.memeNbClassTweetBox.getSelectedItem() == "Oui")
+				Configuration.memeNbClassTweet = true;
+			else
+				Configuration.memeNbClassTweet = false;
+			
+			
 			System.out.println(Configuration.nbTweets);
 		
 		

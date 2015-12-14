@@ -87,7 +87,6 @@ public class MainFrame extends JFrame{
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		widthScreen = ((int) tk.getScreenSize().getWidth());
 		heightScreen = ((int) tk.getScreenSize().getHeight());
-		this.setSize(widthScreen, heightScreen);
 		
 
 		//////////////////////////////////////////////////////////
@@ -236,6 +235,9 @@ jsp.setBackground(Color.WHITE);
 		c.gridheight = 7;
 
 		this.add(crepart, c);
+		
+		this.setSize(widthScreen, heightScreen);
+
 
 	}
 
