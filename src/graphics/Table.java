@@ -9,11 +9,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-import models.Polarite;
 import models.TweetList;
 
 public class Table extends JTable{

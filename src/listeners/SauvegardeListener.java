@@ -29,10 +29,19 @@ public class SauvegardeListener implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		for(int i=0;i<Model.lesTweets.size();i++){
-			Tweet tweet = Model.lesTweets.get(i);
-
-			tweet.setPolarite(table.getValueAt(i, 2).toString());
+		try{
+			for(int i=0;i<Model.lesTweets.size();i++){
+				Tweet tweet = Model.lesTweets.get(i);
+				try {
+					tweet.setPolarite(table.getValueAt(i, 2).toString());
+				}catch (ArrayIndexOutOfBoundsException erreur) {
+					JMessagePopup.showMessage("erreur", "il vous faut etiqueter les tweets avant");
+					return ;
+				}
+			}
+		} catch (NullPointerException err) {
+			JMessagePopup.showMessage("erreur", "il vous faut récupérer des tweets");
+			return ;
 		}
 		int i = 0;
 		while(i < Model.lesTweets.size()){

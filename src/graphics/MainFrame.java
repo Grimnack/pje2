@@ -118,9 +118,12 @@ public class MainFrame extends JFrame{
 		
 		jsp = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		jsp.setPreferredSize(new Dimension(widthScreen*3/5, heightScreen*3/5));
+jsp.setPreferredSize(new Dimension(750, 550));
+jsp.setBackground(Color.WHITE);
 		
 		System.out.println(widthScreen);
 		System.out.println(heightScreen);
+
 		
 		union = new DefaultPieDataset();
 

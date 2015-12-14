@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import models.Configuration;
-import annotations.Annotation;
 
 public class SaveConfigListener implements ActionListener{
 
