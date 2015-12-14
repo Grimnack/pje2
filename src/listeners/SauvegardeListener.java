@@ -13,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import javax.swing.JFileChooser;
-import javax.swing.JPopupMenu;
 
 import models.Model;
 import models.Polarite;
@@ -44,6 +43,15 @@ public class SauvegardeListener implements ActionListener {
 			JMessagePopup.showMessage("erreur", "il vous faut récupérer des tweets");
 			return ;
 		}
+		int i = 0;
+		while(i < Model.lesTweets.size()){
+			if(Model.lesTweets.get(i).getPolarite() == Polarite.NEUTRE)
+				Model.lesTweets.tweetList.remove(i);
+			else
+				i++;
+		}
+		
+		System.out.println(Model.lesTweets);
 
 		try {
 			JFileChooser choix = new JFileChooser();

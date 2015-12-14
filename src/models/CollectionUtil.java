@@ -45,12 +45,15 @@ public class CollectionUtil {
 	}
 	
 	public static Polarite getPolariteFromHighestNb(Map<Polarite, Double> map){
+				
 		if(map.get(Polarite.NEGATIF) > map.get(Polarite.NEUTRE) && map.get(Polarite.NEGATIF) > map.get(Polarite.POSITIF))
 			return Polarite.NEGATIF;
-		else if(map.get(Polarite.NEUTRE) > map.get(Polarite.POSITIF))
+		else if(map.get(Polarite.NEUTRE) > map.get(Polarite.POSITIF) && map.get(Polarite.NEUTRE) > map.get(Polarite.NEGATIF))
 			return Polarite.NEUTRE;
+		else if(map.get(Polarite.POSITIF) > map.get(Polarite.NEUTRE) && map.get(Polarite.POSITIF) > map.get(Polarite.NEGATIF))
+			return Polarite.POSITIF;
 		
-		return Polarite.POSITIF;
+		return Polarite.UNDEFINED;
 
 	}
 }

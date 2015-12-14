@@ -173,7 +173,9 @@ public class Annotation {
 			map.put(Polarite.NEGATIF, tweet.bayes(Polarite.NEGATIF, learningBase));
 			map.put(Polarite.NEUTRE, tweet.bayes(Polarite.NEUTRE, learningBase));
 			map.put(Polarite.POSITIF, tweet.bayes(Polarite.POSITIF, learningBase));
-
+			
+			System.out.println(map);
+			
 			tweet.setPolarite(CollectionUtil.getPolariteFromHighestNb(map));
 
 		}

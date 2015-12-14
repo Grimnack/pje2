@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import javax.swing.JFileChooser;
 
 import models.Model;
+import models.Polarite;
 import models.Tweet;
 import models.TweetList;
 
@@ -53,6 +54,17 @@ public class LoadListener implements ActionListener {
 		}
 		
 		System.out.println(Model.base);
+		int pos = 0, neg = 0, neutre = 0;
+		for(Tweet t : Model.base.tweetList){
+			if(t.getPolarite() == Polarite.NEGATIF)
+				neg++;
+			else if(t.getPolarite() == Polarite.NEUTRE)
+				neutre++;
+			else if(t.getPolarite() == Polarite.POSITIF)
+				pos++;
+		}
+		
+		System.out.println(pos + " " + neutre + " " + neg);
 
 		String message = "Base chargée ! " + Model.base.size() + " tweets chargés !",
 				titre = "Succès !";

@@ -1,23 +1,15 @@
 package twitterHelper;
 
 import graphics.JMessagePopup;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import models.Model;
+import models.TweetList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.RateLimitStatus;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
-import models.Model;
-import models.Tweet;
-import models.TweetList;
 
 public class TwitterHelper {
 

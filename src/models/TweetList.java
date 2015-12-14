@@ -63,7 +63,7 @@ public class TweetList implements Serializable{
 		return tweetList.get(i);
 	}
 
-	/* Formule : P(m|c) = (n(m,c) +1) / (n(c) + N) */
+	/* Formule : P(m|c) = ((n(m,c) +1) / (n(c) + N) */
 	public double probaOccMotDansClass(String mot, Polarite polarite){
 		return (probaOccClass(mot, polarite) +1) / (nbTotalMotsClass(polarite) + nbTotalMots());
 
