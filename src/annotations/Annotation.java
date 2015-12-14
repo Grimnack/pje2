@@ -201,19 +201,9 @@ public class Annotation {
 	}
 
 	public static void checkBase(){
-		System.out.println("Base");
-		System.out.println(Model.base);
-
+		
 		int splitNb = 10;
 		TweetList[] tab = Model.base.split(splitNb);
-
-		/*int pos = 0;
-		int neg = 0;
-		int neutre = 0;
-
-		for(TweetList tweetList : tab){
-			tweetList.printNbTweetsPerClass();
-		}*/
 
 		TweetList[] tabBase = new TweetList[tab.length];
 		TweetList[] tabList = new TweetList[tab.length];

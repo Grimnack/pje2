@@ -231,7 +231,7 @@ public class TweetList implements Serializable{
 			Tweet tweetBase = base.getTweetFromText(tweet.getText());
 			
 			System.out.println(tweet.getPolarite() + " = " + tweetBase.getPolarite());
-			if(tweet.getPolarite() == tweetBase.getPolarite()){
+			if(tweet.getPolarite().equals(tweetBase.getPolarite())){
 				map.put("Bien classé", map.get("Bien classé") + 1);
 			} else if((tweet.isPositif() && tweetBase.isNegatif()) || (tweet.isPositif() && tweetBase.isPositif())){
 				map.put("Très mal classé", map.get("Très mal classé") + 1);
