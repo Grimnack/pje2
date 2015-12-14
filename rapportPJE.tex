@@ -122,7 +122,13 @@
 	\caption{Algorithme du plus proche voisin}
 	\label{KNN}
       \end{figure}
-
+      \begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.2]{impressions-ecran/config.png}
+	\caption{Algorithme du plus proche voisin}
+	\label{config}
+      \end{figure}
+      
 
     
     \subsection{manuel d'utilisation}
@@ -134,17 +140,17 @@
 	À partir de ce moment tous les calculs (dico, knn et bayes) se feront sur ces tweets.
       \subsubsection{Le bouton \textit{Etiquetage}}
 	Ce bouton est utile pour ajouter des tweets à une base de données, il faut avoir au préalable cherché des tweets avec le bouton \textit{Get Tweets}.
-	A côté de chaque tweet, il faut choisir quelle est leur polarité : neutre, positif ou négatif. Une fois ceci fait pour tous les tweets,
+	A côté de chaque tweet, il faut choisir quelle est leur polarité : neutre, positif ou négatif \ref{etiquetage}. Une fois ceci fait pour tous les tweets,
 	il est possible de sauvegarder les tweets étiquetés. Pour la sauvegarde, un sélecteur de fichiers s'ouvre et 2 choix s'offrent à vous :
 	Sauvegarder dans un fichier déjà existant, les tweets seront alors ajoutés au modèle précédemment sauvegardé.
 	Sauvegarder dans un nouveau fichier.  
 	Dans les 2 cas, il est préférable de choisir un fichier avec l'extension .base puisque c'est ce que nous avons commencé à faire dans notre application.
       \subsubsection{Le bouton \textit{Configurer}}
-	
 	Ce bouton sert à configurer l'application. Les options suivantes sont configurables :
 	\begin{itemize}
 	 \item Utilisation ou non du proxy Lille 1
 	 \item Nombre de tweets à récupérer à chaque appel de \textit{Get tweets}
+	 \item Utilisation d'une base de tweets équilibrée (nb positifs = nb negatifs = nb neutres)
 	 \item Algorithme à lancer sur les tweets obtenus
 	 \item Uniquement pour Bayes : ne pas accepter les mots de moins de \textit{n} lettres
 	 \item Uniquement pour Bayes : prendre en compte les n-gramme insérés ci-dessous
@@ -152,7 +158,7 @@
 	 \item Le bouton \textit{Load base} sert à charger la base voulue. La base est stockée sous forme d'objet dans les fichiers comportant l'extension \textit{.base}
 	\end{itemize}
 	Il est important de sauvegarder les modifications avec le bouton associé, sans quoi celles-ci ne seraient pas prises en compte.
-
+	\ref{config}
 \chapter{Résultats de la classification avec les différentes méthodes et analyse}
     \subsection{mots clefs}
       Après analyse, nous avons constaté que 64\% des tweets étaient classés correctement par l'algorithme des mots clefs.
@@ -161,12 +167,19 @@
       Pour Knn, sur 95 tweets différents on a 61\% des tweets classés correctement.
       Pour ce qui est du temps de calcul 442ms pour 100 tweets.
     \subsection{Bayes}
-
+      Pour faire fonctionner bayes il faut que la difference du nombre de mots par classe soit négligeable, pendant qu'on a fait les test on avait la classe neutre qui comportait
+      beaucoup trop de tweets, on a donc tronqué notre base pour obtenir un meme nombre de tweet pour chaque classe, le resultat était légerement plus cohérent mais pas satisfaisant
+      nous avions donc tenté d'équilibrer à la main et nous nous sommes rendu compte que pour obtenir un résultat cohérent il fallait un nombre de mots quasi équivalent pour chaque classe.
     
     
 \chapter{Conclusions}
+Suite a nos experimentations, nous pouvons conclure que l'algorithme de mots clefs à l'avantage d'être efficace en temps pour une bonne classification de 64\%
+presque autant que KNN.
 Il faut prendre les resultats des sondages de sentiments avec des pincettes, puisque la réponse affichée à l'écran ne répond pas à 
-est-ce que les gens sont pour ou contre tel sujet, mais plutot combien de tweets contenant tel sujet sont positif ou negatif. 
+est-ce que les gens sont pour ou contre tel sujet, mais plutot combien de tweets contenant tel sujet sont positif ou negatif.
+Une autre difficulté dans la classification de tweets, c est le sarcasme, si le sarcasme n'existait pas, la classification serait plus efficace...
+Enfin il faut savoir qu'il existe beaucoup de comptes parodiques sur twitter, pour être plus puissant il faudrait ne pas se limiter à juste observer le tweet mais
+aussi observer le comptes de la personne qui envoie le tweet pour savoir si elle est plutot serieuse ou pas.
 
 
 
