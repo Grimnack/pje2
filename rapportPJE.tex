@@ -61,11 +61,17 @@
     D'autre part, nous avons analysé le temps de calcul. Nous avons en effet pensé que c'était un facteur très important dans le domaine de la bigdata, même si avions peu de données.
      
     \subsection{mots clefs}
-      Pour l'algorithme des mots clefs, nous avons gardé le dictionnaire de mots intact.
-          
-      
+      L'algorithme des mots clefs, ou l'algorithme du dictionnaire, est un algorithme permettant de classer des tweets en fonction d'un dictionnaire établi à l'avance.
+      Ainsi, notre application possède un ficher contenant des mots considérés comme positif, et un fichier contenant des mots considérés comme négatifs.
+      L'algorithme se contente de regarder combien de mots positifs et négatifs sont présents dans le tweet.
+      \begin{itemize}
+       \item Si le nombre de mots positifs présents est supérieur au nombre de mots négatifs, le tweet est positif.
+       \item Si le nombre de mots positifs présents est inféieur au nombre de mots négatifs, le tweet est négatif.
+       \item S'il y a autant de mots positifs que négatifs présents dans le tweet, celui-ci est neutre.
+      \end{itemize}
+
     \subsection{KNN}
-    
+      KNN est un algorithme fonctionnant avec une base d'apprentissage.
       
     \subsection{Bayes}
       Bayes a été utilisé dans notre programme pour nous permettre d'estimer la classe des tweets qui vont être ajoutés dans notre base. Ainsi, si l'algorithme de Bayes est bien implémenté et qu'il y a une base conséquence de données, il devient possible d'inclure des tweets dans la base grâce à cet algorithme.

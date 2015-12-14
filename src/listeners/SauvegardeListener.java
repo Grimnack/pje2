@@ -34,6 +34,15 @@ public class SauvegardeListener implements ActionListener {
 
 			tweet.setPolarite(table.getValueAt(i, 2).toString());
 		}
+		int i = 0;
+		while(i < Model.lesTweets.size()){
+			if(Model.lesTweets.get(i).getPolarite() == Polarite.NEUTRE)
+				Model.lesTweets.tweetList.remove(i);
+			else
+				i++;
+		}
+		
+		System.out.println(Model.lesTweets);
 
 		try {
 			JFileChooser choix = new JFileChooser();

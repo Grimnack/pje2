@@ -83,6 +83,12 @@ public class MainFrame extends JFrame{
 		super();
 
 		getContentPane().setBackground(Color.white);
+		
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		widthScreen = ((int) tk.getScreenSize().getWidth());
+		heightScreen = ((int) tk.getScreenSize().getHeight());
+		this.setSize(widthScreen, heightScreen);
+		
 
 		//////////////////////////////////////////////////////////
 		// Configuration police 
@@ -111,7 +117,10 @@ public class MainFrame extends JFrame{
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		jsp = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		jsp.setPreferredSize(new Dimension(750, 550));
+		jsp.setPreferredSize(new Dimension(widthScreen*3/5, heightScreen*3/5));
+		
+		System.out.println(widthScreen);
+		System.out.println(heightScreen);
 		
 		union = new DefaultPieDataset();
 
@@ -120,8 +129,8 @@ public class MainFrame extends JFrame{
 		plot = (PiePlot)repart.getPlot();
 		
 		crepart = new ChartPanel(repart);
-		crepart.setPreferredSize(new Dimension(400, 550));
-		
+		crepart.setPreferredSize(new Dimension(widthScreen*1/3, heightScreen*3/5));
+		crepart.setVisible(false);
 		
 		titre = new JLabel("Tweetemotions");
 		titre.setFont(titreFont);
@@ -131,7 +140,7 @@ public class MainFrame extends JFrame{
 		// Search Panel
 
 		textField = new JTextField(15);
-		textField.setPreferredSize(new Dimension(200, 24));
+		textField.setPreferredSize(new Dimension(100, 24));
 		textField.setFont(openSans);
 
 		search = new JButton("Get tweets !");
@@ -175,9 +184,9 @@ public class MainFrame extends JFrame{
 		c.gridheight = 1;
 		this.add(titre, c );
 		
-		c.gridx = 0;
+		c.gridx = 1;
 		c.gridy = 1;
-		c.gridwidth = 2;
+		c.gridwidth = 1;
 		c.gridheight = 1;
 		this.add(textField, c);
 		
@@ -225,10 +234,6 @@ public class MainFrame extends JFrame{
 
 		this.add(crepart, c);
 
-		Toolkit tk = Toolkit.getDefaultToolkit();
-		widthScreen = ((int) tk.getScreenSize().getWidth());
-		heightScreen = ((int) tk.getScreenSize().getHeight());
-		this.setSize(widthScreen, heightScreen);
 	}
 
 
@@ -250,6 +255,11 @@ public class MainFrame extends JFrame{
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);
 		table.getColumnModel().getColumn(1).setPreferredWidth(1000);
 		
+		if(1100 < widthScreen*3/5)
+			jsp.setPreferredSize(new Dimension(1100, heightScreen*3/5));
+		else
+			jsp.setPreferredSize(new Dimension(widthScreen*3/5, heightScreen*3/5));
+
 		/*Component [] cs = jsp.getComponents();
 	
 		for(int i=0;i<cs.length;i++){
@@ -280,6 +290,13 @@ public class MainFrame extends JFrame{
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);
 		table.getColumnModel().getColumn(1).setPreferredWidth(1000);
 		table.getColumnModel().getColumn(2).setPreferredWidth(150);
+		
+		if(1250 < widthScreen*3/5)
+			jsp.setPreferredSize(new Dimension(1250, heightScreen*3/5));
+		else
+			jsp.setPreferredSize(new Dimension(widthScreen*3/5, heightScreen*3/5));
+		
+		
 	}
 
 	public void addTweetsWithTag(TweetList tweetList){
@@ -307,6 +324,11 @@ public class MainFrame extends JFrame{
 		table.getColumnModel().getColumn(0).setPreferredWidth(100);
 		table.getColumnModel().getColumn(1).setPreferredWidth(1000);
 		table.getColumnModel().getColumn(2).setPreferredWidth(150);
+		
+		if(1250 < widthScreen*3/5)
+			jsp.setPreferredSize(new Dimension(1250, heightScreen*3/5));
+		else
+			jsp.setPreferredSize(new Dimension(widthScreen*3/5, heightScreen*3/5));
 		
 		JComboBox<String> comboBox = new JComboBox<String>(new String[]{"POSITIF", "NEGATIF", "NEUTRE"});
 		
