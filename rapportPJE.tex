@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage{graphicx}
-
+\usepackage{float}
 % Title Page
 \title{Analyse de Comportements avec Twitter}
 \author{Antonin Durey Matthieu Caron}
@@ -59,29 +59,44 @@
       
       
     \subsection{KNN}
+    
       
     \subsection{Bayes}
+      Bayes a été utilisé dans notre programme pour nous permettre d'estimer la classe des tweets qui vont être ajoutés dans notre base. Ainsi, si l'algorithme de Bayes est bien implémenté et qu'il y a une base conséquence de données, il devient possible d'inclure des tweets dans la base grâce à cet algorithme.
+      Néanmoins, il est difficile pour un algorithme d'estimer la classe d'un tweets seulement en regardant mot après mot. C'est pourquoi nous avons ajouté plusieurs paramètres dans notre application :
+      \begin{itemize}
+	    \item Il est possible d'exclure les mots de moins de n lettres - n étant configurable. Cela permet de ne pas prendre en compte les petits comme les articles, pronoms ou déterminants qui n'offrent que peu de sens et qui ne sont généralement pas significatifs pour classifier un tweet. 
+	    \item En prenant un thème donné - la SNCF -, il est logique que certains mots ou groupe de mots soient très important pour juger de la classe d'un tweet. Dans le cas de la SNCF, des ensembles de mots tels que \textit{en retard, à l'heure, train annulé...} sont importants et doivent être davantage pris en compte. Dans l'application, cela est représenté par les \textit{n-grammes}.
+      \end{itemize}
+      De plus, nous laissons le choix de lancer l'algorithme de Bayes en comptant les mots selon leur présence ou selon leur fréquence.
+      Nous nous en sommes rendus compte par la suite : dans le cas d'un tweet où le nombre de mots est réduit, ce changement n'apporte pas beaucoup de différence.
   \section{Interface graphique}
     \subsection{copie d'ecran}
-      \begin{figure}[!h]
+      \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.2]{impressions-ecran/accueil.png}
 	\caption{Page d'accueil}
 	\label{accueil}
       \end{figure}
-      \begin{figure}[!h]
+      \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.2]{impressions-ecran/tweets.png}
 	\caption{Affichage des tweets}
 	\label{tweets}
       \end{figure}
-      \begin{figure}[!h]
+      \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.2]{impressions-ecran/etiquetage.png}
 	\caption{Étiquetage des tweets}
 	\label{etiquetage}
       \end{figure}
-
+      \begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.2]{impressions-ecran/dico.png}
+	\caption{Algorithme naif}
+	\label{dico}
+      \end{figure}
+      
 
 
     
@@ -99,10 +114,12 @@
 	les tweets annotés vont être ajouté a la base de tweets choisit. Vous pouvez aussi créer une nouvelle base, il est préférable de choisir l'extension .base
 	pour se retrouver dans ses fichiers.
       \subsubsection{Le bouton ``Configurer''}
-	Ce bouton sert a choisir l'algorithme de classification entre Dico, KNN et Bayes. 
+	Ce bouton sert a choisir l'algorithme de classification entre Dico, KNN et Bayes.On peut aussi choisir si on utilise ou pas le proxy de lille 1, enfin on peut charger une base de tweets depuis
+	le menu Configurer.
 \chapter{Résultats de la classification avec les différentes méthodes et analyse}
 \chapter{Conclusions}
-
+Il faut prendre les resultats des sondages de sentiments avec des pincettes, puisque la réponse affichée à l'écran ne répond pas à 
+est-ce que les gens sont pour ou contre tel sujet, mais plutot combien de tweets contenant tel sujet sont positif ou negatif. 
 
 
 
