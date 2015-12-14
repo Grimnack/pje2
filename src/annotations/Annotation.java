@@ -133,7 +133,8 @@ public class Annotation {
 			List<Tweet> tweetBase = Model.base.tweetList;
 
 			Map<Tweet, Double> tweetDistance = new HashMap<Tweet, Double>();
-			
+			long StartTime = new Date().getTime() ;
+			long EndTime ;
 
 			// Pour chaque tweet, on caclule sa distance avec tous les tweets etiquetees, et on lui attribue une polarite en fonction de cela
 			for(Tweet tweet : Model.lesTweets.tweetList){
@@ -148,10 +149,12 @@ public class Annotation {
 				tweet.setPolarite(CollectionUtil.listGetClassFromValue(distanceSorted, 7));
 				
 			}
-
+			EndTime = new Date().getTime() - StartTime ;
+			System.out.println("Knn a pris : " + EndTime + "ms");
 			HashMap<Polarite, Integer> map = Model.lesTweets.getPolariteFrequency();
+		
 			Model.frame.addTweetsWithPolarite(Model.lesTweets);
-
+			
 			Model.frame.updateStats("KNN", map.get(Polarite.NEGATIF), map.get(Polarite.NEUTRE), map.get(Polarite.POSITIF));
 			
 			
@@ -162,6 +165,8 @@ public class Annotation {
 
 
 	public static HashMap<Polarite, Integer> predictTweetsClass(TweetList learningBase, TweetList toPredict){
+		long StartTime = new Date().getTime() ;
+		long EndTime ;
 		for(Tweet tweet : toPredict.tweetList){
 			Map<Polarite, Double> map = new HashMap<Polarite, Double>();
 
@@ -172,6 +177,8 @@ public class Annotation {
 			tweet.setPolarite(CollectionUtil.getPolariteFromHighestNb(map));
 
 		}
+		EndTime = new Date().getTime() - StartTime ;
+		System.out.println("Knn a pris : " + EndTime + "ms");
 		return toPredict.getPolariteFrequency();
 	}
 	
